@@ -86,3 +86,27 @@ categoryLinks.forEach(link => {
         });
     }
 });
+
+// --- OBSŁUGA MENU MOBILNEGO ---
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('nav-menu');
+
+if (hamburger && navMenu) {
+    hamburger.addEventListener('click', () => {
+        // Przełączamy klasy dla ikonki i dla samego menu
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+        
+        // Blokujemy przewijanie strony, gdy menu jest otwarte
+        document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : 'auto';
+    });
+
+    // Zamykanie menu po kliknięciu w link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    });
+}
