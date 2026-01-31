@@ -1,23 +1,32 @@
 [
     {
+        "slug": "bezpieczenstwo-vpn",
         "tytul": "WireGuard: Nowy król wydajności VPN",
         "kategoria": "Networking",
-        "opis": "Pełna analiza protokołu, który redefiniuje bezpieczeństwo i szybkość w nowoczesnych sieciach.",
-        "link": "artykuly/bezpieczenstwo-sieci-vpn.html",
+        "opis": "Dogłębna analiza najszybszego protokołu VPN na świecie. Porównanie z OpenVPN i IPsec.",
+        "data": "24.01.2026",
+        "czasCzytania": "2 min",
+        "link": "artykul.html?id=bezpieczenstwo-vpn",
         "tag": "SEC"
     },
     {
-        "tytul": "Budowa domowego serwera NAS",
+        "slug": "budowa-nas",
+        "tytul": "Budowa własnego serwera NAS",
         "kategoria": "Hardware",
-        "opis": "Przewodnik po doborze podzespołów i konfiguracji systemu pod własną chmurę danych.",
-        "link": "artykuly/budowa-serwera-nas.html",
+        "opis": "Przewodnik po doborze sprzętu i konfiguracji TrueNAS dla domowego centrum danych.",
+        "data": "20.01.2026",
+        "czasCzytania": "2 min",
+        "link": "artykul.html?id=budowa-nas",
         "tag": "NAS"
     },
     {
-        "tytul": "AI w administracji IT",
+        "slug": "ai-w-it",
+        "tytul": "AI w administracji systemami IT",
         "kategoria": "DevOps",
-        "opis": "Jak sztuczna inteligencja pomaga w automatyzacji zadań administratora.",
-        "link": "artykuly/przyszlosc-ai-w-it.html",
+        "opis": "Jak sztuczna inteligencja redefiniuje pracę administratora i automatyzację infrastruktury.",
+        "data": "15.01.2026",
+        "czasCzytania": "2 min",
+        "link": "artykul.html?id=ai-w-it",
         "tag": "AI"
     }
 ]

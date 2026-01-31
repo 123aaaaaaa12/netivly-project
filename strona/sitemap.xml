@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://netivlyproject.netlify.app/</loc></url>
-  <url><loc>https://netivlyproject.netlify.app/baza-wiedzy.html</loc></url>
-  <url><loc>https://netivlyproject.netlify.app/artykuly/bezpieczenstwo-sieci-vpn.html</loc></url>
+
+  <!-- Strona Główna -->
+  <url>
+    <loc>https://netivlyproject.netlify.app/index.html</loc>
+    <priority>1.00</priority>
+  </url>
+
+  <!-- Podstrony główne -->
+  <url>
+    <loc>https://netivlyproject.netlify.app/baza-wiedzy.html</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://netivlyproject.netlify.app/ebooki.html</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://netivlyproject.netlify.app/o-projekcie.html</loc>
+    <priority>0.60</priority>
+  </url>
+
+  <!-- Artykuły dynamiczne (zczytywane przez szablon) -->
+  <url>
+    <loc>https://netivlyproject.netlify.app/artykul.html?id=bezpieczenstwo-vpn</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://netivlyproject.netlify.app/artykul.html?id=budowa-nas</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://netivlyproject.netlify.app/artykul.html?id=ai-w-it</loc>
+    <priority>0.70</priority>
+  </url>
+
 </urlset>

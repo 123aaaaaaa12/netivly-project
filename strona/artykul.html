@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artykuł | Netivly Project</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Net<span>ivly</span></a>
+        <nav><ul class="nav-links"><li><a href="index.html">Start</a></li></ul></nav>
+        <button id="theme-toggle">Tryb</button>
+    </header>
+
+    <div class="article-header">
+        <span id="post-tag" class="tag">Kategoria</span>
+        <h1 id="post-title">Ładowanie tytułu...</h1>
+        <div id="post-meta" style="margin-top: 20px; color: var(--text-muted); font-size: 0.9rem;">Data publikacji</div>
+    </div>
+
+    <!-- Tu wskoczy treść z Markdown -->
+    <article id="post-content" class="article-body">
+        <p>Ładowanie treści...</p>
+    </article>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Logika ładowania treści artykułu
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const postId = params.get('id');
+
+            fetch('dane.json')
+                .then(res => res.json())
+                .then(data => {
+                    const post = data.find(p => p.slug === postId);
+                    if (post) {
+                        document.title = `${post.tytul} | Netivly`;
+                        document.getElementById('post-title').innerText = post.tytul;
+                        document.getElementById('post-tag').innerText = post.kategoria;
+                        document.getElementById('post-meta').innerText = `${post.data} • ${post.czasCzytania}`;
+                        
+                        // Ładowanie treści z pliku .md
+                        fetch(`tresc/${post.slug}.md`)
+                            .then(res => res.text())
+                            .then(text => {
+                                document.getElementById('post-content').innerHTML = marked.parse(text);
+                            });
+                    }
+                });
+        });
+    </script>
+</body>
+</html>
