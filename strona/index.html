@@ -129,9 +129,9 @@
         <div class="newsletter-content">
             <h2>Bądź na bieżąco</h2>
             <p>Zapisz się do newslettera i otrzymuj powiadomienia o nowych artykułach technicznych oraz premierach e-booków.</p>
-            <form class="newsletter-form">
-                <input type="email" placeholder="Twój adres e-mail">
-                <button type="submit" class="btn btn-primary">Dołącz</button>
+            <form name="newsletter" method="POST" data-netlify="true" class="newsletter-form">
+                        <input type="email" name="email" placeholder="Twój adres e-mail" required>
+                        <button type="submit" class="btn btn-primary">Dołącz</button>
             </form>
         </div>
     </section>
