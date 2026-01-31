@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baza Wiedzy | Netivly Project</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Netivly<span>Project</span></a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Strona Główna</a></li>
+                <li><a href="baza-wiedzy.html" style="color:var(--primary)">Baza Wiedzy</a></li>
+                <li><a href="ebooki.html">E-booki</a></li>
+                <li><a href="o-projekcie.html">O Projekcie</a></li>
+            </ul>
+        </nav>
+        <button id="theme-toggle">Tryb</button>
+    </header>
+
+    <section class="hero-expanded" style="padding: 60px 5% 40px;">
+        <h1>Baza <span class="text-gradient">Wiedzy</span></h1>
+        <p>Przeszukuj dziesiątki artykułów technicznych z zakresu IT, DevOps i Security.</p>
+        
+        <div class="container" style="margin-top: 30px;">
+            <!-- DODANO ID: search-input -->
+            <input type="text" id="search-input" placeholder="Czego szukasz? (np. VPN, Docker...)" style="width: 100%; max-width: 600px; padding: 15px 25px; border-radius: 15px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-main);">
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="main-layout">
+            <main>
+                <!-- DODANO ID: articles-list -->
+                <div id="articles-list" class="articles-grid" style="grid-template-columns: 1fr;">
+                    <!-- Tutaj JavaScript automatycznie wstawi artykuły z pliku JSON -->
+                    <p style="text-align: center; color: var(--text-muted);">Ładowanie bazy wiedzy...</p>
+                </div>
+            </main>
+
+            <aside>
+                <div class="sidebar-box">
+                    <h4>Kategorie</h4>
+                    <ul style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+                        <li><a href="#" class="tag" onclick="location.reload()">Wszystkie</a></li> 
+                        <li><a href="#" class="tag">Cybersecurity (12)</a></li>
+                        <li><a href="#" class="tag">Networking (8)</a></li>
+                        <li><a href="#" class="tag">DevOps (5)</a></li>
+                        <li><a href="#" class="tag">Hardware (7)</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Pamiętaj, że skrypt musi być na końcu -->
+    <script src="js/script.js"></script>
+</body>
+</html>

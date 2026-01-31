@@ -1,0 +1,23 @@
+[
+    {
+        "tytul": "WireGuard: Nowy król wydajności VPN",
+        "kategoria": "Networking",
+        "opis": "Pełna analiza protokołu, który redefiniuje bezpieczeństwo i szybkość w nowoczesnych sieciach.",
+        "link": "artykuly/bezpieczenstwo-sieci-vpn.html",
+        "tag": "SEC"
+    },
+    {
+        "tytul": "Budowa domowego serwera NAS",
+        "kategoria": "Hardware",
+        "opis": "Przewodnik po doborze podzespołów i konfiguracji systemu pod własną chmurę danych.",
+        "link": "artykuly/budowa-serwera-nas.html",
+        "tag": "NAS"
+    },
+    {
+        "tytul": "AI w administracji IT",
+        "kategoria": "DevOps",
+        "opis": "Jak sztuczna inteligencja pomaga w automatyzacji zadań administratora.",
+        "link": "artykuly/przyszlosc-ai-w-it.html",
+        "tag": "AI"
+    }
+]

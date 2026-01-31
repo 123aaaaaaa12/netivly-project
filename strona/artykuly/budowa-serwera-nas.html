@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WireGuard: Nowy Król Wydajności VPN | Netivly Project</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- PAMIĘTAJ O ../ ABY WYJŚĆ Z FOLDERU DO CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="logo">Net<span>ivly</span></a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html">Start</a></li>
+                <li><a href="../baza-wiedzy.html">Baza Wiedzy</a></li>
+                <li><a href="../ebooki.html">E-booki</a></li>
+                <li><a href="../o-projekcie.html">O Projekcie</a></li>
+            </ul>
+        </nav>
+        <button id="theme-toggle">Tryb</button>
+    </header>
+
+    <!-- NAGŁÓWEK ARTYKUŁU -->
+    <div class="article-header">
+        <span class="tag">Cybersecurity & Networking</span>
+        <h1>WireGuard: Nowy król wydajności i bezpieczeństwa VPN</h1>
+        <div style="margin-top: 20px; color: var(--text-muted); font-size: 0.9rem;">
+            Opublikowano: 24 Stycznia 2024 • 8 min czytania • Autor: Redakcja Netivly
+        </div>
+    </div>
+
+    <!-- TREŚĆ ARTYKUŁU -->
+    <article class="article-body">
+        <p style="font-size: 1.2rem; color: var(--text-muted); font-weight: 500; margin-bottom: 30px; border-left: 4px solid var(--primary); padding-left: 20px;">
+            W świecie zdominowanym przez ociężałe protokoły jak OpenVPN czy IPsec, WireGuard pojawia się jako lekka, niesamowicie szybka i bezpieczna alternatywa, która redefiniuje standardy tunelowania danych.
+        </p>
+
+        <h3>Wstęp do technologii</h3>
+        <p>WireGuard to nowoczesny protokół komunikacyjny typu VPN (Virtual Private Network), który wykorzystuje najnowocześniejszą kryptografię. Jego głównym założeniem jest prostota – podczas gdy OpenVPN posiada setki tysięcy linii kodu, WireGuard zamyka się w zaledwie 4000 linii. Ma to kluczowe znaczenie dla audytów bezpieczeństwa i wykrywania potencjalnych luk.</p>
+        
+        <h3>Dlaczego warto porzucić starsze rozwiązania?</h3>
+        <p>Główną przewagą WireGuard jest jego wydajność. Tradycyjne protokoły VPN często powodują duże opóźnienia i spadek przepustowości łącza. WireGuard działa niemal natychmiastowo – czas nawiązywania połączenia (handshake) jest skrócony do milisekund, co jest szczególnie zauważalne na urządzeniach mobilnych przy przełączaniu się między Wi-Fi a siecią LTE.</p>
+        
+        <h3>Kryptografia na najwyższym poziomie</h3>
+        <p>WireGuard nie pozwala na stosowanie przestarzałych algorytmów szyfrowania. Zamiast tego wymusza użycie sprawdzonych i nowoczesnych rozwiązań, takich jak:</p>
+        <ul style="margin: 20px 0 20px 20px; color: var(--text-main);">
+            <li><strong>ChaCha20</strong> do szyfrowania symetrycznego.</li>
+            <li><strong>Poly1305</strong> do uwierzytelniania wiadomości.</li>
+            <li><strong>Curve25519</strong> dla wymiany kluczy (Diffie-Hellman).</li>
+        </ul>
+
+        <h3>Podsumowanie i wdrożenie</h3>
+        <p>Wdrożenie WireGuard w domowym laboratorium lub infrastrukturze firmowej jest prostsze niż kiedykolwiek. Większość nowoczesnych routerów oraz systemów operacyjnych (Linux, Windows, macOS, Android/iOS) posiada już natywne wsparcie dla tego protokołu. Jeśli szukasz maksymalnej prędkości bez kompromisów w bezpieczeństwie – wybór jest oczywisty.</p>
+        
+        <div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--border);">
+            <a href="../baza-wiedzy.html" class="btn btn-outline" style="margin: 0;">← Wróć do Bazy Wiedzy</a>
+        </div>
+    </article>
+
+    <footer style="margin-top: 0;">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">Net<span>ivly</span></div>
+                <p style="margin-top: 20px; font-size: 0.9rem;">Analizy techniczne i profesjonalna wiedza IT.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Kontakt</h4>
+                <p style="font-size: 0.9rem;">hello@netivly.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- PAMIĘTAJ O ../ ABY WYJŚĆ DO JS -->
+    <script src="../js/script.js"></script>
+</body>
+</html>

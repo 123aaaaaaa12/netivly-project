@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netivly Project | Professional Tech Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Netivly<span>Project</span></a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Strona Główna</a></li>
+                <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
+                <li><a href="ebooki.html">E-booki</a></li>
+                <li><a href="o-projekcie.html">O Projekcie</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <button id="theme-toggle">Tryb</button>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero-expanded">
+        <div class="hero-content">
+            <span class="badge">Edukacja IT • Bezpieczeństwo • Infrastruktura</span>
+            <h1>Świadome podejście do <br><span class="text-gradient">nowoczesnych technologii</span></h1>
+            <p>Netivly Project to platforma dla inżynierów, administratorów i pasjonatów IT, którzy szukają rzetelnej wiedzy technicznej bez marketingu.</p>
+            <div class="hero-btns">
+                <a href="#latest" class="btn btn-primary">Przeglądaj Artykuły</a>
+                <a href="ebooki.html" class="btn btn-outline">Biblioteka E-booków</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOPIC CATEGORIES -->
+    <section class="categories">
+        <div class="container">
+            <div class="category-grid">
+                <div class="cat-card">
+                    <div class="cat-icon">🔒</div>
+                    <h3>Cybersecurity</h3>
+                    <p>Analizy zagrożeń i hardening systemów.</p>
+                </div>
+                <div class="cat-card">
+                    <div class="cat-icon">🌐</div>
+                    <h3>Networking</h3>
+                    <p>Infrastruktura, VPN, Routing i Switching.</p>
+                </div>
+                <div class="cat-card">
+                    <div class="cat-icon">⚙️</div>
+                    <h3>DevOps</h3>
+                    <p>Automatyzacja, Docker i konteneryzacja.</p>
+                </div>
+                <div class="cat-card">
+                    <div class="cat-icon">💾</div>
+                    <h3>Hardware</h3>
+                    <p>Recenzje sprzętu i domowe serwery NAS.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURED ARTICLE -->
+    <section class="featured-section">
+        <div class="container">
+            <h2 class="section-title">Wyróżniony Materiał</h2>
+            <div class="featured-banner">
+                <div class="featured-text">
+                    <span class="tag">Deep Dive</span>
+                    <h2>Architektura Zero Trust w praktyce</h2>
+                    <p>Dowiedz się, jak wdrożyć model zerowego zaufania w sieciach lokalnych, aby wyeliminować luki bezpieczeństwa wynikające z domyślnych uprawnień.</p>
+                    <a href="artykuly/przyszlosc-ai-w-it.html" class="read-link">Czytaj pełny raport →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT (GRID) -->
+    <div class="container" id="latest">
+        <h2 class="section-title">Najnowsze Publikacje</h2>
+        <div class="main-layout">
+            <main class="articles-grid">
+                <a href="artykuly/bezpieczenstwo-sieci-vpn.html" class="article-card-v2">
+                    <div class="article-img-placeholder">Cybersec</div>
+                    <div class="card-body">
+                        <span class="tag">Networking</span>
+                        <h3>WireGuard: Nowy król wydajności VPN</h3>
+                        <p>Analiza techniczna protokołu, który zmienia zasady gry w bezpiecznym tunelowaniu...</p>
+                        <div class="meta">12 min czytania • 24.01.2024</div>
+                    </div>
+                </a>
+
+                <a href="artykuly/budowa-serwera-nas.html" class="article-card-v2">
+                    <div class="article-img-placeholder">Hardware</div>
+                    <div class="card-body">
+                        <span class="tag">Hardware</span>
+                        <h3>Budowa domowego serwera NAS</h3>
+                        <p>Przewodnik po doborze podzespołów i konfiguracji systemu pod własną chmurę danych.</p>
+                        <div class="meta">15 min czytania • 20.01.2024</div>
+                    </div>
+                </a>
+            </main>
+
+            <aside>
+                <div class="sidebar-box">
+                    <h4>E-booki (Wkrótce)</h4>
+                    <p>Przygotowujemy kompleksowe kompendium o sieciach komputerowych.</p>
+                    <div class="ebook-preview">
+                        <strong>Networking Mastery</strong>
+                        <span>PDF / EPUB</span>
+                    </div>
+                </div>
+                <div class="sidebar-box stats">
+                    <h4>W Liczbach</h4>
+                    <div class="stat-item"><strong>150+</strong> Artykułów</div>
+                    <div class="stat-item"><strong>12k</strong> Czytelników</div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- NEWSLETTER SECTION -->
+    <section class="newsletter-full">
+        <div class="newsletter-content">
+            <h2>Bądź na bieżąco</h2>
+            <p>Zapisz się do newslettera i otrzymuj powiadomienia o nowych artykułach technicznych oraz premierach e-booków.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Twój adres e-mail">
+                <button type="submit" class="btn btn-primary">Dołącz</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">Netivly<span>Project</span></div>
+                <p>Niezależna platforma edukacyjna skupiona na przekazywaniu rzetelnej wiedzy IT.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Nawigacja</h4>
+                <ul>
+                    <li><a href="#">Artykuły</a></li>
+                    <li><a href="#">E-booki</a></li>
+                    <li><a href="#">O nas</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Kategorie</h4>
+                <ul>
+                    <li><a href="#">Cybersecurity</a></li>
+                    <li><a href="#">Networking</a></li>
+                    <li><a href="#">Cloud/DevOps</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Kontakt</h4>
+                <p>kontakt@Netivly-project.pl</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Netivly Project. Wszystkie prawa zastrzeżone.
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
