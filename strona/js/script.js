@@ -1,112 +1,84 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- 1. OBSŁUGA TRYBU CIEMNEGO ---
+    // 1. TRYB CIEMNY I HAMBURGER (Logika uniwersalna)
     const themeToggle = document.getElementById('theme-toggle');
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark-mode');
-    }
-    themeToggle.addEventListener('click', () => {
+    if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+    themeToggle?.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
     });
 
-    // --- 2. OBSŁUGA BAZY DANYCH I WYSZUKIWARKI ---
-    const articlesList = document.getElementById('articles-list');
-    const searchInput = document.getElementById('search-input');
-    let baseArticles = [];
-    // Znajdujemy wszystkie linki w panelu bocznym (Kategorie)
-    const categoryLinks = document.querySelectorAll('.sidebar-box .tag');
-
-categoryLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault(); // Zapobiega odświeżeniu strony
-
-        // Pobieramy nazwę kategorii z tekstu linku (np. "Networking (8)" zamieniamy na "Networking")
-        // Używamy split(' ('), żeby uciąć liczbę w nawiasie
-        const selectedCategory = e.target.textContent.split(' (')[0].trim();
-
-        // Jeśli klikniemy kategorię, filtrujemy bazę artykułów
-        const filtered = baseArticles.filter(art => 
-            art.kategoria.toLowerCase() === selectedCategory.toLowerCase()
-        );
-
-        // Wyświetlamy przefiltrowane wyniki
-        renderArticles(filtered);
-
-        // Opcjonalnie: wpisz nazwę kategorii w wyszukiwarkę, żeby użytkownik widział co się dzieje
-        if (searchInput) {
-            searchInput.value = selectedCategory;
-        }
-    });
-});
-
-    // Pobieranie danych z pliku JSON
-    if (articlesList) {
-        fetch('dane.json')
-            .then(response => response.json())
-            .then(data => {
-                baseArticles = data;
-                renderArticles(baseArticles); // Wyświetl wszystko na start
-            })
-            .catch(error => {
-                articlesList.innerHTML = "<p>Błąd ładowania danych bazy wiedzy.</p>";
-            });
-    }
-
-    // Funkcja tworząca karty artykułów
-    function renderArticles(items) {
-        if (items.length === 0) {
-            articlesList.innerHTML = "<p>Brak wyników dla tego zapytania.</p>";
-            return;
-        }
-
-        articlesList.innerHTML = items.map(art => `
-            <a href="${art.link}" class="article-card-v2" style="flex-direction: row; align-items: center; gap: 20px; margin-bottom: 20px;">
-                <div class="article-img-placeholder" style="width: 150px; height: 100px; flex-shrink: 0; font-size: 0.8rem; background: var(--primary); color: white;">
-                    ${art.tag}
-                </div>
-                <div class="card-body" style="padding: 10px;">
-                    <span class="tag">${art.kategoria}</span>
-                    <h3 style="font-size: 1.2rem; margin: 5px 0;">${art.tytul}</h3>
-                    <p style="font-size: 0.9rem; color: var(--text-muted);">${art.opis}</p>
-                </div>
-            </a>
-        `).join('');
-    }
-
-    // Obsługa wpisywania tekstu w wyszukiwarkę
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const searchText = e.target.value.toLowerCase();
-            const filtered = baseArticles.filter(art => 
-                art.tytul.toLowerCase().includes(searchText) || 
-                art.opis.toLowerCase().includes(searchText) || 
-                art.kategoria.toLowerCase().includes(searchText)
-            );
-            renderArticles(filtered);
-        });
-    }
-});
-
-// --- OBSŁUGA MENU MOBILNEGO ---
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('nav-menu');
-
-if (hamburger && navMenu) {
-    hamburger.addEventListener('click', () => {
-        // Przełączamy klasy dla ikonki i dla samego menu
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+    hamburger?.addEventListener('click', () => {
         hamburger.classList.toggle('active');
         navMenu.classList.toggle('active');
-        
-        // Blokujemy przewijanie strony, gdy menu jest otwarte
         document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : 'auto';
     });
 
-    // Zamykanie menu po kliknięciu w link
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-            document.body.style.overflow = 'auto';
+    // 2. KONTENERY (Sprawdzamy na której jesteśmy podstronie)
+    const articlesList = document.getElementById('articles-list'); // Baza Wiedzy (Poziome)
+    const articlesContainer = document.getElementById('articles-container'); // Start (3 najnowsze)
+    const hubArtContainer = document.getElementById('articles-hub-container'); // Centrum (Artykuły)
+    const hubGuideContainer = document.getElementById('guides-hub-container'); // Centrum (Poradniki)
+
+    if (articlesList || articlesContainer || hubArtContainer || hubGuideContainer) {
+        fetch('dane.json')
+            .then(res => res.json())
+            .then(data => {
+                // A. STRONA GŁÓWNA (Index) - Pokazuje tylko 3 najnowsze pionowe
+                if (articlesContainer) {
+                    const latest = [...data].reverse().slice(0, 3);
+                    articlesContainer.innerHTML = latest.map(art => cardGridTemplate(art)).join('');
+                }
+
+                // B. CENTRUM WIEDZY - Podział na Artykuły i Poradniki (Pionowe)
+                if (hubArtContainer) {
+                    hubArtContainer.innerHTML = data.filter(i => i.typ === 'artykul').map(art => cardGridTemplate(art)).join('');
+                }
+                if (hubGuideContainer) {
+                    hubGuideContainer.innerHTML = data.filter(i => i.typ === 'poradnik').map(art => cardGridTemplate(art)).join('');
+                }
+
+                // C. BAZA WIEDZY - Pełna lista (Pozioma - Twoja poprawka)
+                if (articlesList) {
+                    renderHorizontalList(data, articlesList);
+                    setupSearch(data, articlesList);
+                }
+            });
+    }
+
+    // SZABLON PIONOWY (Grid)
+    function cardGridTemplate(art) {
+        return `
+        <a href="${art.link}" class="article-card-v2">
+            <div class="article-img-placeholder">${art.tag}</div>
+            <div class="card-body">
+                <span class="tag">${art.kategoria}</span>
+                <h3>${art.tytul}</h3>
+                <p>${art.opis}</p>
+                <div class="card-footer-meta"><span>${art.data}</span><span>${art.czasCzytania}</span></div>
+            </div>
+        </a>`;
+    }
+
+    // SZABLON POZIOMY (Lista)
+    function renderHorizontalList(items, container) {
+        container.innerHTML = items.map(art => `
+        <a href="${art.link}" class="article-card-horizontal">
+            <div class="card-img-side">${art.tag}</div>
+            <div class="card-content-side">
+                <span class="tag" style="margin-bottom:8px;">${art.kategoria}</span>
+                <h3>${art.tytul}</h3>
+                <p>${art.opis}</p>
+            </div>
+        </a>`).join('');
+    }
+
+    function setupSearch(data, container) {
+        document.getElementById('search-input')?.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = data.filter(art => art.tytul.toLowerCase().includes(term) || art.kategoria.toLowerCase().includes(term));
+            renderHorizontalList(filtered, container);
         });
-    });
-}
+    }
+});

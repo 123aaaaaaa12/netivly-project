@@ -1,32 +1,112 @@
 [
     {
-        "slug": "bezpieczenstwo-vpn",
-        "tytul": "WireGuard: Nowy król wydajności VPN",
+        "slug": "suwerennosc-cyfrowa-2026",
+        "tytul": "Suwerenność Cyfrowa 2026",
+        "typ": "artykul",
+        "kategoria": "Strategia",
+        "opis": "Kompleksowy przewodnik po budowie niezależnej infrastruktury IT dla Ciebie i Twojej firmy.",
+        "data": "01.02.2026",
+        "czasCzytania": "15 min",
+        "link": "artykul.html?id=suwerennosc-cyfrowa-2026",
+        "tag": "DEEP"
+    },
+    {
+        "slug": "ai-w-it-biznes",
+        "tytul": "AI w małej firmie: Jak zacząć bez budżetu?",
+        "typ": "artykul",
+        "kategoria": "DevOps",
+        "opis": "Analiza narzędzi AI, które zautomatyzują pracę biurową bez wysyłania poufnych danych do chmury.",
+        "data": "01.02.2026",
+        "czasCzytania": "10 min",
+        "link": "artykul.html?id=ai-w-it-biznes",
+        "tag": "AI"
+    },
+    {
+        "slug": "open-source-kontra-saas",
+        "tytul": "Tnij koszty: Open-Source zamiast drogich SaaS-ów",
+        "typ": "artykul",
+        "kategoria": "Optymalizacja",
+        "opis": "Ile realnie może zaoszczędzić mała firma, przechodząc na własne rozwiązania? Porównanie kosztów.",
+        "data": "30.01.2026",
+        "czasCzytania": "12 min",
+        "link": "artykul.html?id=open-source-kontra-saas",
+        "tag": "COST"
+    },
+    {
+        "slug": "strategia-backup-321",
+        "tytul": "Zasada Backup 3-2-1: Jedyna polisa ubezpieczeniowa",
+        "typ": "artykul",
+        "kategoria": "Prywatność",
+        "opis": "Dlaczego dysk to za mało? Praktyczne podejście do ochrony danych w domu i przedsiębiorstwie.",
+        "data": "28.01.2026",
+        "czasCzytania": "8 min",
+        "link": "artykul.html?id=strategia-backup-321",
+        "tag": "DATA"
+    },
+    {
+        "slug": "przyszlosc-wifi7-analiza",
+        "tytul": "Wi-Fi 7: Czy Twoja firma potrzebuje nowej sieci?",
+        "typ": "artykul",
         "kategoria": "Networking",
-        "opis": "Dogłębna analiza najszybszego protokołu VPN na świecie. Porównanie z OpenVPN i IPsec.",
+        "opis": "Analiza standardu 802.11be. Czy warto już teraz inwestować w wymianę infrastruktury bezprzewodowej?",
+        "data": "26.01.2026",
+        "czasCzytania": "10 min",
+        "link": "artykul.html?id=przyszlosc-wifi7-analiza",
+        "tag": "WIFI"
+    },
+    {
+        "slug": "bezpieczenstwo-vpn",
+        "tytul": "Instalacja WireGuard na serwerze Linux",
+        "typ": "poradnik",
+        "kategoria": "Cybersecurity",
+        "opis": "Krok po kroku: Jak skonfigurować najszybszy tunel VPN dla bezpiecznego dostępu zdalnego.",
         "data": "24.01.2026",
-        "czasCzytania": "2 min",
+        "czasCzytania": "5 min",
         "link": "artykul.html?id=bezpieczenstwo-vpn",
-        "tag": "SEC"
+        "tag": "LAB"
     },
     {
         "slug": "budowa-nas",
-        "tytul": "Budowa własnego serwera NAS",
+        "tytul": "Konfiguracja TrueNAS Scale dla początkujących",
+        "typ": "poradnik",
         "kategoria": "Hardware",
-        "opis": "Przewodnik po doborze sprzętu i konfiguracji TrueNAS dla domowego centrum danych.",
+        "opis": "Tutorial: Od instalacji systemu po stworzenie pierwszego bezpiecznego poola danych ZFS.",
         "data": "20.01.2026",
-        "czasCzytania": "2 min",
+        "czasCzytania": "15 min",
         "link": "artykul.html?id=budowa-nas",
         "tag": "NAS"
     },
     {
-        "slug": "ai-w-it",
-        "tytul": "AI w administracji systemami IT",
+        "slug": "hardening-linux-tutorial",
+        "tytul": "Hardening serwera Linux w 10 krokach",
+        "typ": "poradnik",
+        "kategoria": "Cybersecurity",
+        "opis": "Gotowa lista komend i zmian w konfiguracji, które zabezpieczą Twój serwer przed atakami.",
+        "data": "18.01.2026",
+        "czasCzytania": "12 min",
+        "link": "artykul.html?id=hardening-linux-tutorial",
+        "tag": "SEC"
+    },
+    {
+        "slug": "docker-kontener-start",
+        "tytul": "Twój pierwszy kontener: Docker od zera",
+        "typ": "poradnik",
         "kategoria": "DevOps",
-        "opis": "Jak sztuczna inteligencja redefiniuje pracę administratora i automatyzację infrastruktury.",
+        "opis": "Praktyczne wprowadzenie do konteneryzacji. Jak uruchomić własne usługi w sposób uporządkowany.",
         "data": "15.01.2026",
-        "czasCzytania": "2 min",
-        "link": "artykul.html?id=ai-w-it",
-        "tag": "AI"
+        "czasCzytania": "10 min",
+        "link": "artykul.html?id=docker-kontener-start",
+        "tag": "DOCK"
+    },
+    {
+        "slug": "wlasny-bitwarden-vaultwarden",
+        "tytul": "Własny manager haseł: Vaultwarden",
+        "typ": "poradnik",
+        "kategoria": "Prywatność",
+        "opis": "Instrukcja hostowania bezpiecznego sejfu na hasła. Pełna kontrola bez opłat subskrypcyjnych.",
+        "data": "12.01.2026",
+        "czasCzytania": "14 min",
+        "link": "artykul.html?id=wlasny-bitwarden-vaultwarden",
+        "tag": "PASS"
     }
 ]

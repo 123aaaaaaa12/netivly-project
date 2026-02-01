@@ -258,3 +258,141 @@ footer { background: var(--bg-card); border-top: 1px solid var(--border); paddin
     .newsletter-form { flex-direction: column; }
     .newsletter-content h2 { font-size: 1.8rem; }
 }
+
+/* Poprawiony Grid dla 3 kolumn */
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Zmniejszono z 400px na 300px */
+    gap: 25px;
+}
+
+/* Stylizacja wnętrza karty dla lepszych proporcji */
+.article-card-v2 {
+    display: flex;
+    flex-direction: column; /* Wymuszamy układ pionowy */
+    height: 100%;
+}
+
+.article-img-placeholder {
+    height: 180px; /* Stała wysokość zdjęcia/placeholderu */
+    width: 100% !important;
+    font-size: 1.2rem;
+}
+
+.tag-meta {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.card-footer-meta {
+    margin-top: auto; /* Pcha metadane na sam dół karty */
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+/* Responsywność */
+@media (max-width: 1100px) {
+    .articles-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 kolumny na średnich ekranach */
+    }
+}
+
+@media (max-width: 700px) {
+    .articles-grid {
+        grid-template-columns: 1fr; /* 1 kolumna na telefonach */
+    }
+}
+
+/* Specjalny styl dla listy w Bazie Wiedzy */
+.article-card-horizontal {
+    display: flex;
+    background: var(--bg-card);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    margin-bottom: 20px;
+    transition: 0.3s;
+    height: 160px; /* Stała, elegancka wysokość */
+}
+
+.article-card-horizontal:hover {
+    transform: translateX(10px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow);
+}
+
+.card-img-side {
+    width: 200px;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.card-content-side {
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.card-content-side h3 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.card-content-side p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .article-card-horizontal { height: auto; flex-direction: column; }
+    .card-img-side { width: 100%; height: 80px; }
+}
+
+/* POPRAWKA KART POZIOMYCH DLA BAZY WIEDZY */
+.article-card-horizontal {
+    display: flex;
+    background: var(--bg-card);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 20px;
+    transition: 0.3s;
+    min-height: 150px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--shadow);
+}
+.article-card-horizontal:hover { transform: translateX(10px); border-color: var(--primary); }
+.card-img-side { width: 180px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; }
+.card-content-side { padding: 25px; display: flex; flex-direction: column; justify-content: center; }
+
+@media (max-width: 768px) {
+    .article-card-horizontal { flex-direction: column; }
+    .card-img-side { width: 100%; height: 100px; }
+}
