@@ -4,71 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>O Projekcie | Netivly Project</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-</head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9FE7V9D214"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <style>
+        .about-container { max-width: 900px; margin: 60px auto; padding: 0 20px; }
+        .mission-box { background: var(--bg-card); padding: 50px; border-radius: 40px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 40px; }
+        .mission-box h1 { font-size: 3rem; letter-spacing: -2px; margin-bottom: 20px; }
+        
+        .split-section { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 50px; }
+        .split-card { background: var(--bg-card); padding: 30px; border-radius: 30px; border: 1px solid var(--border); }
+        .split-card h3 { color: var(--primary); margin-bottom: 15px; font-size: 1.4rem; }
+        .split-card p { color: var(--text-muted); font-size: 0.95rem; }
 
-  gtag('config', 'G-9FE7V9D214');
-</script>
+        .values-list { margin-top: 40px; list-style: none; }
+        .values-list li { margin-bottom: 20px; display: flex; gap: 15px; align-items: flex-start; }
+        .check-icon { color: var(--primary); font-weight: 800; }
+        
+        @media (max-width: 768px) { .split-section { grid-template-columns: 1fr; } .mission-box { padding: 30px; } }
+    </style>
+</head>
 <body>
     <header>
-    <!-- 1. LOGO -->
-    <a href="index.html" class="logo">Net<span>ivly</span></a>
+        <a href="index.html" class="logo">Net<span>ivly</span> Project</a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Start</a></li>
+                <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
+                <li><a href="ebooki.html">E-booki</a></li>
+            </ul>
+        </nav>
+        <button id="theme-toggle">Tryb</button>
+    </header>
 
-    <!-- 2. PRZYCISK HAMBURGERA (widoczny tylko na telefonie) -->
-    <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-
-    <!-- 3. NAWIGACJA -->
-    <nav>
-        <ul class="nav-links" id="nav-menu">
-            <li><a href="index.html">Start</a></li>
-            <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
-            <li><a href="ebooki.html">E-booki</a></li>
-            <li><a href="o-projekcie.html">O Projekcie</a></li>
-        </ul>
-    </nav>
-
-    <!-- 4. PRZYCISK TRYBU -->
-    <button id="theme-toggle">Tryb</button>
-</header>
-
-    <section class="container" style="margin-top: 80px; max-width: 800px;">
-        <span class="tag">Nasza Misja</span>
-        <h1 style="font-size: 3rem; margin: 20px 0;">Budujemy <span class="text-gradient">świadomość technologiczną.</span></h1>
-        
-        <div style="background: var(--bg-card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); margin-top: 40px;">
-            <p style="font-size: 1.1rem; margin-bottom: 20px;">
-                Netivly Project narodził się z pasji do przejrzystej i rzetelnej informacji technicznej. W świecie zdominowanym przez marketingowe slogany, chcemy dostarczać wiedzę opartą na faktach, testach i doświadczeniu inżynierskim.
+    <div class="about-container">
+        <div class="mission-box">
+            <span class="tag">Nasza Misja</span>
+            <h1>Technologia dostępna dla <span class="text-gradient">każdego.</span></h1>
+            <p style="font-size: 1.2rem; color: var(--text-muted); line-height: 1.8;">
+                Netivly Project to inicjatywa, która wypełnia lukę między skomplikowaną inżynierią IT a codziennymi potrzebami użytkowników i przedsiębiorców. Wierzymy, że nowoczesna infrastruktura, bezpieczeństwo i AI nie powinny być zarezerwowane tylko dla gigantów technologicznych.
             </p>
-            <p style="font-size: 1.1rem; margin-bottom: 20px;">
-                Naszym celem jest stworzenie bazy wiedzy, która pomoże administratorom i pasjonatom IT nie tylko używać technologii, ale przede wszystkim ją rozumieć.
-            </p>
-            
-            <h3 style="margin: 40px 0 20px;">Dlaczego Netivly?</h3>
-            <ul style="display: flex; flex-direction: column; gap: 15px;">
-                <li><strong>✓ Bezstronność:</strong> Nie bierzemy pieniędzy za recenzje sprzętu.</li>
-                <li><strong>✓ Głęboka Analiza:</strong> Nie piszemy o newsach, piszemy o tym, jak coś działa.</li>
-                <li><strong>✓ Praktyka:</strong> Każdy poradnik jest testowany w naszym laboratorium.</li>
+
+            <div class="split-section">
+                <div class="split-card">
+                    <h3>Dla Ciebie</h3>
+                    <p>Pomagamy zwykłym ludziom odzyskać kontrolę nad ich danymi. Pokazujemy, jak zbudować własną chmurę (NAS), zabezpieczyć domową sieć VPN-em i świadomie korzystać z narzędzi cyfrowych bez oddawania prywatności korporacjom.</p>
+                </div>
+                <div class="split-card">
+                    <h3>Dla Twojej Firmy</h3>
+                    <p>Wspieramy małe i średnie firmy w optymalizacji kosztów. Zamiast drogich abonamentów i skomplikowanych systemów, proponujemy sprawdzone rozwiązania open-source, automatyzację procesów i hardening infrastruktury.</p>
+                </div>
+            </div>
+
+            <h2 style="margin-top: 60px; letter-spacing: -1px;">Dlaczego warto nam ufać?</h2>
+            <ul class="values-list">
+                <li>
+                    <span class="check-icon">✓</span>
+                    <div>
+                        <strong>Zero marketingu:</strong> Nasze artykuły to czysta wiedza techniczna. Nie piszemy pod dyktando sponsorów, lecz w oparciu o realne testy.
+                    </div>
+                </li>
+                <li>
+                    <span class="check-icon">✓</span>
+                    <div>
+                        <strong>Praktyczne podejście:</strong> Każdy poradnik, od konfiguracji WireGuard po wdrożenie AI, został przetestowany w naszym laboratorium.
+                    </div>
+                </li>
+                <li>
+                    <span class="check-icon">✓</span>
+                    <div>
+                        <strong>Edukacja, nie tylko instrukcja:</strong> Nie chcemy, żebyś tylko kopiował komendy. Chcemy, abyś rozumiał, jak działa Twoja sieć i systemy.
+                    </div>
+                </li>
             </ul>
         </div>
 
-        <div class="newsletter-full" style="margin-top: 60px; padding: 40px; border-radius: 24px;">
-            <h3>Masz pytania?</h3>
-            <p>Napisz do nas: <strong>--</strong></p>
+        <div style="text-align: center; margin-top: 60px;">
+            <h3>Masz pytanie lub potrzebujesz konkretnej analizy?</h3>
+            <p style="color: var(--text-muted); margin-top: 10px;">Obserwuj naszą Bazę Wiedzy lub sprawdź nadchodzące E-booki.</p>
+            <div style="margin-top: 30px;">
+                <a href="baza-wiedzy.html" class="btn btn-primary">Przeglądaj artykuły</a>
+            </div>
         </div>
-    </section>
+    </div>
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">Net<span>ivly</span> Project</div> 
+                <p>Niezależna platforma edukacyjna skupiona na przekazywaniu rzetelnej wiedzy IT.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Nawigacja</h4>
+                <ul>
+                    <li><a href="#">Artykuły</a></li>
+                    <li><a href="#">E-booki</a></li>
+                    <li><a href="#">O nas</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Kategorie</h4>
+                <ul>
+                    <li><a href="#">Cybersecurity</a></li>
+                    <li><a href="#">Networking</a></li>
+                    <li><a href="#">Cloud/DevOps</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Kontakt</h4>
+                <p>--</p>
+            </div>
+        </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Netivly Project. Autor: Dawid Józef Sakowski</p>
+                <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted); opacity: 0.8;">
+                Kod źródłowy: <a href="/LICENSE" style="text-decoration: underline; color: inherit;">MIT</a> | 
+                Artykuły: <a href="https://creativecommons.org/licenses/by/4.0/" style="text-decoration: underline; color: inherit;">CC BY 4.0</a> | 
+                E-booki:  <a href="/LICENSE" style="text-decoration: underline; color: inherit;">Wszystkie prawa zastrzeżone.</a>
+            </p>
+            <a href="polityka-prywatnosci.html" style="text-decoration: underline; color: inherit;">Polityka Prywatności</a>
+        </div>
 
     <script src="js/script.js"></script>
 </body>
