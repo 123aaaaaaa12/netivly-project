@@ -396,3 +396,53 @@ footer { background: var(--bg-card); border-top: 1px solid var(--border); paddin
     .article-card-horizontal { flex-direction: column; }
     .card-img-side { width: 100%; height: 100px; }
 }
+/* --- NAPRAWA MENU MOBILNEGO --- */
+@media (max-width: 900px) {
+    .nav-links {
+        display: none; /* Ukryte domyślnie */
+        flex-direction: column;
+        position: fixed;
+        top: 70px; /* Wysokość nagłówka */
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: var(--bg-body); /* Tło zgodne z trybem jasnym/ciemnym */
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+        z-index: 1000;
+        transition: 0.3s;
+    }
+
+    .nav-links.active {
+        display: flex !important; /* Pokazuje się po kliknięciu */
+    }
+
+    .nav-links li a {
+        font-size: 1.5rem; /* Większy tekst na telefonie */
+        font-weight: 700;
+    }
+
+    /* Ustawienie przycisków po prawej stronie */
+    .header-controls {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+    }
+    
+    /* Ikona hamburgera */
+    .hamburger span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background: var(--text-main);
+        transition: 0.3s;
+    }
+}
