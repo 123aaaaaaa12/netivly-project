@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netivly Project | Professional Tech Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
     <!-- Google tag (gtag.js) -->
@@ -21,15 +20,9 @@
 <body>
 
     <header>
-        <a href="index.html" class="logo">Net<span>ivly</span> Project</a>
+    <a href="index.html" class="logo">Net<span>ivly</span> Project</a>
 
-        <div class="header-controls">
-            <button id="theme-toggle">Tryb</button>
-            <div class="hamburger" id="hamburger">
-                <span></span><span></span><span></span>
-            </div>
-        </div>
-
+    <div class="header-right"> <!-- TO JEST KLUCZOWE OPAKOWANIE -->
         <nav>
             <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html">Start</a></li>
@@ -39,7 +32,15 @@
                 <li><a href="o-projekcie.html">O Projekcie</a></li>
             </ul>
         </nav>
-    </header>
+        
+        <div class="header-actions">
+            <button id="theme-toggle">Tryb</button>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+</header>
 
     
     <!-- HERO SECTION -->
@@ -185,6 +186,6 @@
             <a href="polityka-prywatnosci.html" style="text-decoration: underline; color: inherit;">Polityka Prywatności</a>
         </div>
     </footer>
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=1.1"></script>
 </body>
 </html>
