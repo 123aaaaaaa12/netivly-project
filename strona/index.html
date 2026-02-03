@@ -6,9 +6,13 @@
     <title>Netivly Project | Professional Tech Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/newsletter.css"> 
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
-    <!-- Google tag (gtag.js) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JV5KR2DGE0"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -17,7 +21,7 @@
 
     gtag('config', 'G-JV5KR2DGE0');
     </script>
-</head>
+
 <body>
     <header>
         <!-- 1. LOGO -->
@@ -144,13 +148,42 @@
                 </div>
                 <div class="sidebar-box stats">
                     <h4>W Liczbach</h4>
-                    <div class="stat-item"><strong>3</strong> Artykułów</div>
-                    <!--<div class="stat-item"><strong>12k</strong> Czytelników</div>-->
+                    <div class="stat-item"><strong>15</strong> Artykułów</div>
+                    <div class="stat-item"><strong>100</strong> Czytelników</div>
                 </div>
             </aside>
         </div>
     </div>
-<br>
+
+<section class="container">
+    <div class="new-newsletter-box">
+        <!-- Lewa strona: Treść -->
+        <div class="nl-text-side">
+            <span class="badge" style="margin-bottom: 15px;">Netivly Insider</span>
+
+            <h2>Zbuduj swoją <br><span class="text-gradient">suwerenność IT</span></h2>
+            <p>Dołącz do grona czytelników. Otrzymuj techniczne analizy i powiadomienia o e-bookach bezpośrednio na e-maila.</p>
+            
+            <ul class="nl-benefits">
+                <li><i class="fas fa-check-circle"></i> Brak spamu</li>
+                <li><i class="fas fa-check-circle"></i> Wczesny dostęp do e-booków</li>
+                <li><i class="fas fa-check-circle"></i> Unikalne kody rabatowe</li>
+            </ul>
+        </div>
+
+        <!-- Prawa strona: Formularz -->
+        <div class="nl-form-side">
+            <form action="https://formspree.io/f/mwvqdqzy" method="POST">
+                <input type="email" name="email" placeholder="Twój e-mail biznesowy" required>
+                <button type="submit" class="nl-btn">Zapisz mnie do listy</button>
+                <p style="font-size: 0.75rem; text-align: center; margin-top: 15px; opacity: 0.6;">
+                    Szanujemy Twoją prywatność. Możesz się wypisać w każdej chwili.
+                </p>
+            </form>
+        </div>
+    </div>
+</section>
+    
     <!-- FOOTER -->
     <footer>
         <div class="footer-grid">
@@ -161,23 +194,26 @@
             <div class="footer-col">
                 <h4>Nawigacja</h4>
                 <ul>
-                    <li><a href="baza-wiedzy.html">Artykuły</a></li>
-                    <li><a href="ebooki.html">E-booki</a></li>
-                    <li><a href="o-projekcie.html">O nas</a></li>
+                <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
+                <li><a href="ebooki.html">E-booki</a></li>
+                <li><a href="o-projekcie.html">O Projekcie</a></li>
                 </ul>
             </div>
-            <div class="footer-col">
-                <h4>Kategorie</h4>
-                <ul>
-                    <li><a href="#">Cybersecurity</a></li>
-                    <li><a href="#">Networking</a></li>
-                    <li><a href="#">Cloud/DevOps</a></li>
-                </ul>
-            </div>
+            
             <div class="footer-col">
                 <h4>Kontakt</h4>
-                <p>Wkrótce</p>
+                <p>kontakt@netivly.pl</p>
             </div>
+            <div class="footer-col">
+        <h4>Śledź projekt</h4>
+        <div class="social-links">
+            <!--<a href="https://linkedin.com/in/twoj-profil" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>-->
+            <a href="https://x.com/twoj-profil" target="_blank" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+            <a href="https://github.com/123aaaaaaa12" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+            <!-- <a href="https://discord.gg/twoje-zaproszenie" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>-->
+            <!-- <a href="https://facebook.com/twoja-strona" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>-->
+        </div>
+    </div>
         </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 Netivly Project. Autor: Dawid Józef Sakowski</p>
