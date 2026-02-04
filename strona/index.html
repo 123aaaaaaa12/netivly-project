@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/newsletter.css"> 
+    <link rel="stylesheet" href="css/featured.css">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -96,20 +97,32 @@
     </section>
 
 
-    <!-- FEATURED ARTICLE -->
-    <section class="featured-section">
-        <div class="container">
-            <h2 class="section-title">Wyróżniony Materiał</h2>
-            <div class="featured-banner">
-                <div class="featured-text">
-                    <span class="tag">AI w IT</span>
-                    <h2>Architektura AI w praktyce</h2>
-                    <p>Dowiedz się, o AI w praktyce.</p>
-                    <a href="artykul.html?id=ai-w-it" class="read-link">Czytaj pełny raport →</a>
+<!-- NOWA SEKCJA WYRÓŻNIONA -->
+<section class="ft-wrapper">
+    <div class="container">
+        <h2 style="margin-bottom: 30px; font-weight: 800; font-size: 1.8rem; letter-spacing: -1px;">Wyróżniony Materiał</h2>
+        
+        <div class="ft-card">
+            <div class="ft-circle-decor"></div>
+            
+            <div class="ft-info">
+                <span class="ft-badge">Analiza Systemów</span>
+                <h2 class="ft-title">Linux w 2026 roku: Nowa era suwerenności</h2>
+                <p class="ft-desc">Dowiedz się, dlaczego Linux stał się fundamentem dla małych firm i użytkowników ceniących prywatność. Odkryj system, który oddaje Ci kontrolę nad każdym bitem danych.</p>
+                
+                <div class="ft-actions">
+                    <a href="artykul.html?id=linux" class="ft-btn">Czytaj pełny raport</a>
+                    <span class="ft-meta">14 min czytania • Netivly Insight</span>
                 </div>
             </div>
+
+            <!-- Ikona Linuksa (FontAwesome musi być podpięte) -->
+            <div class="ft-icon-side">
+                <i class="fab fa-linux"></i>
+            </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- MAIN CONTENT (GRID) -->
     <div class="container" id="latest">
@@ -149,7 +162,7 @@
                 <div class="sidebar-box stats">
                     <h4>W Liczbach</h4>
                     <div class="stat-item"><strong>15</strong> Artykułów</div>
-                    <div class="stat-item"><strong>100</strong> Czytelników</div>
+                    <div class="stat-item"><strong>33</strong> Czytelników</div>
                 </div>
             </aside>
         </div>
@@ -208,7 +221,7 @@
         <h4>Śledź projekt</h4>
         <div class="social-links">
             <!--<a href="https://linkedin.com/in/twoj-profil" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>-->
-            <a href="https://x.com/twoj-profil" target="_blank" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+            <a href="https://x.com/netivly" target="_blank" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
             <a href="https://github.com/123aaaaaaa12" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
             <!-- <a href="https://discord.gg/twoje-zaproszenie" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>-->
             <!-- <a href="https://facebook.com/twoja-strona" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>-->

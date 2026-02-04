@@ -1,27 +1,26 @@
 /* --- NOWOCZESNY SYSTEM NEWSLETTERA NETIVLY --- */
 .new-newsletter-box {
-    margin: 80px auto;
-    padding: 60px;
+    margin: 40px auto;
+    padding: 30px 20px; /* Mniejszy padding na start (mobile) */
     background: var(--bg-card);
-    border-radius: 40px;
+    border-radius: 30px;
     border: 1px solid var(--border);
     box-shadow: var(--shadow-premium);
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 40px;
-    align-items: center;
+    display: flex; /* Zmieniamy Grid na Flex dla lepszej kontroli mobilnej */
+    flex-direction: column;
+    gap: 30px;
     position: relative;
     overflow: hidden;
 }
 
-/* Dekoracyjny akcent w tle */
+/* Dekoracyjny akcent w tle - mniejszy na mobile, żeby nie przeszkadzał */
 .new-newsletter-box::after {
     content: '';
     position: absolute;
-    top: -50px;
-    right: -50px;
-    width: 200px;
-    height: 200px;
+    top: -30px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
     background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
     z-index: 0;
 }
@@ -29,97 +28,118 @@
 .nl-text-side {
     position: relative;
     z-index: 1;
+    text-align: center; /* Wyśrodkowanie na mobile */
 }
 
 .nl-text-side h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    line-height: 1.1;
+    font-size: 1.8rem; /* Mniejszy font na mobile */
+    margin-bottom: 15px;
+    line-height: 1.2;
 }
 
 .nl-text-side p {
     color: var(--text-muted);
-    font-size: 1.1rem;
-    margin-bottom: 25px;
+    font-size: 1rem;
+    margin-bottom: 20px;
 }
 
 /* Lista korzyści */
 .nl-benefits {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
+    text-align: left;
+    display: inline-block; /* Pozwala wyśrodkować listę jako blok */
 }
 
 .nl-benefits li {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: var(--text-main);
+    margin-bottom: 8px;
 }
 
 .nl-benefits i {
     color: var(--accent-success);
+    flex-shrink: 0;
 }
 
 /* Prawa strona - Formularz */
 .nl-form-side {
     background: var(--bg-body);
-    padding: 40px;
-    border-radius: 30px;
+    padding: 25px;
+    border-radius: 25px;
     border: 1px solid var(--border);
     z-index: 1;
+    width: 100%;
 }
 
 .nl-form-side form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .nl-form-side input {
-    padding: 18px 20px;
-    border-radius: 15px;
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 12px;
     border: 1px solid var(--border);
     background: var(--bg-card);
     color: var(--text-main);
     font-family: inherit;
     font-size: 1rem;
-}
-
-.nl-form-side input:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    appearance: none; /* Naprawa wyglądu na iPhone */
 }
 
 .nl-btn {
+    width: 100%;
     background: var(--primary);
     color: white;
-    padding: 18px;
-    border-radius: 15px;
+    padding: 16px;
+    border-radius: 12px;
     border: none;
     font-weight: 800;
     cursor: pointer;
     transition: 0.3s;
 }
 
-.nl-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
-}
-
-/* Responsywność */
-@media (max-width: 900px) {
+/* --- WERSJA NA KOMPUTER (Powyżej 900px) --- */
+@media (min-width: 900px) {
     .new-newsletter-box {
-        grid-template-columns: 1fr;
-        padding: 40px 25px;
-        text-align: center;
+        margin: 80px auto;
+        padding: 60px;
+        flex-direction: row; /* Powrót do dwóch kolumn */
+        grid-template-columns: 1.2fr 1fr; /* Jeśli wolisz Grid, możesz użyć display: grid */
+        display: grid;
+        text-align: left;
     }
+
+    .new-newsletter-box::after {
+        width: 200px;
+        height: 200px;
+    }
+
+    .nl-text-side {
+        text-align: left;
+    }
+
+    .nl-text-side h2 {
+        font-size: 2.5rem;
+    }
+
     .nl-benefits {
-        align-items: center;
-        margin-bottom: 30px;
+        display: flex;
     }
-    .nl-text-side h2 { font-size: 2rem; }
+
+    .nl-benefits li {
+        font-size: 0.95rem;
+    }
+
+    .nl-form-side {
+        padding: 40px;
+    }
 }

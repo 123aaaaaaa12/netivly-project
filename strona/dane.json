@@ -11,7 +11,7 @@
         "tag": "DEEP"
     },
     {
-        "slug": "ai-w-it-biznes",
+        "slug": "ai-w-it",
         "tytul": "AI w małej firmie: Jak zacząć bez budżetu?",
         "typ": "artykul",
         "kategoria": "DevOps",
@@ -99,14 +99,26 @@
         "tag": "DOCK"
     },
     {
-        "slug": "wlasny-bitwarden-vaultwarden",
-        "tytul": "Własny manager haseł: Vaultwarden",
+        "slug": "live",
+        "tytul": "Linux i Windows",
         "typ": "poradnik",
-        "kategoria": "Prywatność",
-        "opis": "Instrukcja hostowania bezpiecznego sejfu na hasła. Pełna kontrola bez opłat subskrypcyjnych.",
-        "data": "12.01.2026",
+        "kategoria": "DevOps",
+        "opis": "Linux i Windows na jednym komputerze.",
+        "data": "30.01.2026",
         "czasCzytania": "14 min",
-        "link": "artykul.html?id=wlasny-bitwarden-vaultwarden",
+        "link": "artykul.html?id=live",
+        "tag": "SEC"
+    },
+    {
+        "slug": "linux",
+        "tytul": "Linux w 2026",
+        "typ": "poradnik",
+        "kategoria": "DevOps",
+        "opis": "Dlaczego warto przejść na linuxa w 2026 roku.",
+        "data": "04.02.2026",
+        "czasCzytania": "14 min",
+        "link": "artykul.html?id=linux",
         "tag": "PASS"
     }
+
 ]

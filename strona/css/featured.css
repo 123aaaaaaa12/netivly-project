@@ -1,0 +1,124 @@
+/* --- COMPONENT: FEATURED ARTICLE PREMIUM --- */
+
+.ft-wrapper {
+    margin: 60px 0;
+    padding: 0 20px;
+}
+
+.ft-card {
+    position: relative;
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+    border-radius: 40px;
+    padding: 70px 60px;
+    color: white;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 25px 50px -12px rgba(29, 78, 216, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 400px;
+}
+
+/* Dekoracyjne koło w tle */
+.ft-circle-decor {
+    position: absolute;
+    top: -150px;
+    right: -150px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.ft-info {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+}
+
+.ft-badge {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.ft-title {
+    font-size: 3.5rem !important; /* Wymuszamy rozmiar */
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 20px 0;
+    color: white !important;
+}
+
+.ft-desc {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    margin-bottom: 40px;
+}
+
+.ft-actions {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.ft-btn {
+    background: white;
+    color: #1d4ed8;
+    padding: 18px 40px;
+    border-radius: 18px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1rem;
+}
+
+.ft-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background: #f8fafc;
+}
+
+.ft-meta {
+    font-size: 0.9rem;
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+/* Ikona Linuksa po prawej */
+.ft-icon-side {
+    position: relative;
+    z-index: 2;
+    font-size: 14rem;
+    opacity: 0.2;
+    transform: rotate(10deg);
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.ft-card:hover .ft-icon-side {
+    transform: rotate(0deg) scale(1.1);
+    opacity: 0.3;
+}
+
+/* RESPONSYWNOŚĆ */
+@media (max-width: 900px) {
+    .ft-card {
+        padding: 50px 30px;
+        flex-direction: column;
+        text-align: center;
+        min-height: auto;
+    }
+    
+    .ft-title { font-size: 2.2rem !important; }
+    .ft-actions { flex-direction: column; gap: 15px; }
+    .ft-icon-side { display: none; }
+}
