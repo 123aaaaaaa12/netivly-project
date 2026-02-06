@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/newsletter.css"> 
     <link rel="stylesheet" href="css/featured.css">
+    <link rel="stylesheet" href="css/benefits.css">
+    <link rel="stylesheet" href="css/hero-modern.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -50,51 +53,48 @@
         <button id="theme-toggle">Tryb</button>
     </header>
 
-    
-    <!-- HERO SECTION -->
-    <section class="hero-expanded">
-    <div class="hero-content">
-        <!-- Odświeżone tagi -->
-        <span class="badge">Prywatność • Optymalizacja • Edukacja IT</span>
-        
-        <h1>Nowoczesna technologia <br><span class="text-gradient">dostępna dla każdego</span></h1>
-        
-        <p>Netivly Project to miejsce, gdzie skomplikowana inżynieria spotyka się z potrzebami ludzi i małych firm. Pomagamy odzyskać kontrolę nad danymi i optymalizować koszty IT za pomocą sprawdzonych rozwiązań.</p>
-        
-        <div class="hero-btns">
-            <a href="baza-wiedzy.html" class="btn btn-primary">Przeglądaj Poradniki</a>
-            <a href="o-projekcie.html" class="btn btn-outline">Poznaj Misję</a>
-        </div>
-    </div>
-    </section>
-
-    <!-- TOPIC CATEGORIES -->
-    <section class="categories">
-        <div class="container">
-            <div class="category-grid">
-                <div class="cat-card">
-                    <div class="cat-icon">🔒</div>
-                    <h3>Cybersecurity</h3>
-                    <p>Analizy zagrożeń i hardening systemów.</p>
-                </div>
-                <div class="cat-card">
-                    <div class="cat-icon">🌐</div>
-                    <h3>Networking</h3>
-                    <p>Infrastruktura, VPN, Routing i Switching.</p>
-                </div>
-                <div class="cat-card">
-                    <div class="cat-icon">⚙️</div>
-                    <h3>DevOps</h3>
-                    <p>Automatyzacja, Docker i konteneryzacja.</p>
-                </div>
-                <div class="cat-card">
-                    <div class="cat-icon">💾</div>
-                    <h3>Hardware</h3>
-                    <p>Recenzje sprzętu i domowe serwery NAS.</p>
-                </div>
+    <section class="hero-modern">
+    <div class="container">
+        <!-- Nagłówek -->
+        <div class="hero-header">
+            <span class="badge">Netivly Ecosystem • 2026</span>
+            <h1>Nowoczesna technologia <br><span class="text-gradient">dostępna dla każdego</span></h1>
+            <p>Buduj własną infrastrukturę, chroń dane i optymalizuj koszty IT za pomocą sprawdzonych rozwiązań open-source.</p>
+            
+            <div class="hero-cta-group">
+                <a href="akademia.html" class="btn btn-primary">Rozpocznij Naukę</a>
+                <a href="o-projekcie.html" class="btn btn-outline">Poznaj Misję</a>
             </div>
         </div>
-    </section>
+
+        <!-- DUŻE KAFELKI PREMIUM (4 KOLUMNY) -->
+        <div class="hero-feature-grid">
+            <a href="baza-wiedzy.html?filter=Cybersecurity" class="f-tile">
+                <div class="f-tile-icon"><i class="fas fa-shield-halved"></i></div>
+                <h3>Cybersecurity</h3>
+                <p>Analizy zagrożeń i hardening systemów.</p>
+            </a>
+
+            <a href="baza-wiedzy.html?filter=Networking" class="f-tile">
+                <div class="f-tile-icon"><i class="fas fa-network-wired"></i></div>
+                <h3>Networking</h3>
+                <p>Infrastruktura, VPN i bezpieczne sieci.</p>
+            </a>
+
+            <a href="baza-wiedzy.html?filter=DevOps" class="f-tile">
+                <div class="f-tile-icon"><i class="fas fa-gears"></i></div>
+                <h3>DevOps</h3>
+                <p>Automatyzacja, Docker i kontenery.</p>
+            </a>
+
+            <a href="baza-wiedzy.html?filter=Hardware" class="f-tile">
+                <div class="f-tile-icon"><i class="fas fa-server"></i></div>
+                <h3>Hardware</h3>
+                <p>Recenzje sprzętu i domowe serwery NAS.</p>
+            </a>
+        </div>
+    </div>
+</section>
 
 
 <!-- NOWA SEKCJA WYRÓŻNIONA -->
@@ -124,30 +124,13 @@
     </div>
 </section>
 
-    <!-- MAIN CONTENT (GRID) -->
+
+<!-- MAIN CONTENT (GRID) -->
     <div class="container" id="latest">
         <h2 class="section-title">Najnowsze Publikacje</h2>
         <div class="main-layout">
-            <main class="articles-grid">
-                <a href="artykul.html?id=bezpieczenstwo-vpn" class="article-card-v2">
-                    <div class="article-img-placeholder">Cybersec</div>
-                    <div class="card-body">
-                        <span class="tag">Networking</span>
-                        <h3>WireGuard: Nowy król wydajności VPN</h3>
-                        <p>Analiza techniczna protokołu, który zmienia zasady gry w bezpiecznym tunelowaniu...</p>
-                        <div class="meta">4 min czytania • 24.01.2026</div>
-                    </div>
-                </a>
-
-                <a href="artykul.html?id=budowa-nas" class="article-card-v2">
-                    <div class="article-img-placeholder">Hardware</div>
-                    <div class="card-body">
-                        <span class="tag">Hardware</span>
-                        <h3>Budowa domowego serwera NAS</h3>
-                        <p>Przewodnik po doborze podzespołów i konfiguracji systemu pod własną chmurę danych.</p>
-                        <div class="meta">2 min czytania • 20.01.2026</div>
-                    </div>
-                </a>
+            <main id="articles-container" class="articles-grid">
+                <!-- Tu JavaScript sam wstawi artykuły z JSON -->
             </main>
 
             <aside>
@@ -155,18 +138,58 @@
                     <h4>E-booki (Wkrótce)</h4>
                     <p>Przygotowujemy kompleksowe kompendium o sieciach komputerowych.</p>
                     <div class="ebook-preview">
-                        <strong>--</strong>
+                        <strong>Networking Mastery</strong>
                         <span>PDF / EPUB</span>
                     </div>
                 </div>
-                <div class="sidebar-box stats">
-                    <h4>W Liczbach</h4>
-                    <div class="stat-item"><strong>15</strong> Artykułów</div>
-                    <div class="stat-item"><strong>33</strong> Czytelników</div>
+
+                <div class="sidebar-box">
+                    <h4>O projekcie</h4>
+                    <div class="stat-item">
+                        <span>Artykuły w bazie</span>
+                        <span class="stat-value" id="dynamic-article-count">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Status</span>
+                        <span class="stat-value" style="color: #10b981;">Online</span>
+                    </div>
                 </div>
             </aside>
         </div>
     </div>
+
+<section class="modern-trust-section">
+    <div class="container">
+        <div class="trust-header">
+            <span class="badge">Misja Projektu</span>
+            <h2>Więcej niż tylko <span class="text-gradient">informacje</span></h2>
+            <p>Dostarczamy narzędzia i wiedzę, które pozwalają przestać polegać na gotowych, drogich rozwiązaniach korporacyjnych.</p>
+        </div>
+
+        <div class="trust-grid">
+            <!-- Karta 1 -->
+            <div class="trust-card">
+                <div class="trust-icon">🔓</div>
+                <h3>Cyfrowa Wolność</h3>
+                <p>Uczymy, jak odciąć się od śledzących Cię usług i przenieść dane na własne, bezpieczne serwery pod Twoją kontrolą.</p>
+            </div>
+
+            <!-- Karta 2 -->
+            <div class="trust-card">
+                <div class="trust-icon">💰</div>
+                <h3>Optymalizacja Kosztów</h3>
+                <p>Pokazujemy małym firmom, jak zastąpić drogie subskrypcje narzędziami Open Source bez utraty wydajności.</p>
+            </div>
+
+            <!-- Karta 3 -->
+            <div class="trust-card">
+                <div class="trust-icon">🧠</div>
+                <h3>Praktyczna Ekspertyza</h3>
+                <p>Każdy artykuł i poradnik to wynik realnych testów. Analizujemy dostarczone informacje aby zapobiec dezinformacji.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
 <section class="container">
     <div class="new-newsletter-box">
@@ -198,46 +221,58 @@
 </section>
     
     <!-- FOOTER -->
-    <footer>
+<footer>
+    <div class="container">
         <div class="footer-grid">
+            <!-- Kolumna 1: Logo -->
             <div class="footer-col">
-                <div class="logo">Net<span>ivly</span> Project</div> 
-                <p>Niezależna platforma edukacyjna skupiona na przekazywaniu rzetelnej wiedzy IT.</p>
+                <div class="logo">Net<span>ivly</span> Project</div>
+                <p style="margin-top: 15px;">Niezależna platforma edukacyjna skupiona na przekazywaniu rzetelnej wiedzy IT.</p>
             </div>
+
+            <!-- Kolumna 2: Nawigacja -->
             <div class="footer-col">
                 <h4>Nawigacja</h4>
                 <ul>
-                <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
-                <li><a href="ebooki.html">E-booki</a></li>
-                <li><a href="o-projekcie.html">O Projekcie</a></li>
+                    <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
+                    <li><a href="ebooki.html">E-booki</a></li>
+                    <li><a href="o-projekcie.html">O Projekcie</a></li>
                 </ul>
             </div>
-            
+
+            <!-- Kolumna 3: Kontakt -->
             <div class="footer-col">
                 <h4>Kontakt</h4>
-                <p>kontakt@netivly.pl</p>
+                <p>Masz pytania?<br>
+                <a href="mailto:kontakt@netivly.pl" style="color: var(--primary); font-weight: 600;">kontakt@netivly.pl</a></p>
             </div>
+
+            <!-- Kolumna 4: Social -->
             <div class="footer-col">
-        <h4>Śledź projekt</h4>
-        <div class="social-links">
-            <!--<a href="https://linkedin.com/in/twoj-profil" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>-->
-            <a href="https://x.com/netivly" target="_blank" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
-            <a href="https://github.com/123aaaaaaa12" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-            <!-- <a href="https://discord.gg/twoje-zaproszenie" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>-->
-            <!-- <a href="https://facebook.com/twoja-strona" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>-->
+                <h4>Śledź projekt</h4>
+                <div class="social-links">
+                    <a href="https://x.com/netivly" target="_blank" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://github.com/123aaaaaaa12" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- DOLNA CZĘŚĆ PRAWNA -->
+        <div class="footer-bottom">
+            <div class="footer-info-text">
+                &copy; 2026 <strong>Netivly Project</strong>. Autor: Dawid Józef Sakowski
+            </div>
+            
+            <div class="footer-legal-links">
+                <a href="/license.txt">Licencja MIT</a>
+                <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+                <span>E-booki: Prawa zastrzeżone</span>
+                <a href="polityka-prywatnosci.html">Polityka Prywatności</a>
+            </div>
         </div>
     </div>
-        </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Netivly Project. Autor: Dawid Józef Sakowski</p>
-                <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted); opacity: 0.8;">
-                Kod źródłowy: <a href="/license.txt" style="text-decoration: underline; color: inherit;">MIT</a> | 
-                Artykuły: <a href="https://creativecommons.org/licenses/by/4.0/" style="text-decoration: underline; color: inherit;">CC BY 4.0</a> | 
-                E-booki:  <a href="/license.txt" style="text-decoration: underline; color: inherit;">Wszystkie prawa zastrzeżone.</a>
-            </p>
-            <a href="polityka-prywatnosci.html" style="text-decoration: underline; color: inherit;">Polityka Prywatności</a>
-        </div>
-    </footer>
+</footer>
     <script src="js/script.js"></script>
+    <script src="js/database.js"></script>
 </body>
 </html>

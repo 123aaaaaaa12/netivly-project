@@ -3,94 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-booki | Netivly Project</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <title>E-booki i Materiały | Netivly Project</title>
     <link rel="apple-touch-icon" href="favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .ebook-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
-        .ebook-card { background: var(--bg-card); border-radius: 24px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; text-align: center; padding: 40px 20px; transition: 0.3s; }
-        .ebook-card:hover { transform: translateY(-10px); border-color: var(--primary); }
-        .ebook-cover { width: 180px; height: 250px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); margin: 0 auto 25px; border-radius: 10px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 1.2rem; }
-        .price { font-size: 1.5rem; font-weight: 800; margin: 15px 0; color: var(--primary); }
-    </style>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JV5KR2DGE0"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-JV5KR2DGE0');
-    </script>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="css/ebooks.css">
+    <link rel="stylesheet" href="css/newsletter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+
     <header>
-    <!-- 1. LOGO -->
-    <a href="index.html" class="logo">Net<span>ivly</span> Project</a>
+        <!-- 1. LOGO -->
+        <a href="index.html" class="logo">Net<span>ivly</span> Project</a>
 
-    <!-- 2. PRZYCISK HAMBURGERA (widoczny tylko na telefonie) -->
-    <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
+        <!-- 2. PRZYCISK HAMBURGERA (widoczny tylko na telefonie) -->
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
 
-    <!-- 3. NAWIGACJA -->
-    <nav>
-        <ul class="nav-links" id="nav-menu">
-            <li><a href="index.html">Start</a></li>
-            <li><a href="akademia.html">Materiały</a></li>
-            <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
-            <li><a href="ebooki.html">E-booki</a></li>
-            <li><a href="o-projekcie.html">O Projekcie</a></li>
-        </ul>
-    </nav>
+        <!-- 3. NAWIGACJA -->
+        <nav>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="index.html">Start</a></li>
+                <li><a href="akademia.html">Materiały</a></li>
+                <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
+                <li><a href="ebooki.html">E-booki</a></li>
+                <li><a href="o-projekcie.html">O Projekcie</a></li>
+            </ul>
+        </nav>
 
-    <!-- 4. PRZYCISK TRYBU -->
-    <button id="theme-toggle">Tryb</button>
-</header>
+        <!-- 4. PRZYCISK TRYBU -->
+        <button id="theme-toggle">Tryb</button>
+    </header>
 
-    <section class="hero-expanded">
-        <h1>Specjalistyczne <span class="text-gradient">E-booki IT</span></h1>
-        <p>Skondensowana wiedza techniczna przygotowana przez praktyków. Bez lania wody, same konkrety.</p>
+    <!-- NOWE HERO - SKUPIONE NA NADCHODZĄCEJ WIEDZY -->
+    <section class="eb-hero">
+        <div class="container">
+            <span class="eb-badge">Edukacja w przygotowaniu</span>
+            <h1>Wiedza, która buduje <br><span class="text-gradient">Twoją niezależność</span></h1>
+            <p>Tworzymy serie specjalistycznych e-booków dla osób prywatnych i firm. <br>Zapisz się na listę, aby otrzymać darmowe fragmenty przed premierą.</p>
+        </div>
     </section>
 
     <div class="container">
-        <div class="ebook-grid">
+        <!-- SEKCJA: DARMOWY MATERIAŁ (DOSTĘPNY LUB BETA) -->
+        <h2 class="eb-section-title">Zasoby Darmowe</h2>
+        <div class="eb-card-featured animate-on-load">
+            <div class="eb-cover-wrap free">
+                <i class="fas fa-unlock-alt"></i>
+                <span>FREE</span>
+            </div>
+            <div class="eb-details">
+                <div class="status-tag available">Dostępne wkrótce</div>
+                <h3>Linux Hardening: Pierwsze kroki</h3>
+                <p>Kompletny start dla każdego, kto chce porzucić Windowsa dla prywatności. Dowiesz się jak wybrać system i jak go "utwardzić" na start.</p>
+                
+                <button class="eb-accordion-btn">Zobacz plan rozdziałów <i class="fas fa-chevron-down"></i></button>
+                <div class="eb-accordion-content">
+                    <ul>
+                        <li><i class="fas fa-check"></i> Wybór dystrybucji (Privacy focus)</li>
+                        <li><i class="fas fa-check"></i> Szyfrowanie dysków i partycji</li>
+                        <li><i class="fas fa-check"></i> Bezpieczne repozytoria i aktualizacje</li>
+                    </ul>
+                </div>
+                <a href="#newsletter-section" class="btn btn-primary scroll-to-nl" style="margin-top: 20px;">Poinformuj mnie o premierze</a>
+            </div>
+        </div>
+
+        <!-- SEKCJA: PŁATNE (W PRZYGOTOWANIU) -->
+        <h2 class="eb-section-title">Nadchodzące Publikacje Premium</h2>
+        <div class="eb-grid">
+            
             <!-- E-book 1 -->
-            <div class="ebook-card">
-                <div class="ebook-cover">WORK<br>IN PROGRESS</div>
-                <span class="tag">PRE-ORDER</span>
-                <h3>--</h3>
-                <p>--</p>
-                <div class="price">00,00 PLN</div>
-                <a href="#" class="btn btn-primary">Dowiedz się więcej</a>
+            <div class="eb-card animate-on-load">
+                <div class="eb-cover paid-1">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <div class="eb-info">
+                    <div class="status-tag progress">W opracowaniu: 75%</div>
+                    <h3>Networking Mastery</h3>
+                    <p>Architektura sieci dla MŚP. Vlany, separacja ruchu i profesjonalny VPN bez kosztów enterprise.</p>
+                    <button class="eb-accordion-btn">Szczegóły <i class="fas fa-chevron-down"></i></button>
+                    <div class="eb-accordion-content">
+                        <p>Dowiesz się jak budować sieci odporne na awarie i jak monitorować ruch w czasie rzeczywistym.</p>
+                    </div>
+                </div>
             </div>
 
             <!-- E-book 2 -->
-            <div class="ebook-card">
-                <div class="ebook-cover" style="background: #0f172a">WORK<br>IN PROGRESS</div>
-                <span class="tag">WKRÓTCE</span>
-                <h3>--</h3>
-                <p>--</p>
-                <div class="price" style="color: var(--text-muted)">-- PLN</div>
-                <a href="#" class="btn btn-outline" style="margin:0">Zapisz się na listę</a>
+            <div class="eb-card animate-on-load" style="animation-delay: 0.1s;">
+                <div class="eb-cover paid-2">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <div class="eb-info">
+                    <div class="status-tag progress">W opracowaniu: 40%</div>
+                    <h3>Self-Hosting Pro</h3>
+                    <p>Pełna instrukcja budowy własnej chmury. Od Dockera po automatyczne backupy w modelu 3-2-1.</p>
+                    <button class="eb-accordion-btn">Szczegóły <i class="fas fa-chevron-down"></i></button>
+                    <div class="eb-accordion-content">
+                        <p>Zastąp Dropboxa, Trello i Bitwardena własnymi instancjami na serwerze domowym.</p>
+                    </div>
+                </div>
             </div>
 
             <!-- E-book 3 -->
-            <div class="ebook-card">
-                <div class="ebook-cover" style="background: #0f172a">WORK<br>IN PROGRESS</div>
-                <span class="tag">WKRÓTCE</span>
-                <h3>--</h3>
-                <p>--</p>
-                <div class="price" style="color: var(--text-muted)">-- PLN</div>
-                <a href="#" class="btn btn-outline" style="margin:0">Zapisz się na listę</a>
+            <div class="eb-card animate-on-load" style="animation-delay: 0.2s;">
+                <div class="eb-cover paid-3">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="eb-info">
+                    <div class="status-tag planned">Planowane</div>
+                    <h3>AI w Administracji</h3>
+                    <p>Wykorzystanie lokalnych modeli LLM do automatyzacji biura i analizy logów systemowych.</p>
+                    <button class="eb-accordion-btn">Szczegóły <i class="fas fa-chevron-down"></i></button>
+                    <div class="eb-accordion-content">
+                        <p>Lokalna inteligencja bez wysyłania danych firmy do zewnętrznych gigantów.</p>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
+
+    <!-- SEKCJA NEWSLETTERA (Zidentyfikowana jako #newsletter-section) -->
+            <section id="newsletter-section" class="container">
+                <div class="new-newsletter-box">
+                    <div class="nl-text-side">
+                        <span class="badge">Netivly Insider</span>
+                        <h2>Nie przegap <span class="text-gradient">premiery</span></h2>
+                        <p>Zapisz się, a wyślemy Ci powiadomienie oraz darmowy fragment e-booka zaraz po publikacji.</p>
+                    </div>
+
+                    <div class="nl-form-side">
+                        <!-- PAMIĘTAJ O SWOIM LINKU FORMSPREE -->
+                        <form action="https://formspree.io/f/mwvqdqzy" method="POST">
+                            <input type="email" id="newsletter-email" name="email" placeholder="Twój adres e-mail" required>
+                            <button type="submit" class="nl-btn">Zapisz mnie na listę</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+
+
     <script src="js/script.js"></script>
+    <script>
+        // Logika akordeonów
+        document.querySelectorAll('.eb-accordion-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const content = btn.nextElementSibling;
+                btn.classList.toggle('active');
+                content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+            });
+        });
+    </script>
+    <script>
+// Logika płynnego skoku do newslettera i ustawienia focusu
+document.querySelectorAll('.scroll-to-nl').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        // 1. Płynny zjazd
+        const target = document.querySelector(this.getAttribute('href'));
+        target.scrollIntoView({
+            behavior: 'smooth'
+        });
+
+        // 2. Automatyczne kliknięcie w pole e-mail po zjeździe
+        setTimeout(() => {
+            document.getElementById('newsletter-email').focus();
+        }, 800); // Czekamy aż animacja przewijania się skończy
+    });
+});
+</script>
+
 </body>
 </html>
