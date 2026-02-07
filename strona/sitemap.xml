@@ -12,69 +12,33 @@
     <loc>https://netivly.pl/akademia.html</loc>
     <priority>0.90</priority>
   </url>
-
+  <url>
+    <loc>https://netivly.pl/biznes.html</loc>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://netivly.pl/narzedzia.html</loc>
+    <priority>0.90</priority>
+  </url>
   <url>
     <loc>https://netivly.pl/baza-wiedzy.html</loc>
     <priority>0.80</priority>
   </url>
-
   <url>
     <loc>https://netivly.pl/ebooki.html</loc>
     <priority>0.80</priority>
   </url>
-
   <url>
     <loc>https://netivly.pl/o-projekcie.html</loc>
-    <priority>0.60</priority>
-  </url>
-
-  <url>
-    <loc>https://netivly.pl/polityka-prywatnosci.html</loc>
-    <priority>0.30</priority>
-  </url>
-
-  <!-- ARTYKUŁY I ANALIZY (typ: artykul) -->
-  <url>
-    <loc>https://netivly.pl/artykul.html?id=suwerennosc-cyfrowa-2026</loc>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://netivly.pl/artykul.html?id=ai-w-it-biznes</loc>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://netivly.pl/artykul.html?id=open-source-kontra-saas</loc>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://netivly.pl/artykul.html?id=strategia-backup-321</loc>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://netivly.pl/artykul.html?id=przyszlosc-wifi7-analiza</loc>
     <priority>0.70</priority>
   </url>
 
-  <!-- PORADNIKI TECHNICZNE (typ: poradnik) -->
-  <url>
-    <loc>https://netivly.pl/artykul.html?id=bezpieczenstwo-vpn</loc>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://netivly.pl/artykul.html?id=budowa-nas</loc>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://netivly.pl/artykul.html?id=hardening-linux-tutorial</loc>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://netivly.pl/artykul.html?id=docker-kontener-start</loc>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://netivly.pl/artykul.html?id=wlasny-bitwarden-vaultwarden</loc>
-    <priority>0.70</priority>
-  </url>
+  <!-- Artykuły (Slugowe) -->
+  <url><loc>https://netivly.pl/artykul.html?id=linux</loc><priority>0.70</priority></url>
+  <url><loc>https://netivly.pl/artykul.html?id=ai-w-it</loc><priority>0.70</priority></url>
+  <url><loc>https://netivly.pl/artykul.html?id=bezpieczenstwo-vpn</loc><priority>0.70</priority></url>
+  <url><loc>https://netivly.pl/artykul.html?id=budowa-nas</loc><priority>0.70</priority></url>
+  <url><loc>https://netivly.pl/artykul.html?id=linux-live-usb-poradnik</loc><priority>0.70</priority></url>
+  <url><loc>https://netivly.pl/artykul.html?id=suwerennosc-cyfrowa-2026</loc><priority>0.70</priority></url>
 
 </urlset>

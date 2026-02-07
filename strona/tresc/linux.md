@@ -41,13 +41,9 @@ Aby zainstalować linuxa musisz:
 
 ~~Jest to skrótowe przedstawienie tego procesu. Bardziej szczegółowe informacje znajdują się na stronie wybranej dystrybucji.
 
-### Instalacja Obok Windowsa.
-
-<a href="artykul.html?id=live">Artykuł już w krótce</a>
-
 ### Pendrive z systemem w tryie Live .
 
-<a href="artykul.html?id=live">Artykuł już w krótce</a>
+<a href="artykul.html?id=linux-live-usb-poradnik">Naciśnij ten tekst aby przenieść się do artykułu.</a>
 
 ## Podsumowanie
 ### Główne zalety:
