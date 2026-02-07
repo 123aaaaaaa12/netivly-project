@@ -1,4 +1,4 @@
-/* --- BIZ PREMIUM V5.5 - DARK MODE READY --- */
+/* --- BIZ PREMIUM V5.6 - FINAL POLISHED BUILD --- */
 
 .biz-hero-premium {
     padding: 160px 0 100px;
@@ -6,7 +6,23 @@
     background: radial-gradient(circle at 50% -20%, rgba(37, 99, 235, 0.15), transparent 70%);
 }
 
-.biz-hero-premium h1 { font-size: 4.8rem; font-weight: 800; letter-spacing: -3px; line-height: 1; }
+.biz-hero-premium h1 { 
+    font-size: 4.8rem; 
+    font-weight: 800; 
+    letter-spacing: -3px; 
+    line-height: 1; 
+}
+
+/* --- POPRAWIONY OPIS (TEN NAPIS Z DOŁU) --- */
+.biz-hero-premium p {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    max-width: 850px;         /* Ogranicza szerokość dla lepszego czytania */
+    margin: 35px auto 50px;   /* Centruje blok i daje oddech góra/dół */
+    opacity: 0.9;
+    padding: 0 20px;          /* Zabezpieczenie dla mniejszych ekranów */
+}
 
 .badge-gold {
     background: linear-gradient(90deg, #f59e0b, #d97706);
@@ -34,21 +50,22 @@
 }
 .biz-card-alert i { font-size: 3rem; color: #dc2626; margin-bottom: 25px; }
 .biz-card-alert h2 { font-size: 2.2rem; color: #991b1b; }
-.biz-card-alert p { color: #b91c1c; }
+.biz-card-alert p { color: #b91c1c !important; max-width: 100% !important; margin: 15px 0 0 0 !important; }
 
 body.dark-mode .biz-card-alert {
     background: rgba(220, 38, 38, 0.1);
     border-color: rgba(220, 38, 38, 0.2);
 }
 body.dark-mode .biz-card-alert h2, 
-body.dark-mode .biz-card-alert p { color: #f87171; }
+body.dark-mode .biz-card-alert p { color: #f87171 !important; }
 
 .biz-card-solution {
     background: var(--primary); color: white; padding: 60px 45px; border-radius: 45px;
     box-shadow: 0 30px 60px rgba(37, 99, 235, 0.25);
 }
 .biz-card-solution i { font-size: 3rem; margin-bottom: 25px; }
-.biz-card-solution h2 { font-size: 2.2rem; }
+.biz-card-solution h2 { font-size: 2.2rem; color: white; }
+.biz-card-solution p { color: white; opacity: 0.9; max-width: 100% !important; margin: 15px 0 0 0 !important; }
 
 /* PILLARS */
 .biz-section-title { font-size: 2.8rem; font-weight: 800; text-align: center; margin-bottom: 60px; }
@@ -77,11 +94,11 @@ body.dark-mode .biz-card-alert p { color: #f87171; }
 .t-item.done::after { background: #10b981; box-shadow: 0 0 15px #10b981; }
 .t-item.active::after { background: var(--primary); box-shadow: 0 0 15px var(--primary); }
 
-/* WAITLIST BOX - FIXED SPACING */
+/* WAITLIST BOX */
 .biz-waitlist-card {
     background: var(--bg-card); border: 2px solid var(--primary); padding: 80px;
     border-radius: 50px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px;
-    align-items: center; margin-bottom: 150px; /* OGROMNY MARGINES DOLNY DLA FOOTERA */
+    align-items: center; margin-bottom: 150px;
 }
 
 .waitlist-header h2 { font-size: 3rem; margin-bottom: 20px; }
@@ -96,7 +113,8 @@ body.dark-mode .biz-card-alert p { color: #f87171; }
 
 /* MOBILE */
 @media (max-width: 1000px) {
-    .biz-hero-premium h1 { font-size: 3rem; }
+    .biz-hero-premium h1 { font-size: 2.8rem; }
+    .biz-hero-premium p { font-size: 1.1rem; margin: 25px auto; }
     .biz-split-section, .biz-pillars-grid, .biz-waitlist-card { grid-template-columns: 1fr; }
     .biz-waitlist-card { padding: 40px; margin-bottom: 100px; }
     .biz-countdown { gap: 15px; }
