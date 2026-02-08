@@ -1,0 +1,104 @@
+/* --- TOOLKIT COMPARISON SYSTEM --- */
+
+.toolkit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.compare-card {
+    background: var(--bg-card);
+    border-radius: 30px;
+    border: 1px solid var(--border);
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.compare-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-premium);
+}
+
+/* Strona Płatna (Lekko przygaszona) */
+.side-paid {
+    flex: 1;
+    padding: 30px;
+    background: rgba(100, 116, 139, 0.05);
+    border-right: 1px dashed var(--border);
+    opacity: 0.7;
+}
+
+.side-paid h4 {
+    text-decoration: line-through;
+    color: #ef4444; /* Czerwony akcent dla starego rozwiązania */
+    margin: 10px 0;
+}
+
+/* Strona Darmowa (Wyróżniona) */
+.side-free {
+    flex: 1.2;
+    padding: 30px;
+    background: radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.05), transparent);
+}
+
+.side-free h4 {
+    color: var(--primary);
+    font-size: 1.25rem;
+    margin: 10px 0;
+    font-weight: 800;
+}
+
+/* Plakietka VS */
+.vs-badge {
+    position: absolute;
+    left: calc(45% - 20px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--bg-body);
+    border: 1px solid var(--border);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 900;
+    color: var(--text-muted);
+    z-index: 10;
+}
+
+.btn-tool {
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid transparent;
+}
+
+.btn-tool:hover {
+    border-color: var(--primary);
+}
+
+small {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.6;
+}
+
+/* Responsywność */
+@media (max-width: 900px) {
+    .toolkit-grid { grid-template-columns: 1fr; }
+    .compare-card { flex-direction: column; }
+    .side-paid { border-right: none; border-bottom: 1px dashed var(--border); }
+    .vs-badge { left: 50%; top: 45%; }
+}

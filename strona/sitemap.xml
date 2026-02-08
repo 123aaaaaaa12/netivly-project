@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Strona Główna -->
+  <url>
+    <loc>https://netivly.pl/index.html</loc>
+    <priority>1.00</priority>
+  </url>
+
+  <!-- Podstrony Główne -->
+  <url>
+    <loc>https://netivly.pl/akademia.html</loc>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://netivly.pl/biznes.html</loc>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://netivly.pl/narzedzia.html</loc>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://netivly.pl/baza-wiedzy.html</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://netivly.pl/ebooki.html</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://netivly.pl/o-projekcie.html</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <!-- Artykuły (Slugowe) -->
+  <url><loc>https://netivly.pl/artykul.html?id=linux</loc><priority>0.70</priority></url>
+  <url><loc>https://netivly.pl/artykul.html?id=ai-w-it</loc><priority>0.70</priority></url>
+  <url><loc>https://netivly.pl/artykul.html?id=bezpieczenstwo-vpn</loc><priority>0.70</priority></url>
+  <url><loc>https://netivly.pl/artykul.html?id=budowa-nas</loc><priority>0.70</priority></url>
+  <url><loc>https://netivly.pl/artykul.html?id=linux-live-usb-poradnik</loc><priority>0.70</priority></url>
+  <url><loc>https://netivly.pl/artykul.html?id=suwerennosc-cyfrowa-2026</loc><priority>0.70</priority></url>
+
+</urlset>

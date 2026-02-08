@@ -1,0 +1,146 @@
+/* ==========================================
+   NETIVLY HEADER - FINAL PC & MOBILE FIX
+   ========================================== */
+
+header.main-header {
+    background: var(--glass) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.header-container {
+    display: flex !important;
+    flex-direction: row !important; /* Wymuszamy poziom na PC */
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 25px;
+}
+
+/* --- STREFY HEADERU --- */
+.h-left {
+    flex: 1; /* Lewa strona */
+    display: flex;
+    justify-content: flex-start;
+}
+
+.h-center {
+    flex: 2; /* Środek - dwa razy szerszy dla idealnego centrowania */
+    display: flex;
+    justify-content: center;
+}
+
+.h-right {
+    flex: 1; /* Prawa strona */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+
+/* --- NAWIGACJA PC --- */
+#nav-menu {
+    display: flex !important;
+    flex-direction: row !important; /* Poziome linki na PC */
+    gap: 30px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links a {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--primary);
+}
+
+/* --- PRZYCISKI --- */
+#theme-toggle {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    z-index: 11000;
+}
+
+.hamburger span {
+    width: 28px;
+    height: 3px;
+    background-color: var(--text-main);
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+/* ==========================================
+   LOGIKA MOBILNA (Poniżej 1024px)
+   ========================================== */
+
+@media (max-width: 1024px) {
+    .h-center {
+        display: none !important; /* Chowamy środkową nawigację PC */
+    }
+
+    .hamburger {
+        display: flex !important; /* Pokazujemy hamburgera */
+    }
+
+    /* Menu mobilne: Pełna szerokość, spod headera, z lewej */
+    #nav-menu {
+        position: fixed !important;
+        top: 80px; /* Dokładnie pod headerem */
+        left: 0 !important;
+        width: 100% !important;
+        height: calc(100vh - 80px);
+        background: var(--bg-card) !important;
+        flex-direction: column !important; /* Pionowo na mobile */
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 40px !important;
+        z-index: 10000 !important;
+
+        /* Chowanie w lewo */
+        transform: translateX(-100%);
+        visibility: hidden;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s !important;
+    }
+
+    #nav-menu.active {
+        transform: translateX(0) !important;
+        visibility: visible !important;
+    }
+
+    .nav-links li a {
+        font-size: 1.8rem !important;
+        font-weight: 800;
+    }
+
+    /* Animacja X dla hamburgera */
+    .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); background: var(--primary) !important; }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); background: var(--primary) !important; }
+}

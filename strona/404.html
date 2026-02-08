@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Błąd 404 | Netivly Project</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Styl dedykowany dla strony błędu, aby wyśrodkować treść */
+        .error-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            background: radial-gradient(circle at center, rgba(37, 99, 235, 0.08), transparent);
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 0;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.5;
+        }
+
+        .error-box {
+            background: var(--bg-card);
+            padding: 50px;
+            border-radius: 40px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+
+        .error-box h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .error-box p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .btn-home {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        /* Animacja pulsowania dla gradientu */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        .logo-animation {
+            animation: pulse 3s infinite ease-in-out;
+            margin-bottom: 20px;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JV5KR2DGE0"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-JV5KR2DGE0');
+    </script>
+</head>
+<!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JV5KR2DGE0"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-JV5KR2DGE0');
+    </script>
+<body class="theme-transition">
+
+    <div class="error-container">
+        <div class="error-code">404</div>
+        
+        <div class="error-box">
+            <div class="logo logo-animation" style="font-size: 2rem;">
+                Net<span>ivly</span> Project
+            </div>
+            
+            <h1>Błąd połączenia</h1>
+            <p>Przepraszamy, coś poszło nie tak.<br>Strona, której szukasz, nie istnieje lub została przeniesiona w inny rejon sieci.</p>
+            
+            <a href="index.html" class="btn btn-primary btn-home">
+                Wróć do bazy głównej
+            </a>
+        </div>
+
+        <p style="margin-top: 40px; font-size: 0.8rem; color: var(--text-muted);">
+            Status: 404_NOT_FOUND | Netivly Infrastructure Core
+        </p>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Automatyczne sprawdzanie trybu ciemnego przy ładowaniu
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+</body>
+</html>

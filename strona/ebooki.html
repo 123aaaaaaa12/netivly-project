@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-booki i Materiały | Netivly Project</title>
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="css/ebooks.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/newsletter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JV5KR2DGE0"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-JV5KR2DGE0');
+    </script>
+
+<body>
+
+<header class="main-header">
+    <div class="container header-container">
+        <!-- LEWO -->
+        <a href="index.html" class="logo">Net<span>ivly</span> Project</a>
+
+        <!-- ŚRODEK (Menu) -->
+        <ul class="nav-links" id="nav-menu">
+            <li><a href="index.html">Start</a></li>
+            <li><a href="akademia.html">Materiały</a></li>
+            <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
+            <li><a href="ebooki.html">E-booki</a></li>
+            <li><a href="biznes.html">Dla Biznesu</a></li>
+            <li><a href="o-projekcie.html">O Projekcie</a></li>
+        </ul>
+
+        <!-- PRAWO -->
+        <div class="header-actions">
+            <button id="theme-toggle">Tryb</button>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <!-- NOWE HERO - SKUPIONE NA NADCHODZĄCEJ WIEDZY -->
+    <section class="eb-hero">
+        <div class="container">
+            <span class="eb-badge">Edukacja w przygotowaniu</span>
+            <h1>Wiedza, która buduje <br><span class="text-gradient">Twoją niezależność</span></h1>
+            <p>Tworzymy serie specjalistycznych e-booków dla osób prywatnych i firm. <br>Zapisz się na listę, aby otrzymać darmowe fragmenty przed premierą.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- SEKCJA: DARMOWY MATERIAŁ (DOSTĘPNY LUB BETA) -->
+        <h2 class="eb-section-title">Zasoby Darmowe</h2>
+        <div class="eb-card-featured animate-on-load">
+            <div class="eb-cover-wrap free">
+                <i class="fas fa-unlock-alt"></i>
+                <span>FREE</span>
+            </div>
+            <div class="eb-details">
+                <div class="status-tag available">Dostępne wkrótce</div>
+                <h3>Linux Hardening: Pierwsze kroki</h3>
+                <p>Kompletny start dla każdego, kto chce porzucić Windowsa dla prywatności. Dowiesz się jak wybrać system i jak go "utwardzić" na start.</p>
+                
+                <button class="eb-accordion-btn">Zobacz plan rozdziałów <i class="fas fa-chevron-down"></i></button>
+                <div class="eb-accordion-content">
+                    <ul>
+                        <li><i class="fas fa-check"></i> Wybór dystrybucji (Privacy focus)</li>
+                        <li><i class="fas fa-check"></i> Szyfrowanie dysków i partycji</li>
+                        <li><i class="fas fa-check"></i> Bezpieczne repozytoria i aktualizacje</li>
+                    </ul>
+                </div>
+                <a href="#newsletter-section" class="btn btn-primary scroll-to-nl" style="margin-top: 20px;">Poinformuj mnie o premierze</a>
+            </div>
+        </div>
+
+        <!-- SEKCJA: PŁATNE (W PRZYGOTOWANIU) -->
+        <h2 class="eb-section-title">Nadchodzące Publikacje Premium</h2>
+        <div class="eb-grid">
+            
+            <!-- E-book 1 -->
+            <div class="eb-card animate-on-load">
+                <div class="eb-cover paid-1">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <div class="eb-info">
+                    <div class="status-tag progress">W opracowaniu: 75%</div>
+                    <h3>Networking Mastery</h3>
+                    <p>Architektura sieci dla MŚP. Vlany, separacja ruchu i profesjonalny VPN bez kosztów enterprise.</p>
+                    <button class="eb-accordion-btn">Szczegóły <i class="fas fa-chevron-down"></i></button>
+                    <div class="eb-accordion-content">
+                        <p>Dowiesz się jak budować sieci odporne na awarie i jak monitorować ruch w czasie rzeczywistym.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- E-book 2 -->
+            <div class="eb-card animate-on-load" style="animation-delay: 0.1s;">
+                <div class="eb-cover paid-2">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <div class="eb-info">
+                    <div class="status-tag progress">W opracowaniu: 40%</div>
+                    <h3>Self-Hosting Pro</h3>
+                    <p>Pełna instrukcja budowy własnej chmury. Od Dockera po automatyczne backupy w modelu 3-2-1.</p>
+                    <button class="eb-accordion-btn">Szczegóły <i class="fas fa-chevron-down"></i></button>
+                    <div class="eb-accordion-content">
+                        <p>Zastąp Dropboxa, Trello i Bitwardena własnymi instancjami na serwerze domowym.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- E-book 3 -->
+            <div class="eb-card animate-on-load" style="animation-delay: 0.2s;">
+                <div class="eb-cover paid-3">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="eb-info">
+                    <div class="status-tag planned">Planowane</div>
+                    <h3>AI w Administracji</h3>
+                    <p>Wykorzystanie lokalnych modeli LLM do automatyzacji biura i analizy logów systemowych.</p>
+                    <button class="eb-accordion-btn">Szczegóły <i class="fas fa-chevron-down"></i></button>
+                    <div class="eb-accordion-content">
+                        <p>Lokalna inteligencja bez wysyłania danych firmy do zewnętrznych gigantów.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SEKCJA NEWSLETTERA (Zidentyfikowana jako #newsletter-section) -->
+            <section id="newsletter-section" class="container">
+                <div class="new-newsletter-box">
+                    <div class="nl-text-side">
+                        <span class="badge">Netivly Insider</span>
+                        <h2>Nie przegap <span class="text-gradient">premiery</span></h2>
+                        <p>Zapisz się, a wyślemy Ci powiadomienie oraz darmowy fragment e-booka zaraz po publikacji.</p>
+                    </div>
+
+                    <div class="nl-form-side">
+                        <!-- PAMIĘTAJ O SWOIM LINKU FORMSPREE -->
+                        <form action="https://formspree.io/f/mwvqdqzy" method="POST">
+                            <input type="email" name="email" placeholder="Twój e-mail" required>
+                            <button type="submit" class="nl-btn">Zapisz mnie na listę</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+
+
+    <script src="js/script.js"></script>
+    <script>
+        // Logika akordeonów
+        document.querySelectorAll('.eb-accordion-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const content = btn.nextElementSibling;
+                btn.classList.toggle('active');
+                content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+            });
+        });
+    </script>
+    <script>
+// Logika płynnego skoku do newslettera i ustawienia focusu
+document.querySelectorAll('.scroll-to-nl').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        // 1. Płynny zjazd
+        const target = document.querySelector(this.getAttribute('href'));
+        target.scrollIntoView({
+            behavior: 'smooth'
+        });
+
+        // 2. Automatyczne kliknięcie w pole e-mail po zjeździe
+        setTimeout(() => {
+            document.getElementById('newsletter-email').focus();
+        }, 800); // Czekamy aż animacja przewijania się skończy
+    });
+});
+</script>
+
+</body>
+</html>
