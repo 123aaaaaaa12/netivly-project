@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+  <title>Netivly Project</title>
+  <link>https://netivly.pl</link>
+  <description>Niezależny portal wiedzy o suwerenności cyfrowej i infrastrukturze IT.</description>
+  <language>pl</language>
+
+  <item>
+    <title>Suwerenność Cyfrowa 2026</title>
+    <link>https://netivly.pl/artykul.html?id=suwerennosc-cyfrowa-2026</link>
+    <description>Kompleksowy przewodnik po budowie niezależnej infrastruktury IT dla Ciebie i Twojej firmy.</description>
+    <pubDate>Wed, 11 Feb 2026 10:00:00 +0100</pubDate>
+    <dc:creator>Dawid Józef Sakowski</dc:creator>
+  </item>
+
+  <item>
+    <title>WireGuard: Nowy król wydajności VPN</title>
+    <link>https://netivly.pl/artykul.html?id=bezpieczenstwo-vpn</link>
+    <description>Dogłębna analiza najszybszego protokołu VPN na świecie.</description>
+    <pubDate>Tue, 10 Feb 2026 12:00:00 +0100</pubDate>
+    <dc:creator>Dawid Józef Sakowski</dc:creator>
+  </item>
+
+  <item>
+    <title>Linux w 2026 roku: Nowa era suwerenności</title>
+    <link>https://netivly.pl/artykul.html?id=linux</link>
+    <description>Dlaczego Linux stał się fundamentem dla osób ceniących prywatność.</description>
+    <pubDate>Mon, 09 Feb 2026 15:00:00 +0100</pubDate>
+    <dc:creator>Dawid Józef Sakowski</dc:creator>
+  </item>
+
+  <item>
+    <title>Budowa własnego serwera NAS</title>
+    <link>https://netivly.pl/artykul.html?id=budowa-nas</link>
+    <description>Przewodnik po doborze sprzętu i konfiguracji domowego centrum danych.</description>
+    <pubDate>Sun, 08 Feb 2026 09:00:00 +0100</pubDate>
+    <dc:creator>Dawid Józef Sakowski</dc:creator>
+  </item>
+
+</channel>
+</rss>
