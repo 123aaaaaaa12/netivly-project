@@ -67,5 +67,3 @@ Budowa własnego serwera to projekt na jeden wieczór, który zmienia sposób, w
 Przejdź do sekcji **Poradniki** w naszej Akademii, gdzie opisujemy proces krok po kroku na przykładzie systemu TrueNAS.
 
 ---
-
-*Podoba Ci się wizja cyfrowej wolności? Budujemy Netivly Project, by edukować i wspierać każdego w drodze do technologicznej niezależności. Zostań z nami do września 2027, kiedy to opublikujemy nasze kompletne kompendia w formie e-booków premium.*

@@ -1,0 +1,123 @@
+/* === WYGLĄD COOKIE POP-UP (PREMIUM VIBE) === */
+:root {
+  /* Jasny Motyw */
+  --cookie-bg: rgba(255, 255, 255, 0.85);
+  --cookie-text: #64748b;
+  --cookie-title: #0f172a;
+  --cookie-border: rgba(0, 0, 0, 0.08);
+  --cookie-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  --cookie-icon: #3b82f6; 
+  --cookie-btn-bg: #3b82f6; 
+  --cookie-btn-text: #ffffff;
+  --cookie-btn-hover: #2563eb;
+}
+
+/* Ciemny Motyw */
+body.dark-mode {
+  --cookie-bg: rgba(17, 24, 39, 0.75); 
+  --cookie-text: #9ca3af;
+  --cookie-title: #ffffff;
+  --cookie-border: rgba(255, 255, 255, 0.08); 
+  --cookie-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  --cookie-icon: #3b82f6;
+}
+
+.cookie-popup {
+  position: fixed;
+  bottom: 30px;
+  right: -450px; 
+  width: 340px; 
+  
+  /* Tło + Magia szkła (Glassmorphism) */
+  background-color: var(--cookie-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  
+  border: 1px solid var(--cookie-border);
+  border-radius: 20px; 
+  box-shadow: var(--cookie-shadow);
+  padding: 24px;
+  z-index: 9999; 
+  font-family: 'Montserrat', sans-serif;
+  
+  transition: right 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.3s;
+}
+
+.cookie-popup.show {
+  right: 30px;
+}
+
+.cookie-content {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 22px;
+}
+
+.cookie-icon svg {
+  width: 32px;
+  height: 32px;
+  color: var(--cookie-icon); 
+  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4));
+}
+
+.cookie-text h4 {
+  margin: 0 0 6px 0;
+  color: var(--cookie-title);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  transition: color 0.3s;
+}
+
+.cookie-text p {
+  margin: 0;
+  color: var(--cookie-text);
+  font-size: 13px;
+  line-height: 1.6;
+  transition: color 0.3s;
+}
+
+/* === Wymuszony wygląd linku do Polityki Prywatności (WYCIĄGNIĘTE POZA @MEDIA) === */
+.cookie-text p a {
+  color: #3b82f6 !important; /* Twój niebieski kolor Netivly */
+  text-decoration: underline !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.cookie-text p a:hover {
+  color: #2563eb !important; /* Ciemniejszy niebieski po najechaniu */
+  text-decoration: none !important;
+}
+
+.cookie-btn {
+  width: 100%;
+  padding: 14px; 
+  background-color: var(--cookie-btn-bg);
+  color: var(--cookie-btn-text);
+  border: none;
+  border-radius: 12px; 
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.cookie-btn:hover {
+  background-color: var(--cookie-btn-hover);
+  transform: translateY(-2px); 
+}
+
+/* === Responsywność (Tylko wymiary okienka) === */
+@media (max-width: 480px) {
+  .cookie-popup {
+    width: calc(100% - 40px);
+    bottom: 20px;
+    right: -100%;
+  }
+  .cookie-popup.show {
+    right: 20px;
+  }
+}

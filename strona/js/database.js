@@ -1,134 +1,168 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('search-input');
-    const articlesList = document.getElementById('articles-list');
-    const homeContainer = document.getElementById('articles-container');
-    const hubArtContainer = document.getElementById('articles-hub-container');
-    const hubGuideContainer = document.getElementById('guides-hub-container');
-    const globalCount = document.getElementById('dynamic-article-count');
+    console.log("Netivly Engine v3.0: Cinema & Bento Active");
+
+    // --- KONFIGURACJA KONTENERÓW ---
+    const ui = {
+        // Warstwy kinowe (index.html)
+        layerAi: document.getElementById('layer-ai'),
+        layerInfra: document.getElementById('layer-infra'),
+        layerSecurity: document.getElementById('layer-security'),
+        layerBusiness: document.getElementById('layer-business'), // Nowa warstwa pod e-booki
+        
+        // Standardowe widoki
+        list: document.getElementById('articles-list'),      // Baza Wiedzy (Lista)
+        home: document.getElementById('articles-container'), // Akademia (Grid)
+        hubArt: document.getElementById('articles-hub-container'), 
+        hubGuide: document.getElementById('guides-hub-container'),
+        
+        // Statystyki i Szukajka
+        globalCount: document.getElementById('dynamic-article-count'),
+        searchInput: document.getElementById('search-input')
+    };
 
     let allData = [];
 
-    // 1. POBIERANIE DANYCH
+    // --- POBIERANIE BAZY ---
     fetch('dane.json')
-        .then(res => res.json())
-        .then(data => {
-            allData = data;
-            
-            // Licznik w sidebarze
-            if (globalCount) globalCount.innerText = data.length;
-
-            // Renderowanie odpowiednich sekcji
-            renderContent();
-            
-            // Uruchomienie filtrów (Kategorie)
-            initCategoryFilters();
-            
-            // Sprawdzenie parametrów URL (np. z ikon na stronie głównej)
-            checkUrlParams();
+        .then(res => {
+            if (!res.ok) throw new Error("Błąd odczytu bazy danych JSON");
+            return res.json();
         })
-        .catch(err => console.error("Błąd bazy danych:", err));
+        .then(data => {
+            // Sortujemy: najnowsze (po ID lub kolejności w pliku) na górę
+            allData = [...data].reverse();
+            
+            // Inicjalizacja komponentów
+            updateGlobalStats();
+            renderDynamicContent();
+            setupSearchAndFilters();
+            handleUrlParameters();
+        })
+        .catch(err => {
+            console.error("Netivly DB Error:", err);
+            if(ui.list) ui.list.innerHTML = "<p>Baza danych jest tymczasowo niedostępna.</p>";
+        });
 
-    // 2. FUNKCJA RENDERUJĄCA
-    function renderContent(filteredData = null) {
-        const dataToUse = filteredData || allData;
-
-        // Strona Główna (2 najnowsze)
-        if (homeContainer) {
-            const latest = [...allData].reverse().slice(0, 2);
-            homeContainer.innerHTML = latest.map(art => gridTemplate(art)).join('');
+    // --- RENDEROWANIE ---
+    function renderDynamicContent() {
+        // 1. KINOWE WARSTWY (Strona Główna - 9:16)
+        if (ui.layerAi) {
+            const data = allData.filter(a => a.kategoria.toLowerCase().includes('ai') || a.typ === 'artykul');
+            ui.layerAi.innerHTML = data.map(art => cinemaCardTemplate(art)).join('');
+        }
+        if (ui.layerInfra) {
+            const data = allData.filter(a => a.kategoria.toLowerCase().includes('hard') || a.kategoria.toLowerCase().includes('net'));
+            ui.layerInfra.innerHTML = data.map(art => cinemaCardTemplate(art)).join('');
+        }
+        if (ui.layerSecurity) {
+            const data = allData.filter(a => a.kategoria.toLowerCase().includes('cyb') || a.tag === 'SEC');
+            ui.layerSecurity.innerHTML = data.map(art => cinemaCardTemplate(art)).join('');
+        }
+        if (ui.layerBusiness) {
+            const data = allData.filter(a => a.kategoria.toLowerCase().includes('biz') || a.typ === 'poradnik');
+            ui.layerBusiness.innerHTML = data.map(art => cinemaCardTemplate(art)).join('');
         }
 
-        // Akademia (Podział Artykuły / Poradniki)
-        if (hubArtContainer) {
-            hubArtContainer.innerHTML = allData.filter(i => i.typ === 'artykul').map(art => gridTemplate(art)).join('');
+        // 2. STANDARDOWY GRID (Akademia / Start)
+        if (ui.home) {
+            const latest = allData.slice(0, 2); // Na start pokazujemy 2 najnowsze
+            ui.home.innerHTML = latest.map(art => gridCardTemplate(art)).join('');
         }
-        if (hubGuideContainer) {
-            hubGuideContainer.innerHTML = allData.filter(i => i.typ === 'poradnik').map(art => gridTemplate(art)).join('');
+        if (ui.hubArt) {
+            const data = allData.filter(i => i.typ === 'artykul');
+            ui.hubArt.innerHTML = data.map(art => gridCardTemplate(art)).join('');
+        }
+        if (ui.hubGuide) {
+            const data = allData.filter(i => i.typ === 'poradnik');
+            ui.hubGuide.innerHTML = data.map(art => gridCardTemplate(art)).join('');
         }
 
-        // Baza Wiedzy (Lista pozioma)
-        if (articlesList) {
-            renderHorizontal(dataToUse);
+        // 3. BAZA WIEDZY (Poziome karty)
+        if (ui.list) {
+            renderHorizontalList(allData);
         }
     }
 
-    // 3. SZABLONY KART
-    function gridTemplate(art) {
+    // --- SZABLONY (TEMPLATES) ---
+
+    function cinemaCardTemplate(art) {
         return `
-        <a href="${art.link}" class="article-card-v2">
-            <div class="article-img-placeholder">${art.tag || 'TECH'}</div>
-            <div class="card-body">
-                <span class="tag-meta" style="color:var(--primary); font-weight:800; font-size:0.75rem; text-transform:uppercase; margin-bottom:10px; display:block;">${art.kategoria}</span>
+        <a href="${art.link}" class="card-9-16">
+            <div class="card-img-bg" style="background-image: url('assets/img/covers/${art.slug}.jpg'), linear-gradient(135deg, #020617, #1d4ed8);"></div>
+            <div class="card-overlay-content">
+                <span class="cat-tag">${art.kategoria}</span>
                 <h3>${art.tytul}</h3>
-                <p>${art.opis}</p>
-                <div class="card-footer-meta"><span>${art.data}</span><span>${art.czasCzytania}</span></div>
+                <div class="card-footer">
+                    <span>${art.czasCzytania} czytania</span>
+                    <i class="fas fa-arrow-right-long"></i>
+                </div>
             </div>
         </a>`;
     }
 
-    function renderHorizontal(items) {
-        if (!articlesList) return;
-        if (items.length === 0) {
-            articlesList.innerHTML = "<p style='text-align:center; padding:40px; opacity:0.5;'>Nie znaleziono artykułów...</p>";
-            return;
-        }
-        articlesList.innerHTML = items.map(art => `
-        <a href="${art.link}" class="article-card-horizontal">
-            <div class="card-img-side">${art.tag || 'TECH'}</div>
-            <div class="card-content-side">
-                <span class="tag-meta" style="margin-bottom:8px; font-size:0.7rem; color:var(--primary); font-weight:800; text-transform:uppercase; display:block;">${art.kategoria}</span>
-                <h3 style="font-size:1.3rem; margin-bottom:5px;">${art.tytul}</h3>
-                <p style="font-size:0.95rem; color:var(--text-muted);">${art.opis}</p>
+    function gridCardTemplate(art) {
+        return `
+        <a href="${art.link}" class="article-card-v2">
+            <div class="article-img-placeholder">${art.tag || 'PRO'}</div>
+            <div class="card-body">
+                <span class="tag-meta">${art.kategoria}</span>
+                <h3>${art.tytul}</h3>
+                <p>${art.opis}</p>
+                <div class="card-footer-meta">
+                    <span>${art.data}</span>
+                    <span>${art.czasCzytania}</span>
+                </div>
             </div>
-        </a>`).join('');
+        </a>`;
     }
 
-    // 4. LOGIKA WYSZUKIWARKI
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
+    function renderHorizontalList(items) {
+        if (!ui.list) return;
+        ui.list.innerHTML = items.length ? items.map(art => `
+        <a href="${art.link}" class="article-card-horizontal">
+            <div class="card-img-side">${art.tag || 'NET'}</div>
+            <div class="card-content-side">
+                <span class="tag-meta" style="margin-bottom:8px;">${art.kategoria}</span>
+                <h3>${art.tytul}</h3>
+                <p>${art.opis}</p>
+            </div>
+        </a>`).join('') : "<p class='no-results'>Nie znaleziono dopasowań.</p>";
+    }
+
+    // --- LOGIKA POMOCNICZA ---
+
+    function updateGlobalStats() {
+        if (ui.globalCount) ui.globalCount.innerText = allData.length;
+    }
+
+    function setupSearchAndFilters() {
+        ui.searchInput?.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const filtered = allData.filter(art => 
                 art.tytul.toLowerCase().includes(term) || 
                 art.kategoria.toLowerCase().includes(term)
             );
-            renderHorizontal(filtered);
+            renderHorizontalList(filtered);
         });
-    }
 
-    // 5. LOGIKA KATEGORII (To co nie działało)
-    function initCategoryFilters() {
-        const categoryLinks = document.querySelectorAll('.category-item');
-        
-        categoryLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
+        document.querySelectorAll('.category-item').forEach(btn => {
+            btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                
-                // Pobierz tekst, usuń nawiasy z cyframi np. "(12)"
-                let catName = link.innerText.split('(')[0].trim();
-                
-                if (catName.toLowerCase() === 'wszystkie') {
-                    catName = '';
+                const cat = btn.innerText.split('(')[0].trim();
+                if (ui.searchInput) {
+                    ui.searchInput.value = (cat.toLowerCase() === 'wszystkie') ? '' : cat;
+                    ui.searchInput.dispatchEvent(new Event('input'));
                 }
-
-                // Wpisz do wyszukiwarki i WYMUŚ zdarzenie input
-                if (searchInput) {
-                    searchInput.value = catName;
-                    searchInput.dispatchEvent(new Event('input')); // To uruchamia filtrowanie!
-                }
-                
-                // Przewiń do listy
-                if(articlesList) articlesList.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
     }
 
-    // 6. OBSŁUGA LINKÓW Z FILTREM (np. z ikon na głównej)
-    function checkUrlParams() {
+    function handleUrlParameters() {
         const urlParams = new URLSearchParams(window.location.search);
-        const filter = urlParams.get('filter');
-        if (filter && searchInput) {
-            searchInput.value = filter;
-            searchInput.dispatchEvent(new Event('input'));
+        const filter = urlParams.get('filter') || urlParams.get('search');
+        if (filter && ui.searchInput) {
+            ui.searchInput.value = filter;
+            ui.searchInput.dispatchEvent(new Event('input'));
         }
     }
 });
