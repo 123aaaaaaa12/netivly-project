@@ -17,6 +17,15 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+      <!-- MailerLite Universal -->
+      <script>
+          (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+          .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+          n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+          (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+          ml('account', '2155567');
+      </script>
+      <!-- End MailerLite Universal -->
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -673,15 +682,39 @@
             </ul>
         </div>
 
-        <!-- Prawa strona: Formularz -->
-        <div class="nl-form-side">
-            <form action="https://formspree.io/f/mwvqdqzy" method="POST">
-                <input type="email" name="email" placeholder="Twój e-mail" required>
-                <button type="submit" class="nl-btn">Zapisz mnie do listy</button>
-                <p style="font-size: 0.75rem; text-align: center; margin-top: 15px; opacity: 0.6;">
-                    Szanujemy Twoją prywatność. Możesz się wypisać w każdej chwili.
-                </p>
-            </form>
+        <!-- Prawa strona: Formularz zintegrowany z MailerLite -->
+        <div class="nl-form-side ml-subscribe-form ml-subscribe-form-37894296" id="mlb2-37894296">
+            
+            <!-- Główny widok formularza -->
+            <div class="row-form">
+                <!-- Zmieniony 'action' z Formspree na serwery MailerLite oraz dodana klasa ml-block-form -->
+                <form action="https://assets.mailerlite.com/jsonp/2155567/forms/180861978501186758/subscribe" data-code="" method="POST" target="_blank" class="ml-block-form">
+                    
+                    <!-- Zmieniono name="email" na name="fields[email]" - tak wymaga MailerLite -->
+                    <input type="email" name="fields[email]" placeholder="Twój e-mail" required>
+                    
+                    <!-- Ukryte pola wymagane przez MailerLite do prawidłowego działania -->
+                    <input type="hidden" name="ml-submit" value="1">
+                    <input type="hidden" name="anticsrf" value="true">
+
+                    <button type="submit" class="nl-btn primary">Zapisz mnie do listy</button>
+                    
+                    <button disabled="disabled" style="display: none;" type="button" class="loading">
+                        <span class="sr-only">Ładowanie...</span>
+                    </button>
+
+                    <p style="font-size: 0.75rem; text-align: center; margin-top: 15px; opacity: 0.6;">
+                        Szanujemy Twoją prywatność. Możesz się wypisać w każdej chwili.
+                    </p>
+                </form>
+            </div>
+
+            <!-- Widok po pomyślnym zapisie (skrypt MailerLite podmieni widoki, by pokazać podziękowanie bez przeładowania strony) -->
+            <div class="row-success" style="display: none; text-align: center; padding: 20px 0;">
+                <h3 style="margin-bottom: 10px;">Dziękujemy!</h3>
+                <p style="opacity: 0.8;">Pomyślnie dołączyłeś do naszego newslettera. Sprawdź swoją skrzynkę.</p>
+            </div>
+
         </div>
     </div>
 </section>
@@ -756,6 +789,17 @@
         </div>
     </div>
 </footer>
+  <script>
+    function ml_webform_success_37894296() {
+        var $ = ml_jQuery || jQuery;
+        $('.ml-subscribe-form-37894296 .row-success').show();
+        $('.ml-subscribe-form-37894296 .row-form').hide();
+    }
+</script>
+<script src="https://groot.mailerlite.com/js/w/webforms.min.js?v95037e5bac78f29ed026832ca21a7c7b" type="text/javascript"></script>
+<script>
+    fetch("https://assets.mailerlite.com/jsonp/2155567/forms/180861978501186758/takel");
+</script>
     <script src="js/ciastka.js"></script>
     <script src="js/script.js"></script>
     <script src="js/database.js"></script>
