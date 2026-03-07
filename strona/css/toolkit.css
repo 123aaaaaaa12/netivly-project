@@ -1,104 +1,192 @@
-/* --- TOOLKIT COMPARISON SYSTEM --- */
+/* --- NETIVLY TOOLKIT 2.0 (REWORK) --- */
 
-.toolkit-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-    gap: 30px;
-    margin-top: 30px;
+.toolkit-hero {
+    padding: 120px 0 80px;
+    text-align: center;
+    background: radial-gradient(circle at 50% -20%, rgba(37, 99, 235, 0.1), transparent 70%);
 }
 
-.compare-card {
-    background: var(--bg-card);
-    border-radius: 30px;
-    border: 1px solid var(--border);
+.hero-badge {
+    display: inline-block;
+    padding: 6px 15px;
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--primary);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.toolkit-hero h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    letter-spacing: -3px;
+    margin-bottom: 25px;
+}
+
+.toolkit-hero p {
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+}
+
+/* Sekcje kategorii */
+.tk-section { margin-bottom: 100px; }
+
+.tk-header {
     display: flex;
-    position: relative;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 40px;
 }
 
-.compare-card:hover {
-    transform: translateY(-5px);
+.tk-icon-box {
+    width: 60px; height: 60px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; color: var(--primary);
+    box-shadow: var(--shadow);
+}
+
+/* --- KARTY PORÓWNAWCZE --- */
+.tk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 30px;
+}
+
+.tk-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 35px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow);
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tk-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary);
     box-shadow: var(--shadow-premium);
 }
 
-/* Strona Płatna (Lekko przygaszona) */
-.side-paid {
-    flex: 1;
-    padding: 30px;
-    background: rgba(100, 116, 139, 0.05);
-    border-right: 1px dashed var(--border);
-    opacity: 0.7;
-}
-
-.side-paid h4 {
-    text-decoration: line-through;
-    color: #ef4444; /* Czerwony akcent dla starego rozwiązania */
-    margin: 10px 0;
-}
-
-/* Strona Darmowa (Wyróżniona) */
-.side-free {
-    flex: 1.2;
-    padding: 30px;
-    background: radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.05), transparent);
-}
-
-.side-free h4 {
-    color: var(--primary);
-    font-size: 1.25rem;
-    margin: 10px 0;
-    font-weight: 800;
-}
-
-/* Plakietka VS */
-.vs-badge {
-    position: absolute;
-    left: calc(45% - 20px);
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--bg-body);
-    border: 1px solid var(--border);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+/* Górna część karty (Porównanie) */
+.tk-card-top {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    font-weight: 900;
-    color: var(--text-muted);
-    z-index: 10;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(to right, rgba(0,0,0,0.02), transparent);
 }
 
-.btn-tool {
-    display: inline-block;
-    margin-top: 15px;
-    font-size: 0.8rem;
+.tk-old {
+    flex: 1;
+    padding: 30px;
+    opacity: 0.4;
+    text-align: center;
+}
+
+.tk-old span {
+    text-decoration: line-through;
+    font-weight: 700;
+    display: block;
+    margin-top: 5px;
+}
+
+.tk-vs {
+    background: var(--bg-body);
+    border: 1px solid var(--border);
+    padding: 10px;
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
     font-weight: 800;
     color: var(--primary);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-bottom: 2px solid transparent;
+    z-index: 2;
 }
 
-.btn-tool:hover {
-    border-color: var(--primary);
+.tk-new {
+    flex: 1.3;
+    padding: 30px;
+    background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.05), transparent);
+    text-align: center;
 }
 
-small {
+.tk-new h3 {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-top: 5px;
+}
+
+/* Dolna część karty (Opis) */
+.tk-card-bottom {
+    padding: 35px;
+}
+
+.tk-card-bottom p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 25px;
+}
+
+.tk-tags {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.tk-tags span {
     font-size: 0.65rem;
     font-weight: 800;
     text-transform: uppercase;
+    background: var(--bg-body);
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+}
+
+.tk-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: var(--primary);
+    color: white;
+    padding: 15px;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.tk-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(1.02);
+}
+
+label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
     letter-spacing: 1px;
+    font-weight: 800;
     opacity: 0.6;
 }
 
 /* Responsywność */
-@media (max-width: 900px) {
-    .toolkit-grid { grid-template-columns: 1fr; }
-    .compare-card { flex-direction: column; }
-    .side-paid { border-right: none; border-bottom: 1px dashed var(--border); }
-    .vs-badge { left: 50%; top: 45%; }
+@media (max-width: 1100px) {
+    .tk-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+    .tk-card-top { flex-direction: column; }
+    .tk-vs { margin: -10px 0; }
+    .tk-old, .tk-new { padding: 20px; width: 100%; }
+    .tk-old { border-bottom: 1px dashed var(--border); }
+    .toolkit-hero h1 { font-size: 2.5rem; }
 }
