@@ -53,17 +53,5 @@
         "czasCzytania": "10 min",
         "link": "artykul.html?id=linux-live-usb-poradnik",
         "tag": "LIVE"
-    },
-        {
-        "slug": "nextcloud",
-        "tytul": "Nextcloud Hub: Twoje własne centrum dowodzenia!",
-        "kategoria": "DevOps",
-        "typ": "artykul",
-        "opis": "Przewodnik po doborze sprzętu i konfiguracji systemu operacyjnego dla domowego centrum danych i małej firmy.",
-        "data": "08.03.2026",
-        "czasCzytania": "05 min",
-        "link": "artykul.html?id=nextcloud",
-        "tag": "NAS"
     }
-
 ]
