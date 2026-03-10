@@ -13,6 +13,78 @@
     <link rel="stylesheet" href="css/about.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
+
+    <style>
+    /* WYSUWANY PRZYCISK CHANGELOGA */
+    .changelog-widget {
+        position: fixed;
+        top: 50%; /* Środek ekranu w pionie */
+        right: 0;
+        /* Cały przycisk ma 180px, ale przesuwamy go o 130px w prawo, więc wystaje tylko kwadracik 50x50 z ikoną */
+        transform: translateY(-50%) translateX(130px); 
+        width: 180px;
+        height: 50px;
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        border-radius: 12px 0 0 12px;
+        box-shadow: -4px 4px 15px rgba(0, 0, 0, 0.4);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 9999;
+    }
+
+    /* Po najechaniu myszką wraca na pozycję 0 (wysuwa się cały) */
+    .changelog-widget:hover {
+        transform: translateY(-50%) translateX(0);
+    }
+
+    .changelog-widget i {
+        width: 50px;
+        text-align: center;
+        font-size: 1.2rem;
+    }
+
+    .changelog-widget span {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-weight: 700;
+        font-size: 0.95rem;
+        white-space: nowrap;
+    }
+
+    /* Responsywność dla telefonów: okrągły przycisk w rogu ekranu */
+    @media (max-width: 768px) {
+        .changelog-widget {
+            top: auto;
+            bottom: 25px;       /* Odsunięcie od dołu */
+            right: 25px;        /* Odsunięcie od prawej krawędzi */
+            transform: none;    /* Usuwamy chowanie za ekranem */
+            width: 55px;
+            height: 55px;
+            border-radius: 50%; /* Robimy idealne kółko */
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(37, 99, 235, 0.5);
+        }
+        
+        /* Ukrywamy napis "Zobacz co nowego", zostawiamy tylko ikonę */
+        .changelog-widget span {
+            display: none;
+        }
+
+        /* Środkujemy ikonę błyskawicy */
+        .changelog-widget i {
+            width: auto;
+            font-size: 1.3rem;
+            margin: 0;
+        }
+
+        /* Na telefonie dotknięcie (hover) tylko delikatnie powiększa przycisk */
+        .changelog-widget:hover {
+            transform: scale(1.05);
+        }
+    }
+    </style>
     
     <!-- IKONY -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -31,6 +103,13 @@
 </script>
 
 <body>
+
+    <!-- WYSUWANY WIDŻET -->
+<a href="changelog.html" class="changelog-widget">
+    <i class="fas fa-bolt"></i>
+    <span>Zobacz co nowego</span>
+</a>
+
 <header class="main-header">
     <div class="container header-container">
         <!-- LEWO -->
