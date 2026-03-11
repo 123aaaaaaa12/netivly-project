@@ -1,6 +1,6 @@
 /* --- REWORK: PREMIUM FEATURE TILES --- */
 .hero-modern {
-    padding: 120px 0 60px; /* Balans między góra a dół */
+    padding: 80px 0 80px; /* Zmienione ze 120px na 60px */
     background: radial-gradient(circle at 50% -20%, rgba(37, 99, 235, 0.12), transparent 70%);
     text-align: center;
 }
