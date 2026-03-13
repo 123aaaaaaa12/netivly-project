@@ -52,6 +52,17 @@
         "data": "02.02.2026",
         "czasCzytania": "10 min",
         "link": "artykul.html?id=linux-live-usb-poradnik",
-        "tag": "LIVE"
+        "tag": "LINUX"
+    },
+    {
+        "slug": "llm",
+        "tytul": "LLM czyli własne, lokalne AI",
+        "kategoria": "LLM",
+        "typ": "poradnik",
+        "opis": "Instrukcja krok po kroku: jak stworzyć własny LLM",
+        "data": "13.03.2026",
+        "czasCzytania": "10 min",
+        "link": "artykul.html?id=llm",
+        "tag": "LLM"
     }
 ]
