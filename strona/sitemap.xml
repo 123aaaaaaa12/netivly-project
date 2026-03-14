@@ -35,7 +35,7 @@
 
     <!-- Artykuły (dodatkowe) -->
   <url><loc>https://netivly.pl/narzedzia</loc><priority>0.80</priority></url>
-  <url><loc>https://netivly.pl/wip</loc><priority>0.80</priority></url>
+  <url><loc>https://netivly.pl/wip</loc><priority>0.60</priority></url>
   <!-- Artykuły (Slugowe) -->
   <url><loc>https://netivly.pl/artykul.html?id=linux</loc><priority>0.70</priority></url>
   <url><loc>https://netivly.pl/artykul.html?id=ai-w-it</loc><priority>0.70</priority></url>
@@ -43,6 +43,6 @@
   <url><loc>https://netivly.pl/artykul.html?id=budowa-nas</loc><priority>0.70</priority></url>
   <url><loc>https://netivly.pl/artykul.html?id=linux-live-usb-poradnik</loc><priority>0.70</priority></url>
   <url><loc>https://netivly.pl/artykul.html?id=suwerennosc-cyfrowa-2026</loc><priority>0.70</priority></url>
-  <url><loc>https://netivly.pl/artykul.html?id=nextcloud</loc><priority>0.70</priority></url>
+  <url><loc>https://netivly.pl/artykul.html?id=llm</loc><priority>0.70</priority></url>
 
 </urlset>

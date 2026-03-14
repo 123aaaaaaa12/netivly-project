@@ -64,5 +64,16 @@
         "czasCzytania": "10 min",
         "link": "artykul.html?id=llm",
         "tag": "LLM"
+    },
+    {
+        "slug": "terminal",
+        "tytul": "Terminal dla opornych: 10 komend, które musisz znać",
+        "kategoria": "Terminal",
+        "typ": "poradnik",
+        "opis": "Terminal dla opornych :)",
+        "data": "14.03.2026",
+        "czasCzytania": "10 min",
+        "link": "artykul.html?id=terminal",
+        "tag": "TERMINAL"
     }
 ]
