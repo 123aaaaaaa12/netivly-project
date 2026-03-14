@@ -1,110 +1,83 @@
-Ostatnimi czasy AI stało się bardzo popularne, więc dlaczego nie spróbować uruchomić własnego chata na swoim komputerze?
+# Własny ChatGPT na domowym komputerze. Jak uruchomić lokalne AI za darmo?
 
-## Large Language Model (LLM) czyli własny model AI.
+Ostatnimi czasy sztuczna inteligencja zdominowała rynek IT. Większość osób korzysta z rozwiązań chmurowych (takich jak ChatGPT czy Claude), oddając korporacjom swoje dane i kod. Dlaczego by więc nie spróbować uruchomić własnego, w pełni prywatnego modelu na własnym komputerze?
 
-Ostatnio całkiem sporo czasu czasu używam AI i zastanawiałem się czy nie spróbować pobrać i uruchomić własny lokalny LLM. Więc pobrałem i używałem przez kilka dni. LLMy testowałem na konfiguracji:
+## Czym jest LLM (Large Language Model)?
+LLM to w uproszczeniu "mózg" sztucznej inteligencji, który potrafi rozumieć tekst i generować odpowiedzi. Ostatnio spędzam sporo czasu na pracy z AI, więc postanowiłem sprawdzić, jak lokalne modele poradzą sobie w codziennych zadaniach. Pobrałem kilka z nich i intensywnie testowałem przez ostatnie dni.
 
-|  System  |    Procesor   |    Grafika   |    RAM     |
-| -------- |    --------   |   ---------  |  --------  |
-|  Fedora  |  Ryzen 7 5700 |Radeon RX 6600 |    32GB    |
+Całość środowiska uruchomiłem i testowałem na następującej konfiguracji sprzętowej:
 
+|  System  |    Procesor   |    Karta Graficzna   |    RAM     |
+| :------- | :------------ | :------------------- | :--------- |
+|  Fedora  |  Ryzen 7 5700 | Radeon RX 6600       |    32 GB   |
 
-### Wybór platformy AI & Machine Learning.
-Aby uruchomić własny model potrzebujemy aplikacji która pozowli przeprowadzić konwersację z modelem (czyli w skrócie okienka do rozmowy z chatbotem).Jeżeli chodzi o platformę mamy do wyboru całekiem sporo opcji:
+### Wybór platformy do obsługi AI
+Aby wygodnie rozmawiać z modelem, potrzebujemy odpowiedniej aplikacji – "okienka" czatu, które załaduje pliki modelu do pamięci naszego komputera. Obecnie na rynku dominują dwa świetne rozwiązania:
 
-| Program | Interfejs Użytkownika |
-| :--- | :--- |
-| LM Studio | GUI - Okienka |
-| Ollama | CLI - Terminal |
+| Program | Interfejs Użytkownika | Najlepsze dla... |
+| :--- | :--- | :--- |
+| **LM Studio** | GUI (Graficzne Okienka) | Początkujących i fanów wygodnego klikania |
+| **Ollama** | CLI (Terminal / Konsola) | Administratorów i budowania automatyzacji |
 
-Ja wybrałem LM Studio i pobrałem plik z oficjalnej strony *[LM STUDIO (LINK)](https://lmstudio.ai)*
+Ja zdecydowałem się na **LM Studio**. To potężne, a zarazem banalnie proste narzędzie.
 
-### Jak Pobrać LM Studio?
+### Jak pobrać i uruchomić LM Studio?
 
-1. **Odwiedź oficjalną stronę projektu**:
-   - [LM Studio](https://example.com/lm-studio)
+1. **Pobierz aplikację:** Wejdź na oficjalną stronę projektu: [lmstudio.ai](https://lmstudio.ai/) i pobierz wersję odpowiednią dla Twojego systemu (Windows, macOS, Linux).
+2. **Instalacja (Windows/Mac):** Wystarczy uruchomić pobrany plik instalacyjny i przeklikać standardowy kreator.
+3. **Instalacja (Linux - Wskazówka):** Jeśli używasz Linuxa (tak jak ja Fedory), pobierzesz plik w formacie `.AppImage`. Pamiętaj, aby przed jego uruchomieniem nadać mu uprawnienia do wykonywania! Możesz to zrobić klikając na plik prawym przyciskiem myszy (Właściwości -> Uprawnienia) lub wpisując w terminalu: `chmod +x nazwa_pliku.AppImage`.
 
-2. **Znajdź sekcję "Pobierz" lub "Download"**:
-   - Na stronie głównej lub w menu nawigacyjnym znajdziesz przycisk lub zakładkę do pobierania.
+## Konfiguracja LM Studio i pobieranie modeli
 
-3. **Wybierz odpowiedni plik do pobrania**:
-   - Wybierz najnowszą wersję dla swojej operacyjnej systemu (Windows, macOS, Linux).
-
-4. **Pobierz plik**:
-   - Kliknij na przycisk "Pobierz" lub "Download". Poczekaj na zakończenie pobierania.
-
-5. **Zainstaluj program**:
-   - Po pobraniu odkryj plik doinstalowawczy (np. *.zip, *.exe) i postępuj zgodnie z instrukcjami instalacyjnymi.
-
-6. **Sprawdź poprawność instalacji**:
-   - Uruchom program LM Studio, aby upewnić się, że został poprawnie zainstalowany.
-
-
-
-## Konfiguracja LM Studio i Modelu LLM
-### Instalacja modelu.
 <img src="https://raw.githubusercontent.com/123aaaaaaa12/netivly-photos/main/lmstudio.png" 
-     alt="LM Studio Screenshot" 
-     style="max-width: 100%; height: auto;">
+     alt="Interfejs LM Studio" 
+     style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
 
+Po uruchomieniu LM Studio powita Cię nowoczesny, ciemny interfejs. Na lewym pasku nawigacyjnym znajdziesz cztery główne zakładki:
+1. **Czat** – miejsce do rozmowy z AI.
+2. **Local Server** – opcje deweloperskie (stawianie lokalnego API).
+3. **Moje Modele** – zarządzanie pobranymi plikami (ikona folderu).
+4. **Wyszukiwarka** – wbudowana przeglądarka modeli (ikona lupy).
 
-Po uruchomieniu LM studio powinnieneś zobaczyć oto właśnie tą aplikację.
-* **Na pasku po lewej** są cztery przyciski.
-1. Chaty
-2. Developer
-3. Moje Modele 
-4. Wyszukiwarka Modeli (tutaj je pobierasz)
+> **Netivly Insight:** Samo LM Studio waży około 1 GB, ale rozmiary modeli (zazwyczaj w formacie `.gguf`) mogą wahać się od 1.5 GB do nawet 40 GB. Dla przykładu: model oznaczony jako **7B** posiada 7 miliardów parametrów. Im więcej parametrów, tym model jest bystrzejszy i precyzyjniejszy, ale wymaga więcej pamięci RAM i mocniejszej karty graficznej.
 
-> **Netivly Insight:** LM Studio waży około 1GB ale rozmiary modeli mogą sięgać od 1 do 40 GB w zależności od funkcji jakie pełnią. Dla przykładu: Model który ma nazwie 7B ma około 7 miliardów parametrów im więcej parametrów tym bardziej szczegółowy i precyzyjny jest ale wpływa to na rozmiar pliku.
+**Na start polecam przetestować te dwa modele:**
+* `Qwen2.5-Coder-7B-Instruct` (Świetny wirtualny programista)
+* `DeepSeek-Coder-1.3B-Instruct` (Wersja "kieszonkowa", działa nawet na słabych laptopach)
 
-* **Ja wybrałem modele:**
-* Qwen2.5 Coder 7B Instruct 
-* Deepseek Coder 1.3B Instruct
+## Rodzina modeli Qwen – co wybrać?
 
-> **Netivly Insight:** Jeśli chcesz używać modelu do analizy zdjęc wybierz modele "vision"
+Aby rozpocząć rozmowę, wystarczy wejść w zakładkę Czatu, kliknąć górny pasek (lub skrót `Ctrl + L`) i załadować pobrany model do pamięci RAM. 
 
-# Modele AI dla różnych zastosowań
+Szczególnie do gustu przypadły mi modele z rodziny **Qwen** (stworzone przez Alibabę), które w testach często pokonują zachodnią konkurencję. Oto krótki przegląd ich wersji:
 
-Jeśli już pobrałeś własny model tworzysz nowy chat i klikasz Ctrl + l i wybierasz model który załaduje się do pamięci RAM. Teraz już możesz używać własnego AI. Mi spodobały się modele Qwen dlatego pokaże na ich przykładzie:
-
-### **Qwen2-VL** (Modele "z oczami")
-- **Typ:** Vision-Language Models
-- **Opis:** Przydatne do analizowania zdjęć, zrzutów ekranu czy projektów stron.
-- **Zastosowanie:**
-  - Analiza błędów z Cloudflare
-  - Zamiana rysunków na kod HTML
-
-* **Wersje:**
-
-- **2B**: Bardzo szybki, idealny na start.
-- **7B**: Dobry do szczegółowych analiz, znacznie mądrzejszy niż wersja 2B.
-
-### **Qwen2.5-Coder** (Programista)
+### 1. Qwen2-VL (Modele "z oczami")
+- **Typ:** Vision-Language Models (VLM)
+- **Opis:** Potrafią "widzieć". Przydatne do analizowania zrzutów ekranu, czytania błędów z konsoli lub zamiany narysowanych na kartce projektów na gotowy kod HTML.
 - **Wersje:**
-  - **1.5B / 3B**: Dobre do prostych poprawek, błyskawiczne (niskie zużycie RAM).
-  - **7B**: Złoty środek.
-  - **32B**: Dotrainingowany na bardziej skomplikowanych JavaScriptach, zajmie około 20-24 GB RAM.
+  - **2B**: Bardzo szybki, idealny na start i do prostych zdjęć.
+  - **7B**: Znacznie mądrzejszy, świetny do szczegółowych analiz architektury.
 
-### **Qwen2-Math** (Specjalista od matematyki)
-- **Opis:** Dotrenowany na zadaniach logiczno-matematycznych.
-- **Zastosowanie:**
-  - Budowa kalkulatorów
-  - Zaawansowane skrypty finansowe
-  - Logika oparta na liczbach
+### 2. Qwen2.5-Coder (Dla programistów)
+- **Opis:** Model wytrenowany specjalnie pod kątem logiki programowania i pisania czystego kodu.
+- **Wersje:**
+  - **1.5B / 3B**: Błyskawiczne, zużywają znikomą ilość RAM-u. Dobre do prostych skryptów (np. Bash).
+  - **7B**: Złoty środek. Świetnie radzi sobie z Pythonem, JS czy HTML. Zmieści się na domowym komputerze.
+  - **32B**: Potwór do zaawansowanych projektów. Wymaga mocnego sprzętu (zajmie około 20-24 GB RAM).
 
-### **Qwen2.5** (Generalista)
-- **Opis:** Wersja "do wszystkiego" – pisania artykułów, wymyślania nazw projektów czy tłumaczenia tekstów.
-- **Zalety:**
-  - Dobre radzenie sobie z naturalnym językiem
-  - Kreatywny writing 
-  - Bogatsze słownictwo
-- **Wady:**
-  - Gorzej w pisaniu kodu
+### 3. Qwen2-Math (Specjalista od liczb)
+- **Opis:** Dotrenowany na zaawansowanych zadaniach logiczno-matematycznych. Idealny do pisania kalkulatorów, skryptów finansowych i rozwiązywania zawiłych problemów z algorytmiką.
 
-## Podsumowanie.
+### 4. Qwen2.5 (Generalista)
+- **Opis:** Wersja "do wszystkiego". Klasyczny asystent tekstowy.
+- **Zalety:** Bardzo dobrze radzi sobie z językiem naturalnym (w tym polskim!), świetny do copywritingu, redagowania artykułów i wymyślania nazw projektów. Ma bogate słownictwo.
+- **Wady:** Radzi sobie z programowaniem odczuwalnie gorzej niż dedykowana wersja *Coder*.
 
-Nie potrzebujesz superkomputera, by zacząć przygodę z LLM do prostrzych modeli wystarczy nawet przeciętny komputer. Wykorzystanie otwartej architektury, takiej jak rodzina modeli Qwen, w połączeniu z narzędziami typu LM Studio czy Ollama, pozwala na budowanie ciekawych rzeczy lub aplikacji przy zachowaniu pełnej prywatności i zerowych kosztach subskrypcji.
+## Podsumowanie
 
-### Masz Pytania ? Zapraszamy na forum!
-*[Forum (LINK)](forum.html)*      
-:P
+Nie potrzebujesz farmy serwerów za miliony dolarów, by zacząć przygodę ze sztuczną inteligencją. Do prostszych modeli wystarczy nawet przeciętny, kilkuletni komputer. Wykorzystanie otwartej architektury w połączeniu z narzędziami takimi jak LM Studio pozwala na budowanie genialnych rzeczy przy **zachowaniu pełnej prywatności swoich danych i przy zerowych kosztach subskrypcji**. To esencja suwerenności IT.
+
+---
+### Masz Pytania lub problem z instalacją?
+Podziel się swoimi wynikami testów w naszej społeczności!  
+👉 **[Dołącz do dyskusji na Forum Netivly](forum.html)**
