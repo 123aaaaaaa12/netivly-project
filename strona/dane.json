@@ -68,12 +68,23 @@
     {
         "slug": "terminal",
         "tytul": "Terminal dla opornych: 10 komend, które musisz znać",
-        "kategoria": "Terminal",
+        "kategoria": "Basics",
         "typ": "poradnik",
         "opis": "Terminal dla opornych :)",
         "data": "14.03.2026",
         "czasCzytania": "10 min",
         "link": "artykul.html?id=terminal",
         "tag": "TERMINAL"
+    },
+        {
+        "slug": "5dystrybucji",
+        "tytul": "Porównanie 5 dystrybucji Linuxa dla nowych użytkowników. Co wybrać na start?",
+        "kategoria": "Basics",
+        "typ": "poradnik",
+        "opis": "Jeśli masz dość telemetrii, wymuszonych aktualizacji i sztucznej inteligencji wbudowanej w system przez gigantów technologicznych, oto 5 najlepszych dystrybucji na start Twojej przygody z cyfrową wolnością.",
+        "data": "15.03.2026",
+        "czasCzytania": "7 min",
+        "link": "artykul.html?id=5dystrybucji",
+        "tag": "LINUX"
     }
 ]

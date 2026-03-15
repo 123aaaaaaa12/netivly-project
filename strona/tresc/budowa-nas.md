@@ -63,7 +63,4 @@ Zastosuj domową wersję profesjonalnej zasady **3-2-1**:
 
 Budowa własnego serwera to projekt na jeden wieczór, który zmienia sposób, w jaki korzystasz z technologii. Gdy już postawisz swój pierwszy serwer plików, otwiera się przed Tobą świat setek darmowych usług: od własnego Netflixa (Jellyfin), przez blokowanie reklam w całym domu (Pi-hole), aż po lokalne AI.
 
-**Chcesz zobaczyć konkretną listę zakupową i instrukcję instalacji?**
-Przejdź do sekcji **Poradniki** w naszej Akademii, gdzie opisujemy proces krok po kroku na przykładzie systemu TrueNAS.
-
 ---

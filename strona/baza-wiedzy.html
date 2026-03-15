@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/newbox.css">
     <link rel="stylesheet" href="css/footer.css">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JV5KR2DGE0"></script>
@@ -81,6 +82,15 @@
                         <a href="#" class="category-item">Hardware</a>
                     </div>
                 </div>
+
+                <!-- Przycisk do trybu wizualnego -->
+                <!-- Przycisk do trybu wizualnego z animacją -->
+                <div style="margin-top: 25px;">
+                    <a href="czytelnia.html" class="animated-gradient-btn">
+                        <i class="fas fa-th-large"></i>
+                        <span>Wizualny przegląd kafelkowy</span>
+                    </a>
+                </div>
             </aside>
         </div>
     </div>
@@ -139,7 +149,47 @@
         </div>
     </div>
 </footer>
-    <!-- Pamiętaj, że skrypt musi być na końcu -->
+        <!-- Pamiętaj, że skrypt musi być na końcu -->
+        <script>
+        // --- SKRYPT: ZANIKAJĄCY PRZYCISK NAD STOPKĄ (TYLKO MOBILE) ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const floatingBtn = document.querySelector('.animated-gradient-btn');
+            const footer = document.querySelector('footer');
+
+            // Uruchamiamy skrypt tylko, jeśli oba elementy istnieją na stronie
+            if (floatingBtn && footer) {
+                
+                // Funkcja sprawdzająca pozycję scrolla
+                function checkFooterScroll() {
+                    // Skrypt działa tylko na urządzeniach mobilnych (szerokość poniżej 768px)
+                    // Na komputerach przycisk nie jest pływający, więc nie musi znikać!
+                    if (window.innerWidth <= 768) {
+                        
+                        // Obliczamy pozycję stopki względem obecnego widoku ekranu
+                        const footerPosition = footer.getBoundingClientRect().top;
+                        const windowHeight = window.innerHeight;
+                        
+                        // Jeśli górna krawędź stopki pojawia się na ekranie (odjąłem 50px marginesu)
+                        if (footerPosition < windowHeight + 50) {
+                            floatingBtn.classList.add('fade-out'); // Ukryj przycisk
+                        } else {
+                            floatingBtn.classList.remove('fade-out'); // Pokaż przycisk z powrotem
+                        }
+                    } else {
+                        // Upewniamy się, że na dużych ekranach przycisk jest zawsze widoczny
+                        floatingBtn.classList.remove('fade-out');
+                    }
+                }
+
+                // Nasłuchujemy zdarzenia przewijania strony
+                window.addEventListener('scroll', checkFooterScroll);
+                // Wywołujemy też raz na start, na wypadek gdyby strona załadowała się od razu na dole
+                checkFooterScroll();
+                // Nasłuchujemy zmiany rozmiaru okna
+                window.addEventListener('resize', checkFooterScroll);
+            }
+        });
+    </script>
     <script src="js/script.js"></script>
     <script src="js/database.js"></script>
 </body>
