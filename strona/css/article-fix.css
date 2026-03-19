@@ -1,0 +1,35 @@
+/* --- FIX DLA ARTYKUŁU: ODBLOKOWANIE PRZYCISKÓW --- */
+
+header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 9999 !important; /* Absolutny szczyt */
+    pointer-events: auto !important; /* Wymuszenie klikalności */
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+}
+
+.reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: var(--primary);
+    z-index: 10000; /* Nad nagłówkiem */
+    pointer-events: none !important; /* Myszka ignoruje ten pasek */
+}
+
+/* Upewnij się, że Hero nie wchodzi pod nagłówek i go nie blokuje */
+.hero-expanded {
+    position: relative;
+    z-index: 1; 
+    pointer-events: auto;
+}
+
+/* Styl dla akordeonów w e-bookach (jeśli używasz w artykule) */
+.eb-accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.3s ease-out;
+}

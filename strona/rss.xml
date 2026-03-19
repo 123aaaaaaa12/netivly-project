@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+  <title>Netivly Project</title>
+  <link>https://netivly.pl</link>
+  <description>Niezależny portal wiedzy o suwerenności cyfrowej i infrastrukturze IT.</description>
+  <language>pl</language>
+  <lastBuildDate>Tue, 17 Mar 2026 18:15:00 +0100</lastBuildDate>
+
+  <item>
+    <title>Porównanie 5 dystrybucji Linuxa dla nowych użytkowników. Co wybrać na start?</title>
+    <link>https://netivly.pl/artykul.html?id=5dystrybucji</link>
+    <description>Jeśli masz dość telemetrii, wymuszonych aktualizacji i sztucznej inteligencji wbudowanej w system przez gigantów technologicznych, oto 5 najlepszych dystrybucji na start Twojej przygody z cyfrową wolnością.</description>
+    <pubDate>Sun, 15 Mar 2026 10:00:00 +0100</pubDate>
+    <dc:creator>Dawid Józef Sakowski</dc:creator>
+  </item>
+
+  <item>
+    <title>Terminal dla opornych: 10 komend, które musisz znać</title>
+    <link>https://netivly.pl/artykul.html?id=terminal</link>
+    <description>Terminal dla opornych</description>
+    <pubDate>Sat, 14 Mar 2026 14:00:00 +0100</pubDate>
+    <dc:creator>Dawid Józef Sakowski</dc:creator>
+  </item>
+
+  <item>
+    <title>LLM czyli własne, lokalne AI</title>
+    <link>https://netivly.pl/artykul.html?id=llm</link>
+    <description>Instrukcja krok po kroku: jak stworzyć własny LLM</description>
+    <pubDate>Sat, 14 Mar 2026 12:00:00 +0100</pubDate>
+    <dc:creator>Dawid Józef Sakowski</dc:creator>
+  </item>
+
+  <item>
+    <title>Linux w 2026 roku: Nowa era suwerenności</title>
+    <link>https://netivly.pl/artykul.html?id=linux</link>
+    <description>Dlaczego Linux stał się fundamentem dla małych firm i użytkowników ceniących prywatność. Analiza trendów i niezależności cyfrowej.</description>
+    <pubDate>Fri, 06 Feb 2026 09:00:00 +0100</pubDate>
+    <dc:creator>Dawid Józef Sakowski</dc:creator>
+  </item>
+
+  <item>
+    <title>AI w administracji systemami IT</title>
+    <link>https://netivly.pl/artykul.html?id=ai-w-it</link>
+    <description>Jak sztuczna inteligencja redefiniuje pracę administratora i automatyzację infrastruktury w nowoczesnym biurze.</description>
+    <pubDate>Thu, 05 Feb 2026 10:00:00 +0100</pubDate>
+    <dc:creator>Dawid Józef Sakowski</dc:creator>
+  </item>
+
+  <item>
+    <title>WireGuard: Nowy król wydajności VPN</title>
+    <link>https://netivly.pl/artykul.html?id=bezpieczenstwo-vpn</link>
+    <description>Dogłębna analiza najszybszego protokołu VPN na świecie. Porównanie wydajności z OpenVPN i IPsec.</description>
+    <pubDate>Wed, 04 Feb 2026 11:00:00 +0100</pubDate>
+    <dc:creator>Dawid Józef Sakowski</dc:creator>
+  </item>
+
+  <item>
+    <title>Budowa własnego serwera NAS</title>
+    <link>https://netivly.pl/artykul.html?id=budowa-nas</link>
+    <description>Przewodnik po doborze sprzętu i konfiguracji systemu operacyjnego dla domowego centrum danych i małej firmy.</description>
+    <pubDate>Tue, 03 Feb 2026 08:00:00 +0100</pubDate>
+    <dc:creator>Dawid Józef Sakowski</dc:creator>
+  </item>
+
+  <item>
+    <title>Linux na pendrive: Przenośne centrum ratunkowe</title>
+    <link>https://netivly.pl/artykul.html?id=linux-live-usb-poradnik</link>
+    <description>Instrukcja krok po kroku: jak stworzyć bootowalny pendrive Live USB do testów, pracy i ratowania danych.</description>
+    <pubDate>Mon, 02 Feb 2026 15:00:00 +0100</pubDate>
+    <dc:creator>Dawid Józef Sakowski</dc:creator>
+  </item>
+</channel>
+</rss>

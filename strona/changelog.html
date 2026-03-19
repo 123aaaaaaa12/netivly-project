@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changelog | Netivly Project</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        .changelog-hero {
+            text-align: center;
+            padding: 80px 20px 40px 20px;
+        }
+        .changelog-hero h1 { font-size: 2.8rem; margin-bottom: 15px; }
+        .changelog-hero p { color: #94a3b8; max-width: 600px; margin: 0 auto; line-height: 1.6; font-size: 1.1rem; }
+        
+        /* Oś czasu na całą stronę */
+        .timeline-container {
+            max-width: 800px;
+            margin: 0 auto 100px auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 20px;
+            bottom: 20px;
+            width: 2px;
+            background: rgba(51, 65, 85, 0.5);
+        }
+
+        .update-box {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 50px;
+        }
+
+        .update-box::before {
+            content: '';
+            position: absolute;
+            left: 23px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #0f172a;
+            border: 3px solid var(--primary, #3b82f6);
+            z-index: 2;
+        }
+
+        /* Wyróżnienie najważniejszych aktualizacji */
+        .update-box.major::before {
+            background: #10b981;
+            border-color: #10b981;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+        }
+
+        .update-date {
+                    font-family: monospace, sans-serif;
+                    font-size: 0.9rem;
+                    color: var(--text-muted, #94a3b8);
+                    margin-bottom: 10px;
+                    display: inline-block;
+                    background: var(--bg-card, rgba(255,255,255,0.05));
+                    border: 1px solid var(--border, transparent);
+                    padding: 4px 10px;
+                    border-radius: 6px;
+                }
+
+                .update-content {
+                    background: var(--bg-card, rgba(15, 23, 42, 0.4));
+                    border: 1px solid var(--border, rgba(51, 65, 85, 0.5));
+                    border-radius: 12px;
+                    padding: 25px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Lekki cień przydatny na jasnym */
+                }
+
+                .update-content h3 { margin-bottom: 15px; font-size: 1.4rem; color: var(--text-main, #111827); }
+                .update-content p { color: var(--text-muted, #4b5563); line-height: 1.6; margin-bottom: 15px; }
+                .update-content p:last-child { margin-bottom: 0; }
+                .update-content ul { padding-left: 20px; color: var(--text-muted, #4b5563); margin-bottom: 15px; }
+                .update-content li { margin-bottom: 8px; }
+
+        .tag {
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            padding: 4px 10px; border-radius: 4px; margin-right: 10px;
+        }
+        .tag.feature { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .tag.content { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+        .tag.system { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+    </style>
+</head>
+<body class="theme-transition">
+
+<!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JV5KR2DGE0"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-JV5KR2DGE0');
+    </script>
+
+<body>
+<header class="main-header">
+    <div class="container header-container">
+        <!-- LEWO -->
+        <a href="index.html" class="logo">Net<span>ivly</span> Project</a>
+
+        <!-- ŚRODEK (Menu) -->
+        <ul class="nav-links" id="nav-menu">
+            <li><a href="index.html">Start</a></li>
+            <li><a href="forum.html">Forum</a></li>
+            <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
+            <li><a href="ebooki.html">E-booki</a></li>
+            <li><a href="biznes.html">Dla Biznesu</a></li>
+            <li><a href="o-projekcie.html">O Projekcie</a></li>
+        </ul>
+
+        <!-- PRAWO -->
+        <div class="header-actions">
+            <button id="theme-toggle">Tryb</button>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="changelog-hero">
+        <h1>Dziennik <span class="text-gradient">Projektu</span></h1>
+        <p>Bądź na bieżąco z rozwojem serwisu. Poniżej znajdziesz historię wszystkich nowości, aktualizacji systemowych oraz publikacji na portalu Netivly.</p>
+    </section>
+
+    <div class="timeline-container">
+
+            <!-- Wpis: Dodanie artykułu o komendach terminalowych -->
+    <div class="update-box">
+        <span class="update-date">14.03.2026</span>
+        <div class="update-content">
+            <span class="tag content">Artykuł</span>
+            <h3>Terminal dla opornych: 10 komend, które musisz znać!</h3>
+            <p>Przeanalizowaliśmy najważniejsze narzędzia i funkcje w terminalu dla opornych użytkowników. W naszym nowym artykule dowiesz się, jak skorzystać z poleceń, takich jak ls, mkdir, cd, rm itp.</p>
+            <ul>
+                <li>Artykuł: "Terminal dla opornych: 10 komend, które musisz znać!"</li>
+                <li>Wyjaśnienie poszczególnych poleceń oraz ich użycia.</li>
+            </ul>
+        </div>
+    </div>
+        
+        <!-- Wpis: LLM i YouTube -->
+        <div class="update-box major">
+            <span class="update-date">14.03.2026</span>
+            <div class="update-content">
+                <span class="tag feature">Nowość</span>
+                <span class="tag content">Artykuł</span>
+                <h3>Lokalne AI na Linuxie i start kanału YouTube! 🚀</h3>
+                <p>Opublikowaliśmy obszerny poradnik krok po kroku o tym, jak uruchomić własny, w 100% prywatny model AI (LLM) na domowym komputerze przy użyciu narzędzia LM Studio na systemie Fedora. Dodatkowo rozszerzamy naszą działalność – wystartowaliśmy z oficjalnym kanałem Netivly na YouTube!</p>
+                <ul>
+                    <li>Nowy artykuł: "Własny ChatGPT na domowym komputerze. Jak uruchomić lokalne AI za darmo?".</li>
+                    <li>Praktyczne zestawienie modeli do kodowania (m m.in. Qwen2.5-Coder oraz DeepSeek).</li>
+                    <li>Uruchomienie kanału wideo (link dodano do stopki serwisu).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Wpis: Repozytorium Zdjęć i Poprawki -->
+        <div class="update-box">
+            <span class="update-date">13.03.2026</span>
+            <div class="update-content">
+                <span class="tag system">System</span>
+                <h3>Nowa architektura dla grafik i optymalizacja repozytorium</h3>
+                <p>Wdrożyliśmy usprawnienia pod kątem szybkości ładowania strony i wagi głównego kodu. Zdjęcia i zasoby wizualne portalu zostały zmigrowane do dedykowanego, niezależnego repozytorium na GitHubie. Wprowadzono również drobne poprawki (bugfixy) w interfejsie użytkownika.</p>
+            </div>
+        </div>
+        
+        <!-- Wpis 1 -->
+        <div class="update-box major">
+            <span class="update-date">10.03.2026</span>
+            <div class="update-content">
+                <span class="tag feature">Nowość</span>
+                <h3>Wystartowaliśmy ze Społecznością!</h3>
+                <p>Od dziś możecie dyskutować, wymieniać się doświadczeniami i zadawać techniczne pytania na naszym nowym forum.</p>
+                <ul>
+                    <li>Integracja logowania za pomocą kont Github (ochrona przed spamem).</li>
+                    <li>Nowa podstrona "Społeczność" w głównym menu.</li>
+                    <li>Pełne wsparcie dla ciemnego motywu w panelu dyskusji.</li>
+                </ul>
+                <a href="forum.html" style="color: var(--primary); text-decoration: none; font-weight: 600;">Przejdź na forum &rarr;</a>
+            </div>
+        </div>
+
+        <!-- Wpis 2 -->
+        <div class="update-box">
+            <span class="update-date">02.03.2026</span>
+            <div class="update-content">
+                <span class="tag content">Artykuł</span>
+                <h3>Linux w 2026 roku - nowa publikacja</h3>
+                <p>Opublikowaliśmy obszerną analizę dotyczącą roli systemów Linux w budowaniu niezależności małych firm. Dowiesz się z niej, dlaczego rok 2026 to ostateczny moment na migrację.</p>
+            </div>
+        </div>
+
+        <!-- Wpis 3 -->
+        <div class="update-box major">
+            <span class="update-date">03.02.2026</span>
+            <div class="update-content">
+                <span class="tag system">System</span>
+                <h3>Oficjalny start Netivly Project</h3>
+                <p>Wdrożenie pierwszej wersji portalu! Architektura oparta na czystym HTML, CSS, JS z dynamiczną wyszukiwarką JSON.</p>
+                <ul>
+                    <li>Konfiguracja domeny na środowisku Cloudflare.</li>
+                    <li>Uruchomienie Listy Oczekujących (Waitlist) na E-booki.</li>
+                    <li>Wdrożenie formularzy MailerLite z Double Opt-in.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <!-- GŁÓWNY GRID Z 4 KOLUMNAMI -->
+        <div class="footer-grid">
+            <!-- Kolumna 1: Logo -->
+            <div class="footer-col">
+                <div class="logo">Net<span>ivly</span> Project</div>
+                <p style="margin-top: 15px;">Niezależna platforma edukacyjna skupiona na przekazywaniu rzetelnej wiedzy IT.</p>
+            </div>
+
+            <!-- Kolumna 2: Nawigacja -->
+            <div class="footer-col">
+                <h4>Nawigacja</h4>
+                <ul>
+                    <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
+                    <li><a href="forum.html">Społeczność</a></li>
+                    <li><a href="o-projekcie.html">O Projekcie</a></li>
+                </ul>
+            </div>
+
+            <!-- Kolumna 3: Kontakt -->
+            <div class="footer-col">
+                <h4>Kontakt</h4>
+                <p>Masz pytania?<br>
+                <a href="mailto:kontakt@netivly.pl" style="color: var(--primary); font-weight: 600;">kontakt@netivly.pl</a></p>
+            </div>
+
+            <!-- Kolumna 4: Social -->
+            <div class="footer-col">
+                <h4>Śledź projekt</h4>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/share/1ArbEkRDLg/" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://x.com/netivly" target="_blank" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://github.com/123aaaaaaa12" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://www.youtube.com/@NetivlyProject" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div> <!-- Tego znacznika brakowało! On zamyka 4 kolumny -->
+
+        <!-- DOLNA CZĘŚĆ PRAWNA (rozciągnięta na całą szerokość) -->
+        <div class="footer-bottom">
+            <div class="footer-info-text">
+                &copy; 2026 <strong>Netivly Project</strong>. Autor: Dawid Józef Sakowski
+            </div>
+            
+            <div class="footer-legal-links">
+                <a href="/license.txt">Licencja MIT</a>
+                <a href="/license.txt">E-booki: Prawa zastrzeżone</a>
+                <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+                <a href="polityka-prywatnosci.html">Polityka Prywatności</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
