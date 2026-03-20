@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     
-    <!-- DYNAMICZNE SEO -->
     <title>Ładowanie... | Netivly Project</title>
     <meta name="description" content="Ekspercka wiedza techniczna i poradniki IT.">
     
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- STYLE -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/newsletter.css">
     <link rel="stylesheet" href="css/header.css">
@@ -21,173 +19,522 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* --- CORE SYSTEM V11.0 --- */
-        html, body { 
-            overflow-x: hidden; /* Blokada pływania na boki */
-            width: 100%; 
-            margin: 0; 
-            padding: 0; 
+        /* =============================================
+           RESET & BASE
+        ============================================= */
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            margin: 0;
+            padding: 0;
             background: var(--bg-body);
         }
 
-        .reading-progress { position: fixed; top: 0; left: 0; width: 0%; height: 5px; background: var(--primary); z-index: 6000; pointer-events: none; }
+        /* =============================================
+           PASEK POSTĘPU
+        ============================================= */
+        .reading-progress {
+            position: fixed;
+            top: 0; left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), #60a5fa);
+            z-index: 6000;
+            pointer-events: none;
+            transition: width 0.1s linear;
+        }
 
-        /* HERO ARTYKUŁU */
-        .post-hero-premium {
-            padding: clamp(100px, 12vh, 160px) 0 60px;
+        /* =============================================
+           HERO
+        ============================================= */
+        .post-hero {
+            padding: clamp(110px, 14vh, 170px) 0 80px;
             text-align: center;
-            background: radial-gradient(circle at 50% -20%, rgba(37, 99, 235, 0.15), transparent 75%);
+            position: relative;
+            overflow: hidden;
             border-bottom: 1px solid var(--border);
         }
 
-        #post-title {
-            font-size: clamp(1.8rem, 6vw, 3.8rem);
+        .post-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37, 99, 235, 0.12), transparent 70%);
+            pointer-events: none;
+        }
+
+        .post-hero .container {
+            position: relative;
+            max-width: 860px;
+        }
+
+        #post-tag {
+            display: inline-block;
+            background: rgba(37, 99, 235, 0.12);
+            color: var(--primary);
+            border: 1px solid rgba(37, 99, 235, 0.25);
+            padding: 6px 16px;
+            border-radius: 99px;
+            font-size: 0.78rem;
             font-weight: 800;
-            letter-spacing: -0.04em;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        #post-title {
+            font-size: clamp(2rem, 5.5vw, 3.6rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
             line-height: 1.1;
-            padding: 0 10px;
+            margin: 0 0 24px;
             word-wrap: break-word;
         }
 
-        /* UKŁAD STRONY */
-        .article-main-grid {
-            display: grid;
-            grid-template-columns: 1fr 340px;
-            gap: 60px;
-            margin: 60px auto;
-            max-width: 1300px;
-            padding: 0 25px;
-        }
-
-        /* TYPOGRAFIA I RAMKA (INSIGHT) */
-        #post-content { 
-            font-size: 1.15rem; 
-            line-height: 1.9; 
-            color: var(--text-main);
-            overflow-wrap: break-word; /* Łamanie długich słów jak "Implementacja" */
-        }
-
-        #post-content h2 { 
-            margin: 60px 0 25px; font-size: clamp(1.5rem, 4vw, 2.4rem); font-weight: 800; 
-            letter-spacing: -1px; border-bottom: 2px solid var(--border); padding-bottom: 15px;
-            word-wrap: break-word;
-        }
-        
-        #post-content h3 { margin: 40px 0 20px; font-size: 1.6rem; font-weight: 700; color: var(--primary); }
-
-        /* TA RAMKA, O KTÓRĄ PROSIŁEŚ (BLOCKQUOTE) */
-        #post-content blockquote { 
-            background: rgba(37, 99, 235, 0.04); 
+        .post-hero-meta {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            border-left: 5px solid var(--primary); 
-            padding: 30px; 
-            border-radius: 12px 24px 24px 12px; 
-            margin: 40px 0; 
-            font-style: italic;
-            box-shadow: var(--shadow-sm);
+            padding: 10px 24px;
+            border-radius: 99px;
         }
 
-        /* TABELE I KOD */
-        #post-content table { display: block; width: 100% !important; overflow-x: auto; margin: 40px 0; border-collapse: collapse; }
-        #post-content th, #post-content td { padding: 15px; border: 1px solid var(--border); text-align: left; min-width: 120px; }
+        .post-hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
 
-        #post-content pre { border-radius: 20px; margin: 30px 0; padding: 25px !important; overflow-x: auto; max-width: 100% !important; }
+        .post-hero-meta .sep {
+            width: 4px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 50%;
+        }
 
-        /* SIDEBAR */
-        .article-sidebar { position: sticky; top: 110px; height: fit-content; }
-        .widget-card { background: var(--bg-card); padding: 30px; border-radius: 28px; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: var(--shadow); }
-        .widget-card h4 { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 1.5px; margin-bottom: 20px; }
+        /* =============================================
+           GŁÓWNY GRID
+        ============================================= */
+        .article-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 50px;
+            max-width: 1240px;
+            margin: 60px auto;
+            padding: 0 30px;
+            align-items: start;
+        }
 
-        /* --- MOBILNY FIX (KLUCZOWY) --- */
+        /* =============================================
+           TREŚĆ ARTYKUŁU
+        ============================================= */
+        .article-body {
+            min-width: 0; /* fix dla overflow w grid */
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--primary); }
+
+        #post-content {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--text-main);
+            overflow-wrap: break-word;
+        }
+
+        #post-content > h1:first-child {
+            display: none; /* Ukrywa powielony tytuł z markdown */
+        }
+
+        #post-content h2 {
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin: 64px 0 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+            word-wrap: break-word;
+        }
+
+        #post-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 40px 0 16px;
+        }
+
+        #post-content p {
+            margin: 0 0 20px;
+        }
+
+        #post-content ul, #post-content ol {
+            margin: 0 0 24px;
+            padding-left: 24px;
+        }
+
+        #post-content li {
+            margin-bottom: 8px;
+        }
+
+        /* BLOCKQUOTE / INSIGHT */
+        #post-content blockquote {
+            background: rgba(37, 99, 235, 0.05);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-left: 4px solid var(--primary);
+            padding: 24px 28px;
+            border-radius: 0 16px 16px 0;
+            margin: 36px 0;
+            font-style: normal;
+        }
+
+        #post-content blockquote p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* TABELE */
+        #post-content table {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            margin: 36px 0;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        #post-content th {
+            background: rgba(37, 99, 235, 0.08);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        #post-content th, #post-content td {
+            padding: 14px 18px;
+            border: 1px solid var(--border);
+            text-align: left;
+            min-width: 120px;
+        }
+
+        #post-content tr:hover td {
+            background: rgba(37, 99, 235, 0.03);
+        }
+
+        /* KOD */
+        #post-content pre {
+            border-radius: 16px;
+            margin: 28px 0;
+            overflow-x: auto;
+        }
+
+        #post-content code:not(pre code) {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        /* SHARE WIDGET */
+        .share-widget {
+            margin-top: 72px;
+            padding: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+        }
+
+        .share-widget h4 {
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--primary);
+            margin: 0 0 16px;
+        }
+
+        .share-input-row {
+            display: flex;
+            gap: 8px;
+            background: var(--bg-body);
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .share-input-row input {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 8px 10px;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.85rem;
+            outline: none;
+            min-width: 0;
+        }
+
+        #copy-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            transition: opacity 0.2s;
+        }
+
+        #copy-btn:hover { opacity: 0.85; }
+
+        /* =============================================
+           SIDEBAR
+        ============================================= */
+        .article-sidebar {
+            position: sticky;
+            top: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        .sidebar-card h4 {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--primary);
+            margin: 0 0 18px;
+        }
+
+        /* TOC */
+        #toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        #toc-list a {
+            display: block;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+            line-height: 1.4;
+        }
+
+        #toc-list a:hover,
+        #toc-list a.active {
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary);
+        }
+
+        /* AUTOR */
+        .author-card-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .author-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), #60a5fa);
+            color: white;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .author-name {
+            font-weight: 800;
+            font-size: 0.95rem;
+        }
+
+        .author-role {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .author-bio {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* =============================================
+           RESPONSIVE
+        ============================================= */
         @media (max-width: 1000px) {
-            .article-main-grid { display: block; padding: 0 15px; }
-            .article-sidebar { display: none; }
-            .post-hero-premium { padding: 80px 15px 40px; text-align: left; }
-            #post-content h2 { font-size: 1.6rem; }
-            .container { padding: 0 10px !important; }
+            .article-layout {
+                display: block;
+                padding: 0 16px;
+                margin: 40px auto;
+            }
+
+            .article-sidebar {
+                display: none;
+            }
+
+            .post-hero {
+                padding: 90px 16px 50px;
+                text-align: left;
+            }
+
+            .post-hero-meta {
+                flex-wrap: wrap;
+            }
+
+            #post-content h2 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
-<!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JV5KR2DGE0"></script>
-    <script>
+
+<!-- Google tag -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JV5KR2DGE0"></script>
+<script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-JV5KR2DGE0');
-    </script>
+</script>
+
 <body>
     <div class="reading-progress" id="progress-bar"></div>
 
-<header class="main-header">
-    <div class="container header-container">
-        <!-- LEWO -->
-        <a href="index.html" class="logo">Net<span>ivly</span> Project</a>
-
-        <!-- ŚRODEK (Menu) -->
-        <ul class="nav-links" id="nav-menu">
-            <li><a href="index.html">Start</a></li>
-            <li><a href="forum.html">Forum</a></li>
-            <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
-            <li><a href="ebooki.html">E-booki</a></li>
-            <li><a href="biznes.html">Dla Biznesu</a></li>
-            <li><a href="o-projekcie.html">O Projekcie</a></li>
-        </ul>
-
-        <!-- PRAWO -->
-        <div class="header-actions">
-            <button id="theme-toggle">Tryb</button>
-            <div class="hamburger" id="hamburger">
-                <span></span><span></span><span></span>
+    <header class="main-header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">Net<span>ivly</span> Project</a>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="index.html">Start</a></li>
+                <li><a href="forum.html">Forum</a></li>
+                <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
+                <li><a href="ebooki.html">E-booki</a></li>
+                <li><a href="biznes.html">Dla Biznesu</a></li>
+                <li><a href="o-projekcie.html">O Projekcie</a></li>
+            </ul>
+            <div class="header-actions">
+                <button id="theme-toggle">Tryb</button>
+                <div class="hamburger" id="hamburger">
+                    <span></span><span></span><span></span>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 
-    <section class="post-hero-premium">
+    <!-- HERO -->
+    <section class="post-hero">
         <div class="container">
-            <span id="post-tag" class="badge">ŁADOWANIE...</span>
+            <span id="post-tag">ŁADOWANIE...</span>
             <h1 id="post-title">Wczytywanie artykułu...</h1>
-            <p id="post-meta" style="font-weight: 700; opacity: 0.6; font-size: 1rem; margin-top: 15px;"></p>
+            <div class="post-hero-meta" id="post-meta">
+                <span><i class="fas fa-calendar-alt"></i> —</span>
+                <div class="sep"></div>
+                <span><i class="fas fa-clock"></i> —</span>
+            </div>
         </div>
     </section>
 
-    <div class="article-main-grid">
-        <main>
-            <div style="margin-bottom: 40px;">
-                <a href="baza-wiedzy.html" style="font-weight: 800; color: var(--text-muted); display: inline-flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-arrow-left"></i> Powrót do bazy
-                </a>
-            </div>
+    <!-- GŁÓWNY UKŁAD -->
+    <div class="article-layout">
+
+        <!-- TREŚĆ -->
+        <main class="article-body">
+            <a href="baza-wiedzy.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Powrót do bazy
+            </a>
 
             <article id="post-content">
-                <!-- Treść wleci tutaj -->
+                <!-- Treść z markdown -->
             </article>
 
             <!-- SHARE -->
-            <div class="widget-card" style="margin-top: 80px;">
-                <h4 style="margin-bottom: 15px;">Udostępnij link</h4>
-                <div style="display: flex; gap: 10px; background: var(--bg-body); padding: 8px; border-radius: 16px; border: 1px solid var(--border);">
-                    <input type="text" id="url-field" style="flex: 1; background: none; border: none; padding: 10px; color: var(--text-muted); font-family: inherit; font-size: 0.85rem; outline: none;" readonly>
-                    <button id="copy-btn" style="background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700;">Kopiuj</button>
+            <div class="share-widget">
+                <h4>Udostępnij artykuł</h4>
+                <div class="share-input-row">
+                    <input type="text" id="url-field" readonly>
+                    <button id="copy-btn">Kopiuj link</button>
                 </div>
             </div>
         </main>
 
+        <!-- SIDEBAR -->
         <aside class="article-sidebar">
-            <div class="widget-card">
+
+            <!-- TOC -->
+            <div class="sidebar-card" id="toc-card">
                 <h4>Spis treści</h4>
-                <ul id="toc-list" style="list-style: none;"></ul>
+                <ul id="toc-list"></ul>
             </div>
 
-            <div class="widget-card">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                    <div style="width: 45px; height: 45px; background: var(--primary); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900;">D</div>
-                    <h4 style="margin:0; font-size: 1rem;">Dawid Sakowski</h4>
+            <!-- AUTOR -->
+            <div class="sidebar-card">
+                <h4>Autor</h4>
+                <div class="author-card-inner">
+                    <div class="author-top">
+                        <div class="author-avatar">D</div>
+                        <div class="author-info">
+                            <span class="author-name">Dawid Sakowski</span>
+                            <span class="author-role">Założyciel Netivly</span>
+                        </div>
+                    </div>
+                    <p class="author-bio">Ekspert w dziedzinie suwerenności danych, Linuxa i bezpieczeństwa IT. Twórca Netivly Project.</p>
                 </div>
-                <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Założyciel Netivly. Ekspert w dziedzinie suwerenności danych.</p>
             </div>
+
         </aside>
     </div>
 
@@ -201,7 +548,7 @@
             const postId = params.get('id');
             const contentDiv = document.getElementById('post-content');
             const urlField = document.getElementById('url-field');
-            if(urlField) urlField.value = window.location.href;
+            if (urlField) urlField.value = window.location.href;
 
             fetch('dane.json')
                 .then(res => res.json())
@@ -209,11 +556,14 @@
                     const post = data.find(p => p.slug === postId);
                     if (post) {
                         document.title = `${post.tytul} | Netivly`;
-                        document.querySelector('meta[name="description"]').setAttribute("content", post.opis);
+                        document.querySelector('meta[name="description"]').setAttribute('content', post.opis);
                         document.getElementById('post-title').innerText = post.tytul;
                         document.getElementById('post-tag').innerText = post.kategoria;
-                        document.getElementById('post-meta').innerText = `${post.data} • ${post.czasCzytania}`;
-                        
+                        document.getElementById('post-meta').innerHTML = `
+                            <span><i class="fas fa-calendar-alt"></i> ${post.data}</span>
+                            <div class="sep"></div>
+                            <span><i class="fas fa-clock"></i> ${post.czasCzytania}</span>
+                        `;
                         return fetch(`tresc/${post.slug}.md`);
                     }
                 })
@@ -221,41 +571,67 @@
                 .then(text => {
                     contentDiv.innerHTML = marked.parse(text);
                     Prism.highlightAll();
-                    
-                    // ToC Generator
+
+                    // Ukryj pierwszy h1 jeśli pokrywa się z tytułem hero
+                    const firstH1 = contentDiv.querySelector('h1');
+                    if (firstH1) firstH1.style.display = 'none';
+
+                    // Generuj TOC
                     const headings = contentDiv.querySelectorAll('h2');
                     const tocList = document.getElementById('toc-list');
-                    if (headings.length === 0) { document.querySelector('.widget-card').style.display = 'none'; }
-                    headings.forEach((h, i) => {
-                        h.id = `section-${i}`;
-                        const li = document.createElement('li');
-                        li.style.marginBottom = "10px";
-                        const a = document.createElement('a');
-                        a.href = `#${h.id}`;
-                        a.innerText = h.innerText;
-                        a.style.color = "var(--text-muted)";
-                        a.style.fontSize = "0.9rem";
-                        a.style.textDecoration = "none";
-                        a.onclick = (e) => { e.preventDefault(); h.scrollIntoView({ behavior: 'smooth' }); };
-                        li.appendChild(a);
-                        tocList.appendChild(li);
-                    });
+                    const tocCard = document.getElementById('toc-card');
+
+                    if (headings.length === 0) {
+                        tocCard.style.display = 'none';
+                    } else {
+                        headings.forEach((h, i) => {
+                            h.id = `section-${i}`;
+                            const li = document.createElement('li');
+                            const a = document.createElement('a');
+                            a.href = `#${h.id}`;
+                            a.innerText = h.innerText;
+                            a.onclick = (e) => {
+                                e.preventDefault();
+                                h.scrollIntoView({ behavior: 'smooth' });
+                            };
+                            li.appendChild(a);
+                            tocList.appendChild(li);
+                        });
+
+                        // Aktywny link w TOC przy scrollowaniu
+                        const observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                const id = entry.target.id;
+                                const link = tocList.querySelector(`a[href="#${id}"]`);
+                                if (link) {
+                                    if (entry.isIntersecting) {
+                                        tocList.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+                                        link.classList.add('active');
+                                    }
+                                }
+                            });
+                        }, { rootMargin: '-20% 0px -70% 0px' });
+
+                        headings.forEach(h => observer.observe(h));
+                    }
                 });
 
+            // Kopiuj link
             const copyBtn = document.getElementById('copy-btn');
-            if(copyBtn) {
+            if (copyBtn) {
                 copyBtn.onclick = () => {
                     navigator.clipboard.writeText(urlField.value).then(() => {
-                        copyBtn.innerText = "OK!";
-                        setTimeout(() => { copyBtn.innerText = "Kopiuj"; }, 2000);
+                        copyBtn.innerText = '✓ Skopiowano';
+                        setTimeout(() => { copyBtn.innerText = 'Kopiuj link'; }, 2000);
                     });
                 };
             }
 
+            // Pasek postępu
             window.onscroll = () => {
-                let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-                let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                document.getElementById("progress-bar").style.width = (winScroll / height) * 100 + "%";
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                document.getElementById('progress-bar').style.width = (winScroll / height) * 100 + '%';
             };
         });
     </script>

@@ -45,5 +45,6 @@
   <url><loc>https://netivly.pl/artykul.html?id=terminal</loc><priority>0.70</priority></url>
   <url><loc>https://netivly.pl/artykul.html?id=llm</loc><priority>0.70</priority></url>
   <url><loc>https://netivly.pl/artykul.html?id=5dystrybucji</loc><priority>0.70</priority></url>
+  <url><loc>https://netivly.pl/artykul.html?id=btrfs-vs-zfs</loc><priority>0.70</priority></url>
 
 </urlset>

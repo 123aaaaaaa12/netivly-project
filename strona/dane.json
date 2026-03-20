@@ -86,5 +86,27 @@
         "czasCzytania": "7 min",
         "link": "artykul.html?id=5dystrybucji",
         "tag": "LINUX"
+    },
+        {
+        "slug": "btrfs-vs-zfs",
+        "tytul": "Btrfs vs ZFS: Który system plików do domowego serwera?",
+        "typ": "artykul",
+        "kategoria": "Hardware",
+        "opis": "Porównanie dwóch najpopularniejszych nowoczesnych systemów plików: wydajność, snapshoty, łatwość konfiguracji i stabilność. Co wybrać do domowego NAS-a?",
+        "data": "20.03.2026",
+        "czasCzytania": "11 min",
+        "link": "artykul.html?id=btrfs-vs-zfs",
+        "tag": "NAS"
+    },
+        {
+        "slug": "ssh",
+        "tytul": "SSH dla początkujących: Bezpieczne połączenia krok po kroku",
+        "typ": "poradnik",
+        "kategoria": "Basics",
+        "opis": "Jak zdalnie zarządzać serwerem, NAS-em lub Raspberry Pi przez SSH. Pierwsze połączenie, klucze, plik config i podstawowe zabezpieczenia — wszystko w jednym miejscu.",
+        "data": "20.03.2026",
+        "czasCzytania": "12 min",
+        "link": "artykul.html?id=ssh",
+        "tag": "TERMINAL"
     }
 ]
