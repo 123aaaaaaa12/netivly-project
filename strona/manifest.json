@@ -1,0 +1,22 @@
+{
+    "name": "Netivly Project",
+    "short_name": "Netivly",
+    "description": "Praktyczna wiedza o Linuksie, self-hostingu i cyberbezpieczeństwie.",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#020617",
+    "theme_color": "#1d4ed8",
+    "lang": "pl",
+    "icons": [
+        {
+            "src": "favicon.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "favicon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
