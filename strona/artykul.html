@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    
+    <!-- DYNAMICZNE SEO -->
+    <title>Ładowanie... | Netivly Project</title>
+    <meta name="description" content="Ekspercka wiedza techniczna i poradniki IT.">
+    
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- STYLE -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/newsletter.css">
+    <link rel="stylesheet" href="css/header.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* --- CORE SYSTEM V11.0 --- */
+        html, body { 
+            overflow-x: hidden; /* Blokada pływania na boki */
+            width: 100%; 
+            margin: 0; 
+            padding: 0; 
+            background: var(--bg-body);
+        }
+
+        .reading-progress { position: fixed; top: 0; left: 0; width: 0%; height: 5px; background: var(--primary); z-index: 6000; pointer-events: none; }
+
+        /* HERO ARTYKUŁU */
+        .post-hero-premium {
+            padding: clamp(100px, 12vh, 160px) 0 60px;
+            text-align: center;
+            background: radial-gradient(circle at 50% -20%, rgba(37, 99, 235, 0.15), transparent 75%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        #post-title {
+            font-size: clamp(1.8rem, 6vw, 3.8rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            padding: 0 10px;
+            word-wrap: break-word;
+        }
+
+        /* UKŁAD STRONY */
+        .article-main-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 60px;
+            margin: 60px auto;
+            max-width: 1300px;
+            padding: 0 25px;
+        }
+
+        /* TYPOGRAFIA I RAMKA (INSIGHT) */
+        #post-content { 
+            font-size: 1.15rem; 
+            line-height: 1.9; 
+            color: var(--text-main);
+            overflow-wrap: break-word; /* Łamanie długich słów jak "Implementacja" */
+        }
+
+        #post-content h2 { 
+            margin: 60px 0 25px; font-size: clamp(1.5rem, 4vw, 2.4rem); font-weight: 800; 
+            letter-spacing: -1px; border-bottom: 2px solid var(--border); padding-bottom: 15px;
+            word-wrap: break-word;
+        }
+        
+        #post-content h3 { margin: 40px 0 20px; font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+
+        /* TA RAMKA, O KTÓRĄ PROSIŁEŚ (BLOCKQUOTE) */
+        #post-content blockquote { 
+            background: rgba(37, 99, 235, 0.04); 
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary); 
+            padding: 30px; 
+            border-radius: 12px 24px 24px 12px; 
+            margin: 40px 0; 
+            font-style: italic;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* TABELE I KOD */
+        #post-content table { display: block; width: 100% !important; overflow-x: auto; margin: 40px 0; border-collapse: collapse; }
+        #post-content th, #post-content td { padding: 15px; border: 1px solid var(--border); text-align: left; min-width: 120px; }
+
+        #post-content pre { border-radius: 20px; margin: 30px 0; padding: 25px !important; overflow-x: auto; max-width: 100% !important; }
+
+        /* SIDEBAR */
+        .article-sidebar { position: sticky; top: 110px; height: fit-content; }
+        .widget-card { background: var(--bg-card); padding: 30px; border-radius: 28px; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: var(--shadow); }
+        .widget-card h4 { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 1.5px; margin-bottom: 20px; }
+
+        /* --- MOBILNY FIX (KLUCZOWY) --- */
+        @media (max-width: 1000px) {
+            .article-main-grid { display: block; padding: 0 15px; }
+            .article-sidebar { display: none; }
+            .post-hero-premium { padding: 80px 15px 40px; text-align: left; }
+            #post-content h2 { font-size: 1.6rem; }
+            .container { padding: 0 10px !important; }
+        }
+    </style>
+</head>
+<!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JV5KR2DGE0"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-JV5KR2DGE0');
+    </script>
+<body>
+    <div class="reading-progress" id="progress-bar"></div>
+
+<header class="main-header">
+    <div class="container header-container">
+        <!-- LEWO -->
+        <a href="index.html" class="logo">Net<span>ivly</span> Project</a>
+
+        <!-- ŚRODEK (Menu) -->
+        <ul class="nav-links" id="nav-menu">
+            <li><a href="index.html">Start</a></li>
+            <li><a href="forum.html">Forum</a></li>
+            <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
+            <li><a href="ebooki.html">E-booki</a></li>
+            <li><a href="biznes.html">Dla Biznesu</a></li>
+            <li><a href="o-projekcie.html">O Projekcie</a></li>
+        </ul>
+
+        <!-- PRAWO -->
+        <div class="header-actions">
+            <button id="theme-toggle">Tryb</button>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <section class="post-hero-premium">
+        <div class="container">
+            <span id="post-tag" class="badge">ŁADOWANIE...</span>
+            <h1 id="post-title">Wczytywanie artykułu...</h1>
+            <p id="post-meta" style="font-weight: 700; opacity: 0.6; font-size: 1rem; margin-top: 15px;"></p>
+        </div>
+    </section>
+
+    <div class="article-main-grid">
+        <main>
+            <div style="margin-bottom: 40px;">
+                <a href="baza-wiedzy.html" style="font-weight: 800; color: var(--text-muted); display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-arrow-left"></i> Powrót do bazy
+                </a>
+            </div>
+
+            <article id="post-content">
+                <!-- Treść wleci tutaj -->
+            </article>
+
+            <!-- SHARE -->
+            <div class="widget-card" style="margin-top: 80px;">
+                <h4 style="margin-bottom: 15px;">Udostępnij link</h4>
+                <div style="display: flex; gap: 10px; background: var(--bg-body); padding: 8px; border-radius: 16px; border: 1px solid var(--border);">
+                    <input type="text" id="url-field" style="flex: 1; background: none; border: none; padding: 10px; color: var(--text-muted); font-family: inherit; font-size: 0.85rem; outline: none;" readonly>
+                    <button id="copy-btn" style="background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700;">Kopiuj</button>
+                </div>
+            </div>
+        </main>
+
+        <aside class="article-sidebar">
+            <div class="widget-card">
+                <h4>Spis treści</h4>
+                <ul id="toc-list" style="list-style: none;"></ul>
+            </div>
+
+            <div class="widget-card">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                    <div style="width: 45px; height: 45px; background: var(--primary); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900;">D</div>
+                    <h4 style="margin:0; font-size: 1rem;">Dawid Sakowski</h4>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Założyciel Netivly. Ekspert w dziedzinie suwerenności danych.</p>
+            </div>
+        </aside>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const postId = params.get('id');
+            const contentDiv = document.getElementById('post-content');
+            const urlField = document.getElementById('url-field');
+            if(urlField) urlField.value = window.location.href;
+
+            fetch('dane.json')
+                .then(res => res.json())
+                .then(data => {
+                    const post = data.find(p => p.slug === postId);
+                    if (post) {
+                        document.title = `${post.tytul} | Netivly`;
+                        document.querySelector('meta[name="description"]').setAttribute("content", post.opis);
+                        document.getElementById('post-title').innerText = post.tytul;
+                        document.getElementById('post-tag').innerText = post.kategoria;
+                        document.getElementById('post-meta').innerText = `${post.data} • ${post.czasCzytania}`;
+                        
+                        return fetch(`tresc/${post.slug}.md`);
+                    }
+                })
+                .then(res => res.text())
+                .then(text => {
+                    contentDiv.innerHTML = marked.parse(text);
+                    Prism.highlightAll();
+                    
+                    // ToC Generator
+                    const headings = contentDiv.querySelectorAll('h2');
+                    const tocList = document.getElementById('toc-list');
+                    if (headings.length === 0) { document.querySelector('.widget-card').style.display = 'none'; }
+                    headings.forEach((h, i) => {
+                        h.id = `section-${i}`;
+                        const li = document.createElement('li');
+                        li.style.marginBottom = "10px";
+                        const a = document.createElement('a');
+                        a.href = `#${h.id}`;
+                        a.innerText = h.innerText;
+                        a.style.color = "var(--text-muted)";
+                        a.style.fontSize = "0.9rem";
+                        a.style.textDecoration = "none";
+                        a.onclick = (e) => { e.preventDefault(); h.scrollIntoView({ behavior: 'smooth' }); };
+                        li.appendChild(a);
+                        tocList.appendChild(li);
+                    });
+                });
+
+            const copyBtn = document.getElementById('copy-btn');
+            if(copyBtn) {
+                copyBtn.onclick = () => {
+                    navigator.clipboard.writeText(urlField.value).then(() => {
+                        copyBtn.innerText = "OK!";
+                        setTimeout(() => { copyBtn.innerText = "Kopiuj"; }, 2000);
+                    });
+                };
+            }
+
+            window.onscroll = () => {
+                let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                document.getElementById("progress-bar").style.width = (winScroll / height) * 100 + "%";
+            };
+        });
+    </script>
+</body>
+</html>
