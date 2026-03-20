@@ -81,3 +81,9 @@ Nie potrzebujesz farmy serwerów za miliony dolarów, by zacząć przygodę ze s
 ### Masz Pytania lub problem z instalacją?
 Podziel się swoimi wynikami testów w naszej społeczności!  
 👉 **[Dołącz do dyskusji na Forum Netivly](forum.html)**
+
+---
+<br>
+<small style="color: #64748b; font-size: 0.8rem; line-height: 1.4; display: block; text-align: center;">
+  <strong>Nota prawna:</strong> Wszystkie nazwy, znaki towarowe oraz logotypy produktów, usług i firm wymienione w tym artykule są własnością ich odpowiednich twórców, firm lub fundacji. Zostały użyte wyłącznie w celach informacyjno-edukacyjnych. Netivly Project nie jest oficjalnie powiązany z żadnym z wymienionych podmiotów.
+</small>

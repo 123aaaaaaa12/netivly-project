@@ -53,5 +53,8 @@ Aby zainstalować linuxa musisz:
 
 Linux pozwala ominąć ominąć ograniczenia innych systemów przez co potrafi wspomóc nas użytkowników w odpowiednich sprawach przez wiele dystrybucji każdy może wybrać to co jest dla niego najważniejsze i ma kontrolę nad własnym systemem dlatego warto używać linuxa w 2026 roku.
 
-
+<br>
+<small style="color: #64748b; font-size: 0.8rem; line-height: 1.4; display: block; text-align: center;">
+  <strong>Nota prawna:</strong> Wszystkie nazwy, znaki towarowe oraz logotypy produktów, usług i firm wymienione w tym artykule są własnością ich odpowiednich twórców, firm lub fundacji. Zostały użyte wyłącznie w celach informacyjno-edukacyjnych. Netivly Project nie jest oficjalnie powiązany z żadnym z wymienionych podmiotów.
+</small>
 

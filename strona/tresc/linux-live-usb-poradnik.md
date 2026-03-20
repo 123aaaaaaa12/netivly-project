@@ -44,6 +44,7 @@ Włóż pendrive do komputera, uruchom go ponowine i podczas uruchamiania nacisk
 ## Netivly Insight: Persystencja danych
 Standardowy tryb Live kasuje wszystkie zmiany po restarcie. Jeśli chcesz instalować programy i zapisywać pliki bezpośrednio na pendrive, szukaj w programie Rufus opcji **"Persistent partition"**. Dzięki temu Twój kieszonkowy Linux stanie się prawdziwym komputerem w breloku.
 
-```bash
-# Sprawdzenie wydajności Twojego pendrive pod Linuxem
-sudo hdparm -tT /dev/sda
+<br>
+<small style="color: #64748b; font-size: 0.8rem; line-height: 1.4; display: block; text-align: center;">
+  <strong>Nota prawna:</strong> Wszystkie nazwy, znaki towarowe oraz logotypy produktów, usług i firm wymienione w tym artykule są własnością ich odpowiednich twórców, firm lub fundacji. Zostały użyte wyłącznie w celach informacyjno-edukacyjnych. Netivly Project nie jest oficjalnie powiązany z żadnym z wymienionych podmiotów.
+</small>
