@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Netivly Engine v3.0: Cinema & Bento Active");
+    console.log("Netivly Engine v3.0: Active");
 
     // --- KONFIGURACJA KONTENERÓW ---
     const ui = {

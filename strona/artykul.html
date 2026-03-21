@@ -210,13 +210,21 @@
 
         /* TABELE */
         #post-content table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 12px;
+            margin: 0;
+        }
+
+        /* Wrapper zapewniający przewijanie poziome na mobile */
+        #post-content .table-wrapper {
             display: block;
             width: 100%;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             margin: 36px 0;
-            border-collapse: collapse;
             border-radius: 12px;
-            overflow: hidden;
+            border: 1px solid var(--border);
         }
 
         #post-content th {
@@ -571,6 +579,14 @@
                 .then(text => {
                     contentDiv.innerHTML = marked.parse(text);
                     Prism.highlightAll();
+
+                    // Owij tabele w wrapper do przewijania na mobile
+                    contentDiv.querySelectorAll('table').forEach(table => {
+                        const wrapper = document.createElement('div');
+                        wrapper.classList.add('table-wrapper');
+                        table.parentNode.insertBefore(wrapper, table);
+                        wrapper.appendChild(table);
+                    });
 
                     // Ukryj pierwszy h1 jeśli pokrywa się z tytułem hero
                     const firstH1 = contentDiv.querySelector('h1');
