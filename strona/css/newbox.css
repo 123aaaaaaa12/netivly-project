@@ -1,0 +1,84 @@
+/* --- WYSOKA, ANIMOWANA KARTA PRZYCISKU --- */
+.animated-gradient-btn {
+    display: flex;
+    flex-direction: column; /* Ustawia ikonę nad tekstem */
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* Odstęp między ikoną a tekstem */
+    width: 100%;
+    
+    /* TU ZMIENIŁEM WYSOKOŚĆ: 40px góra/dół to ogromny oddech */
+    padding: 40px 20px; 
+    
+    border-radius: 16px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ffffff;
+    text-decoration: none;
+    box-sizing: border-box;
+    
+    /* Bardzo spokojny, szeroki gradient */
+    background: linear-gradient(-45deg, #1e3a8a, #2563eb, #3b82f6, #1e3a8a);
+    background-size: 300% 300%;
+    animation: calmGradientWave 10s ease infinite; /* Zwolniono do 10s dla relaksującego efektu */
+    
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Płynne, sprężyste podskoczenie */
+}
+
+/* Efekt po najechaniu myszką */
+.animated-gradient-btn:hover {
+    transform: translateY(-6px) scale(1.02); /* Lekko się unosi i powiększa */
+    box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3);
+    color: #ffffff;
+}
+
+/* Znacznie większa ikona, bo mamy dużo miejsca w pionie */
+.animated-gradient-btn i {
+    font-size: 2.5rem; 
+    opacity: 0.9;
+    margin-bottom: 5px;
+}
+
+/* Definicja spokojnego ruchu tła */
+@keyframes calmGradientWave {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* --- ZMIANA W PŁYWAJĄCE KÓŁKO NA TELEFONACH --- */
+@media (max-width: 768px) {
+    .animated-gradient-btn {
+        position: fixed;        /* Odrywa przycisk od strony */
+        bottom: 30px;           /* Odstęp od dołu ekranu */
+        right: 25px;            /* Odstęp od prawej krawędzi */
+        width: 65px;            /* Idealny rozmiar pod kciuk */
+        height: 65px;
+        padding: 0;             /* Usuwamy wielkie marginesy z PC */
+        border-radius: 50%;     /* Robimy idealne kółko */
+        flex-direction: row;    /* Resetujemy pionowy układ */
+        z-index: 9999;          /* Zawsze na samym wierzchu */
+        box-shadow: 0 10px 30px rgba(37, 99, 235, 0.5); /* Mocny cień, żeby się odcinał */
+    }
+
+    /* Ukrywamy sam tekst na telefonie */
+    .animated-gradient-btn span {
+        display: none;
+    }
+
+    /* Dopasowujemy ikonę do kółka */
+    .animated-gradient-btn i {
+        font-size: 1.6rem;
+        margin-bottom: 0;       /* Usuwamy odstęp z wersji PC */
+    }
+}
+
+/* Klasa dodawana przez JavaScript, gdy użytkownik dojedzie do stopki */
+.animated-gradient-btn.fade-out {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateY(20px) scale(0.8) !important; /* Przycisk delikatnie zjeżdża w dół i maleje znikając */
+}

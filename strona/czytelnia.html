@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Czytelnia | Netivly Project</title>
+    <meta name="description" content="Czytelnia Netivly.">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JV5KR2DGE0"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-JV5KR2DGE0');
+    </script>
+</head>
+
+<body class="theme-transition">
+
+<header class="main-header">
+    <div class="container header-container">
+        <!-- LEWO -->
+        <a href="index.html" class="logo">Net<span>ivly</span> Project</a>
+
+        <!-- ŚRODEK (Menu) -->
+        <ul class="nav-links" id="nav-menu">
+            <li><a href="index.html">Start</a></li>
+            <li><a href="forum.html">Forum</a></li>
+            <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
+            <li><a href="o-projekcie.html">O Projekcie</a></li>
+        </ul>
+
+        <!-- PRAWO -->
+        <div class="header-actions">
+            <button id="theme-toggle">Tryb</button>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <section class="hero-expanded">
+        <div class="hero-content">
+            <span class="badge">Wizualny Katalog</span>
+            <h1>Czytelnia <span class="text-gradient">Netivly</span></h1>
+            <p>Przeglądaj nasze materiały w formie wygodnych, wizualnych kafelków. Zrozum technologię i wdrażaj ją samodzielnie krok po kroku.</p>
+            
+            <!-- Przycisk powrotu do trybu szybkiej listy -->
+            <div style="margin-top: 30px;">
+                <a href="baza-wiedzy.html" class="btn btn-outline" style="border-radius: 8px; padding: 10px 20px; font-size: 0.9rem;">
+                    <i class="fas fa-list-ul"></i> Wróć do wyszukiwarki
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        
+        <!-- SEKCJA: ARTYKUŁY I STRATEGIA -->
+        <div style="margin-bottom: 60px;">
+            <div style="margin-bottom: 30px; border-left: 5px solid var(--primary); padding-left: 20px;">
+                <h2 style="font-size: 2.2rem; letter-spacing: -1px;">📚 Analizy i Strategia</h2>
+                <p style="color: var(--text-muted);">Podejście wysokopoziomowe: suwerenność danych, koszty IT i trendy.</p>
+            </div>
+            <div id="articles-hub-container" class="articles-grid">
+                <!-- Tu wpadną Artykuły -->
+            </div>
+        </div>
+
+        <!-- SEKCJA: PORADNIKI -->
+        <div style="margin-bottom: 100px;">
+            <div style="margin-bottom: 30px; border-left: 5px solid #10b981; padding-left: 20px;">
+                <h2 style="font-size: 2.2rem; letter-spacing: -1px;">🛠️ Warsztat i Tutoriale</h2>
+                <p style="color: var(--text-muted);">Konkretne instrukcje "krok po kroku" dla administratorów i hobbystów.</p>
+            </div>
+            <div id="guides-hub-container" class="articles-grid">
+                <!-- Tu wpadną Poradniki -->
+            </div>
+        </div>
+
+    </div>
+
+<footer>
+    <div class="container">
+        <!-- GŁÓWNY GRID Z 4 KOLUMNAMI -->
+        <div class="footer-grid">
+            <!-- Kolumna 1: Logo -->
+            <div class="footer-col">
+                <div class="logo">Net<span>ivly</span> Project</div>
+                <p style="margin-top: 15px;">Niezależna platforma edukacyjna skupiona na przekazywaniu rzetelnej wiedzy IT.</p>
+            </div>
+
+            <!-- Kolumna 2: Nawigacja -->
+            <div class="footer-col">
+                <h4>Nawigacja</h4>
+                <ul>
+                    <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
+                    <li><a href="forum.html">Społeczność</a></li>
+                    <li><a href="o-projekcie.html">O Projekcie</a></li>
+                </ul>
+            </div>
+
+            <!-- Kolumna 3: Kontakt -->
+            <div class="footer-col">
+                <h4>Kontakt</h4>
+                <p>Masz pytania?<br>
+                <a href="mailto:kontakt@netivly.pl" style="color: var(--primary); font-weight: 600;">kontakt@netivly.pl</a></p>
+            </div>
+
+            <!-- Kolumna 4: Social -->
+            <div class="footer-col">
+                <h4>Śledź projekt</h4>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/share/1ArbEkRDLg/" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://x.com/netivly" target="_blank" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://github.com/123aaaaaaa12" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://www.youtube.com/@NetivlyProject" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div> <!-- Tego znacznika brakowało! On zamyka 4 kolumny -->
+
+        <!-- DOLNA CZĘŚĆ PRAWNA (rozciągnięta na całą szerokość) -->
+        <div class="footer-bottom">
+            <div class="footer-info-text">
+                &copy; 2026 <strong>Netivly Project</strong>. Autor: Dawid Józef Sakowski
+            </div>
+            
+            <div class="footer-legal-links">
+                <a href="/license.txt">Licencja MIT</a>
+                <a href="/license.txt">E-booki: Prawa zastrzeżone</a>
+                <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+                <a href="polityka-prywatnosci.html">Polityka Prywatności</a>
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="js/script.js"></script>
+    <script src="js/database.js"></script>
+</body>
+</html>

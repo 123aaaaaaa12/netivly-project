@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polityka Prywatności | Netivly Project</title>
+    <meta name="description" content="Polityka prywatności Netivly Project – dowiedz się jak chronimy Twoje dane i jakie ciasteczka wykorzystuje nasza strona.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <meta property="og:title" content="Netivly - Zbuduj suwerenność IT">
+    <meta property="og:description" content="Techniczne analizy i wiedza o cyberbezpieczeństwie.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/123aaaaaaa12/netivly-photos/main/back3.png">
+
+    <style>
+        html, body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; background: var(--bg-body); }
+
+        /* HERO */
+        .policy-hero {
+            padding: clamp(110px, 14vh, 160px) 0 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .policy-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(37, 99, 235, 0.1), transparent 70%);
+            pointer-events: none;
+        }
+
+        .policy-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            padding: 7px 18px;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .policy-hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            margin: 0 0 16px;
+        }
+
+        .policy-hero-meta {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 9px 22px;
+            border-radius: 99px;
+        }
+
+        /* LAYOUT */
+        .policy-layout {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 48px;
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 30px;
+            align-items: start;
+        }
+
+        /* SIDEBAR NAV */
+        .policy-nav {
+            position: sticky;
+            top: 100px;
+        }
+
+        .policy-nav-inner {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .policy-nav h4 {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--primary);
+            margin: 0 0 14px;
+        }
+
+        .policy-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .policy-nav a {
+            display: block;
+            font-size: 0.83rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 7px 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+            line-height: 1.4;
+        }
+
+        .policy-nav a:hover {
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary);
+        }
+
+        /* GŁÓWNA TREŚĆ */
+        .policy-content {
+            min-width: 0;
+        }
+
+        .highlight-box {
+            background: rgba(37, 99, 235, 0.05);
+            border: 1px solid rgba(37, 99, 235, 0.15);
+            border-left: 4px solid var(--primary);
+            padding: 20px 24px;
+            border-radius: 0 16px 16px 0;
+            margin-bottom: 48px;
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        .policy-section {
+            margin-bottom: 48px;
+            padding-bottom: 48px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .policy-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .policy-section h2 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin: 0;
+        }
+
+        .policy-section p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            font-size: 1rem;
+            margin-bottom: 14px;
+        }
+
+        .policy-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .policy-section li {
+            display: flex;
+            gap: 12px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 0.97rem;
+        }
+
+        .policy-section li::before {
+            content: '→';
+            color: var(--primary);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .policy-section li strong {
+            color: var(--text-main);
+        }
+
+        /* TABELA DOSTAWCÓW */
+        .providers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .provider-card {
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px 18px;
+        }
+
+        .provider-card strong {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            color: var(--text-main);
+        }
+
+        .provider-card span {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* TABELA PRAW */
+        .rights-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .right-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 16px;
+        }
+
+        .right-item i {
+            color: var(--primary);
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .right-item span {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* RETENTION TABLE */
+        .retention-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .retention-table th {
+            background: rgba(37, 99, 235, 0.08);
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--primary);
+            padding: 12px 16px;
+            text-align: left;
+        }
+
+        .retention-table td {
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+        }
+
+        .retention-table tr:hover td {
+            background: rgba(37, 99, 235, 0.02);
+        }
+
+        /* CTA */
+        .policy-cta {
+            margin-top: 48px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 36px;
+            text-align: center;
+        }
+
+        .policy-cta p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .policy-cta .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            padding: 13px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: opacity 0.2s;
+        }
+
+        .policy-cta .btn:hover { opacity: 0.85; }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .policy-layout { display: block; padding: 0 16px; }
+            .policy-nav { display: none; }
+            .policy-hero { padding: 90px 16px 40px; }
+            .providers-grid, .rights-grid { grid-template-columns: 1fr; }
+            .retention-table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JV5KR2DGE0"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-JV5KR2DGE0');
+</script>
+
+<body>
+
+<header class="main-header">
+    <div class="container header-container">
+        <a href="index.html" class="logo">Net<span>ivly</span> Project</a>
+        <ul class="nav-links" id="nav-menu">
+            <li><a href="index.html">Start</a></li>
+            <li><a href="forum.html">Forum</a></li>
+            <li><a href="baza-wiedzy.html">Baza Wiedzy</a></li>
+            <li><a href="ebooki.html">E-booki</a></li>
+            <li><a href="biznes.html">Dla Biznesu</a></li>
+            <li><a href="o-projekcie.html">O Projekcie</a></li>
+        </ul>
+        <div class="header-actions">
+            <button id="theme-toggle">Tryb</button>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="policy-hero">
+    <div class="container">
+        <div class="policy-hero-badge"><i class="fas fa-shield-halved"></i> Dokument prawny</div>
+        <h1>Polityka Prywatności</h1>
+        <div class="policy-hero-meta">
+            <span><i class="fas fa-calendar-alt"></i> Ostatnia aktualizacja: 20 marca 2026 r.</span>
+        </div>
+    </div>
+</section>
+
+<!-- LAYOUT -->
+<div class="policy-layout">
+
+    <!-- SIDEBAR -->
+    <nav class="policy-nav">
+        <div class="policy-nav-inner">
+            <h4>Spis treści</h4>
+            <ul>
+                <li><a href="#administrator">1. Administrator</a></li>
+                <li><a href="#dane">2. Zbierane dane</a></li>
+                <li><a href="#cele">3. Cele przetwarzania</a></li>
+                <li><a href="#dostawcy">4. Podmioty trzecie</a></li>
+                <li><a href="#prawa">5. Twoje prawa (RODO)</a></li>
+                <li><a href="#retention">6. Okres przechowywania</a></li>
+                <li><a href="#cookies">7. Pliki cookies</a></li>
+                <li><a href="#transfer">8. Transfer danych poza UE</a></li>
+                <li><a href="#licencje">9. Licencje i własność</a></li>
+                <li><a href="#kontakt">10. Kontakt i skargi</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- TREŚĆ -->
+    <div class="policy-content">
+
+        <div class="highlight-box">
+            Niniejszy dokument określa zasady przetwarzania i ochrony danych osobowych użytkowników serwisu <strong>netivly.pl</strong>. Szanujemy Twoją prywatność i dbamy o to, aby Twoje dane były bezpieczne. Dokument jest zgodny z wymogami Rozporządzenia (UE) 2016/679 (RODO).
+        </div>
+
+        <!-- 1. ADMINISTRATOR -->
+        <div class="policy-section" id="administrator">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-user-shield"></i></div>
+                <h2>1. Administrator Danych</h2>
+            </div>
+            <p>Administratorem danych osobowych serwisu Netivly Project jest <strong>Dawid Józef Sakowski</strong>. W sprawach związanych z przetwarzaniem danych możesz skontaktować się pod adresem e-mail: <strong>kontakt@netivly.pl</strong>. Staramy się odpowiadać na wszystkie zapytania w ciągu 72 godzin.</p>
+        </div>
+
+        <!-- 2. DANE -->
+        <div class="policy-section" id="dane">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-database"></i></div>
+                <h2>2. Rodzaj zbieranych danych</h2>
+            </div>
+            <p>W ramach funkcjonowania serwisu przetwarzamy następujące informacje:</p>
+            <ul>
+                <li><strong>Newsletter / Lista oczekujących:</strong> adres e-mail, jeśli dobrowolnie zapiszesz się do naszej listy mailingowej.</li>
+                <li><strong>Dane techniczne:</strong> adres IP, rodzaj przeglądarki, system operacyjny oraz przybliżona lokalizacja — zapisywane automatycznie w logach serwera przez dostawcę hostingu.</li>
+                <li><strong>Analityka:</strong> anonimowe dane o sposobie korzystania ze strony (czas spędzony na podstronach, kliknięcia), zbierane przez Google Analytics.</li>
+                <li><strong>Forum / Społeczność:</strong> jeśli zdecydujesz się na komentowanie, korzystamy z systemu Giscus opartego na GitHub Discussions. Zbierane są dane z Twojego publicznego konta GitHub (nazwa użytkownika, avatar) oraz treść zamieszczanych wpisów.</li>
+            </ul>
+        </div>
+
+        <!-- 3. CELE -->
+        <div class="policy-section" id="cele">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-bullseye"></i></div>
+                <h2>3. Cele i podstawa przetwarzania</h2>
+            </div>
+            <p>Dane przetwarzane są wyłącznie w następujących celach:</p>
+            <ul>
+                <li>Dostarczania treści technicznych i informacji o premierach produktów — na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO).</li>
+                <li>Zapewnienia bezpieczeństwa serwisu i ochrony przed atakami — na podstawie prawnie uzasadnionego interesu administratora (art. 6 ust. 1 lit. f RODO).</li>
+                <li>Analizy statystycznej i ulepszania zawartości strony — na podstawie zgody wyrażonej przez akceptację cookies.</li>
+                <li>Umożliwienia dyskusji w sekcji "Społeczność" — na podstawie Twojej dobrowolnej decyzji o logowaniu i publikacji treści.</li>
+            </ul>
+        </div>
+
+        <!-- 4. DOSTAWCY -->
+        <div class="policy-section" id="dostawcy">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-handshake"></i></div>
+                <h2>4. Odbiorcy danych (Podmioty trzecie)</h2>
+            </div>
+            <p>Twoje dane nie są sprzedawane. Korzystamy z usług sprawdzonych dostawców zewnętrznych, którym powierzamy dane w niezbędnym zakresie:</p>
+            <div class="providers-grid">
+                <div class="provider-card">
+                    <strong>Cloudflare Inc.</strong>
+                    <span>Dostawca hostingu i zabezpieczeń strony. Przetwarza dane techniczne (IP, nagłówki HTTP).</span>
+                </div>
+                <div class="provider-card">
+                    <strong>MailerLite Limited</strong>
+                    <span>Dostawca systemu do zarządzania subskrypcjami i wysyłki newslettera. Przetwarza adresy e-mail subskrybentów.</span>
+                </div>
+                <div class="provider-card">
+                    <strong>Google LLC</strong>
+                    <span>Dostawca narzędzia Google Analytics. Przetwarza anonimowe dane o ruchu na stronie.</span>
+                </div>
+                <div class="provider-card">
+                    <strong>GitHub, Inc.</strong>
+                    <span>Dostawca infrastruktury forum (GitHub Discussions / Giscus). Treści komentarzy i dane konta przechowywane na ich serwerach.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. PRAWA -->
+        <div class="policy-section" id="prawa">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-scale-balanced"></i></div>
+                <h2>5. Twoje prawa (RODO)</h2>
+            </div>
+            <p>Zgodnie z RODO przysługują Ci następujące prawa:</p>
+            <div class="rights-grid">
+                <div class="right-item">
+                    <i class="fas fa-eye"></i>
+                    <span><strong>Prawo dostępu</strong> — możesz uzyskać informację o tym jakie dane przetwarzamy i otrzymać ich kopię.</span>
+                </div>
+                <div class="right-item">
+                    <i class="fas fa-pen"></i>
+                    <span><strong>Prawo do sprostowania</strong> — możesz poprawić nieprawidłowe lub uzupełnić niekompletne dane.</span>
+                </div>
+                <div class="right-item">
+                    <i class="fas fa-trash"></i>
+                    <span><strong>Prawo do usunięcia</strong> — możesz żądać usunięcia danych (prawo do bycia zapomnianym), w tym wypisania się z newslettera.</span>
+                </div>
+                <div class="right-item">
+                    <i class="fas fa-pause"></i>
+                    <span><strong>Prawo do ograniczenia przetwarzania</strong> — możesz żądać ograniczenia przetwarzania Twoich danych w określonych przypadkach.</span>
+                </div>
+                <div class="right-item">
+                    <i class="fas fa-hand"></i>
+                    <span><strong>Prawo do sprzeciwu</strong> — możesz sprzeciwić się przetwarzaniu danych opartemu na prawnie uzasadnionym interesie administratora.</span>
+                </div>
+                <div class="right-item">
+                    <i class="fas fa-rotate-left"></i>
+                    <span><strong>Prawo do wycofania zgody</strong> — możesz wycofać zgodę na przetwarzanie danych w dowolnym momencie bez wpływu na zgodność z prawem wcześniejszego przetwarzania.</span>
+                </div>
+            </div>
+            <p style="margin-top: 20px;">Aby skorzystać ze swoich praw, wyślij wiadomość na: <strong>kontakt@netivly.pl</strong>. Twoje żądanie zostanie zrealizowane niezwłocznie, nie później niż w ciągu 30 dni.</p>
+        </div>
+
+        <!-- 6. RETENTION -->
+        <div class="policy-section" id="retention">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-clock"></i></div>
+                <h2>6. Okres przechowywania danych</h2>
+            </div>
+            <p>Przechowujemy dane przez minimalny niezbędny okres:</p>
+            <table class="retention-table">
+                <thead>
+                    <tr>
+                        <th>Rodzaj danych</th>
+                        <th>Okres przechowywania</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Adres e-mail (newsletter)</td>
+                        <td>Do momentu wypisania się z listy</td>
+                    </tr>
+                    <tr>
+                        <td>Logi serwera (IP, nagłówki)</td>
+                        <td>Do 90 dni (polityka Cloudflare)</td>
+                    </tr>
+                    <tr>
+                        <td>Dane analityczne (Google Analytics)</td>
+                        <td>14 miesięcy (domyślne ustawienie GA)</td>
+                    </tr>
+                    <tr>
+                        <td>Komentarze na forum (GitHub)</td>
+                        <td>Do momentu usunięcia przez użytkownika lub administratora</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 7. COOKIES -->
+        <div class="policy-section" id="cookies">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-cookie-bite"></i></div>
+                <h2>7. Pliki Cookies</h2>
+            </div>
+            <p>Strona netivly.pl wykorzystuje pliki cookies (ciasteczka) w celu:</p>
+            <ul>
+                <li>Zapamiętywania preferencji użytkownika (np. wybór trybu ciemnego/jasnego).</li>
+                <li>Prawidłowego działania systemu nawigacji i wyszukiwarki.</li>
+                <li>Zbierania anonimowych statystyk ruchu (Google Analytics) — wyłącznie po wyrażeniu zgody.</li>
+                <li>Utrzymania bezpiecznej sesji logowania w sekcji "Społeczność" — ciasteczka dostarczane przez GitHub i skrypt Giscus.</li>
+            </ul>
+            <p>Możesz samodzielnie zarządzać plikami cookies w ustawieniach swojej przeglądarki internetowej. Wycofanie zgody na cookies analityczne nie wpływa na możliwość korzystania z serwisu.</p>
+        </div>
+
+        <!-- 8. TRANSFER -->
+        <div class="policy-section" id="transfer">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-globe"></i></div>
+                <h2>8. Transfer danych poza UE</h2>
+            </div>
+            <p>Część naszych dostawców (Google LLC, GitHub Inc., Cloudflare Inc.) ma siedziby w Stanach Zjednoczonych, co oznacza że Twoje dane mogą być transferowane poza Europejski Obszar Gospodarczy (EOG). Transfer odbywa się na podstawie:</p>
+            <ul>
+                <li>Standardowych klauzul umownych zatwierdzonych przez Komisję Europejską (SCC).</li>
+                <li>Certyfikacji w ramach programu Data Privacy Framework (DPF) — dotyczy Google LLC i Cloudflare Inc.</li>
+            </ul>
+            <p>Możesz sprzeciwić się przetwarzaniu danych przez Google Analytics — w tym celu skontaktuj się z nami pod adresem kontakt@netivly.pl lub skorzystaj z wtyczki do przeglądarki dostępnej na stronie Google.</p>
+        </div>
+
+        <!-- 9. LICENCJE -->
+        <div class="policy-section" id="licencje">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-file-contract"></i></div>
+                <h2>9. Licencje i własność intelektualna</h2>
+            </div>
+            <p>Kod źródłowy serwisu udostępniany jest na licencji <strong>MIT</strong>. Artykuły techniczne oraz grafiki zamieszczone bezpośrednio na portalu udostępniane są na licencji <strong>CC BY 4.0</strong> (pozwalającej na ich swobodne udostępnianie i modyfikację pod warunkiem wskazania autora), chyba że przy konkretnym materiale wyraźnie zaznaczono inaczej.</p>
+            <p>Znaki towarowe i logotypy firm trzecich wymienione w artykułach należą do ich prawnych właścicieli i zostały użyte wyłącznie w celach informacyjno-edukacyjnych. Netivly Project nie jest oficjalnie powiązany z żadnym z tych podmiotów.</p>
+            <p><strong>Wszystkie publikacje cyfrowe oznaczone jako E-booki objęte są pełną ochroną prawną (Wszelkie prawa zastrzeżone).</strong> Reprodukcja, dystrybucja ani odsprzedaż bez zgody autora jest zabroniona.</p>
+        </div>
+
+        <!-- 10. KONTAKT -->
+        <div class="policy-section" id="kontakt">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-envelope"></i></div>
+                <h2>10. Kontakt i prawo do skargi</h2>
+            </div>
+            <p>W przypadku pytań dotyczących przetwarzania danych osobowych skontaktuj się z nami:</p>
+            <ul>
+                <li><strong>E-mail:</strong> kontakt@netivly.pl</li>
+                <li><strong>Czas odpowiedzi:</strong> do 72 godzin w dni robocze</li>
+            </ul>
+            <p>Jeśli uważasz że przetwarzamy Twoje dane niezgodnie z prawem, masz prawo wnieść skargę do organu nadzorczego — w Polsce jest to <strong>Prezes Urzędu Ochrony Danych Osobowych (UODO)</strong>, ul. Stawki 2, 00-193 Warszawa, strona: <strong>uodo.gov.pl</strong>.</p>
+        </div>
+
+        <!-- CTA -->
+        <div class="policy-cta">
+            <p>Zapoznałeś się z naszą polityką prywatności. Dziękujemy za poświęcony czas.</p>
+            <a href="index.html" class="btn"><i class="fas fa-arrow-left"></i> Wróć do strony głównej</a>
+        </div>
+
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+<script src="js/database.js"></script>
+</body>
+</html>
