@@ -1,16 +1,46 @@
 [
-    {
-  
-    },
-        {
-        "slug": "ssh",
-        "tytul": "~",
-        "typ": "poradnik",
-        "kategoria": "Basics",
-        "opis": "~",
-        "data": "20.03.2026",
-        "czasCzytania": "12 min",
-        "link": "artykul.html?id=ssh",
-        "tag": "TERMINAL"
-    }
+  {
+    "slug": "jak-zaczac",
+    "tytul": "Jak zacząć z gamingiem na Linuksie? Kompletny przewodnik dla początkujących",
+    "typ": "poradnik",
+    "kategoria": "Jak zacząć",
+    "opis": "Wybór dystrybucji, instalacja sterowników, Steam Play i pierwsze uruchomienie gry — wszystko co musisz wiedzieć na start.",
+    "data": "07.05.2026",
+    "czasCzytania": "15 min",
+    "link": "artykul.html?id=jak-zaczac",
+    "tag": "PODSTAWY"
+  },
+  {
+    "slug": "proton-steam-play",
+    "tytul": "Proton i Steam Play — jak uruchamiać gry z Windowsa na Linuksie?",
+    "typ": "poradnik",
+    "kategoria": "Proton & Steam Play",
+    "opis": "Czym jest Proton, jak działa DXVK i VKD3D, jak zainstalować Proton GE i jak konfigurować parametry uruchomieniowe dla konkretnych gier.",
+    "data": "07.05.2026",
+    "czasCzytania": "16 min",
+    "link": "artykul.html?id=proton-steam-play",
+    "tag": "PROTON"
+  },
+  {
+    "slug": "kompatybilnosc",
+    "tytul": "Kompatybilność gier na Linuksie — jak sprawdzić czy Twoja gra zadziała?",
+    "typ": "poradnik",
+    "kategoria": "Kompatybilność",
+    "opis": "ProtonDB, oceny Steam Deck, areweanticheatyet.com — kompletny schemat sprawdzania kompatybilności gry zanim ją kupisz lub zanim stracisz czas na debugowanie.",
+    "data": "07.05.2026",
+    "czasCzytania": "14 min",
+    "link": "artykul.html?id=kompatybilnosc",
+    "tag": "KOMPATYBILNOŚĆ"
+  },
+  {
+    "slug": "setup-systemu",
+    "tytul": "Setup systemu pod gaming na Linuksie — konfiguracja krok po kroku",
+    "typ": "poradnik",
+    "kategoria": "Setup systemu",
+    "opis": "Kompletna konfiguracja Linuksa pod gaming: sterowniki GPU, GameMode, MangoHud, limity plików, swappiness, Proton GE i Heroic Games Launcher.",
+    "data": "07.05.2026",
+    "czasCzytania": "18 min",
+    "link": "artykul.html?id=setup-systemu",
+    "tag": "KONFIGURACJA"
+  }
 ]

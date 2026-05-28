@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Społeczność | Netivly Project</title>
-    <meta name="description" content="Forum społeczności Netivly – dyskutuj o IT, zadawaj pytania i dziel się wiedzą z innymi entuzjastami technologii.">
+    <meta name="description" content="Forum społeczności Netivly – dyskutuj o gamingu na Linuksie, zadawaj pytania o Proton, Steam Play i konfigurację systemu.">
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -32,8 +32,27 @@
         .forum-hero p {
             color: #94a3b8;
             max-width: 600px;
-            margin: 0 auto;
+            margin: 0 auto 24px;
             line-height: 1.6;
+        }
+        .forum-topic-hints {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 8px;
+        }
+        .forum-topic-hints span {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 14px;
+            border-radius: 99px;
+            border: 1px solid rgba(59,130,246,0.25);
+            background: rgba(59,130,246,0.07);
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #93c5fd;
         }
         .forum-container {
             max-width: 900px; /* Szerokość optymalna do czytania forum */
@@ -73,7 +92,14 @@
 <main>
     <section class="forum-hero">
         <h1>Społeczność <span class="text-gradient">Netivly</span></h1>
-        <p>Zadawaj pytania, dziel się swoimi konfiguracjami serwerów i dyskutuj o cyberbezpieczeństwie. Zaloguj się kontem GitHub, aby dołączyć do rozmowy.</p>
+        <p>Masz problem z Protonem? Nie możesz uruchomić gry? Chcesz podzielić się konfiguracją swojego systemu? To właściwe miejsce. Zaloguj się kontem GitHub, aby dołączyć do rozmowy.</p>
+
+        <div class="forum-topic-hints">
+            <span><i class="fas fa-gamepad"></i> Proton & Steam Play</span>
+            <span><i class="fas fa-circle-check"></i> Kompatybilność gier</span>
+            <span><i class="fab fa-linux"></i> Konfiguracja systemu</span>
+            <span><i class="fas fa-wrench"></i> Narzędzia gamingowe</span>
+        </div>
     </section>
 
     <section class="container">

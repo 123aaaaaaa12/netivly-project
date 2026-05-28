@@ -95,28 +95,29 @@
 
         <!-- DUŻE KAFELKI PREMIUM (4 KOLUMNY) -->
         <div class="hero-feature-grid">
+
+            <a href="baza-wiedzy.html?filter=Jak zacząć" class="f-tile">
+                <div class="f-tile-icon"><i class="fas fa-wrench"></i></div>
+                <h3>Jak zacząć?</h3>
+                <p>Poznaj możliwości.</p>
+            </a>
+
             <a href="baza-wiedzy.html?filter=Proton" class="f-tile">
                 <div class="f-tile-icon"><i class="fas fa-gamepad"></i></div>
                 <h3>Proton & Steam Play</h3>
                 <p>Uruchamiaj gry z Windowsa na Linuksie.</p>
             </a>
 
-            <a href="baza-wiedzy.html?filter=Kompatybilnosc" class="f-tile">
+            <a href="baza-wiedzy.html?filter=Kompatybilność" class="f-tile">
                 <div class="f-tile-icon"><i class="fas fa-circle-check"></i></div>
                 <h3>Kompatybilność gier</h3>
                 <p>Czy Twoja gra działa? Sprawdź zanim kupisz.</p>
             </a>
 
-            <a href="baza-wiedzy.html?filter=Fedora" class="f-tile">
+            <a href="baza-wiedzy.html?filter=Setup systemu" class="f-tile">
                 <div class="f-tile-icon"><i class="fab fa-linux"></i></div>
-                <h3>Fedora & Setup</h3>
+                <h3>Setup</h3>
                 <p>Konfiguracja systemu pod gaming.</p>
-            </a>
-
-            <a href="baza-wiedzy.html?filter=Narzedzia" class="f-tile">
-                <div class="f-tile-icon"><i class="fas fa-wrench"></i></div>
-                <h3>Narzędzia gracza</h3>
-                <p>Lutris, Heroic, ProtonDB i więcej.</p>
             </a>
         </div>
     </div>
@@ -218,6 +219,10 @@
     margin-top: 70px;
     padding-top: 60px;
     padding-bottom: 60px;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
     background: linear-gradient(135deg,
       rgba(59,130,246,0.04) 0%,
       rgba(139,92,246,0.04) 50%,
@@ -242,6 +247,9 @@
     margin-bottom: 70px;
   }
 
+  /* Zapobiega poziomemu scrollbarowi przy użyciu triku 100vw */
+  html, body { overflow-x: hidden; }
+
   /* =============================================
      FOOTER — oddzielenie
   ============================================= */
@@ -251,6 +259,10 @@
       rgba(59,130,246,0.03) 0%,
       transparent 40%
     ) !important;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
   }
 
   /* =============================================
@@ -491,7 +503,7 @@
       <div class="section-header">
         <div class="title-wrapper">
           <span class="category-dot"></span>
-          <h2 class="section-title">Proton & Steam Play</h2>
+          <h2 class="section-title">Wyróżnione </h2>
         </div>
         <div class="slider-controls">
           <button class="slider-btn btn-left">❮</button>
@@ -542,121 +554,7 @@
     </div>
 
 
-    <!-- ========== SEKCJA 2 ========== -->
-    <div class="carousel-section">
-      <div class="section-header">
-        <div class="title-wrapper">
-          <span class="category-dot" style="background-color: #10b981; box-shadow: 0 0 12px rgba(16, 185, 129, 0.8);"></span>
-          <h2 class="section-title">Kompatybilność & Narzędzia</h2>
-        </div>
-        <div class="slider-controls">
-          <button class="slider-btn btn-left">❮</button>
-          <button class="slider-btn btn-right">❯</button>
-        </div>
-      </div>
-
-      <div class="scrolling-articles-wrapper">
-        <div class="scrolling-articles-track">
-          
-          <a href="artykul.html?id=llm" class="article-card">
-            <img src="https://raw.githubusercontent.com/123aaaaaaa12/netivly-photos/main/Ai2.png" alt="Tlo 5">
-            <div class="card-overlay"></div>
-            <div class="card-content">
-              <h3 class="card-title">LOKALNE<br>AI</h3>
-              <div class="card-bottom">NETIVLY PORTAL</div>
-            </div>
-          </a>
-          
-          <a href="wip.html" class="article-card">
-            <img src="https://raw.githubusercontent.com/123aaaaaaa12/netivly-photos/main/wip.jpg" alt="Tlo 6">
-            <div class="card-overlay"></div>
-            <div class="card-content">
-              <h3 class="card-title">WIRELESS<br>NETWORKS</h3>
-              <div class="card-bottom">NETIVLY PORTAL</div>
-            </div>
-          </a>
-
-          <a href="artykul.html?id=bezpieczenstwo-vpn" class="article-card">
-            <img src="https://raw.githubusercontent.com/123aaaaaaa12/netivly-photos/main/vpn.jpg" alt="Tlo 7">
-            <div class="card-overlay"></div>
-            <div class="card-content">
-              <h3 class="card-title">VPN<br></h3>
-              <div class="card-bottom">NETIVLY PORTAL</div>
-            </div>
-          </a>
-
-          
-          <a href="artykul.html?id=ai-w-it" class="article-card">
-            <img src="https://raw.githubusercontent.com/123aaaaaaa12/netivly-photos/main/ai.jpg" alt="Tlo 8">
-            <div class="card-overlay"></div>
-            <div class="card-content">
-              <!-- Znak <br> pozwala na przeniesienie słowa do nowej linii -->
-              <h3 class="card-title">AI W<br>ADMINISTRACJI</h3>
-              <div class="card-bottom">NETIVLY PORTAL</div>
-            </div>
-          </a>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- ========== SEKCJA 3 ========== -->
-    <div class="carousel-section">
-      <div class="section-header">
-        <div class="title-wrapper">
-          <span class="category-dot" style="background-color: #8b5cf6; box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);"></span>
-          <h2 class="section-title">Fedora & Setup gracza</h2>
-        </div>
-        <div class="slider-controls">
-          <button class="slider-btn btn-left">❮</button>
-          <button class="slider-btn btn-right">❯</button>
-        </div>
-      </div>
-
-      <div class="scrolling-articles-wrapper">
-        <div class="scrolling-articles-track">
-          
-          <a href="artykul.html?id=btrfs-vs-zfs" class="article-card">
-            <img src="https://raw.githubusercontent.com/123aaaaaaa12/netivly-photos/main/ecosys.jpg" alt="Tlo 9">
-            <div class="card-overlay"></div>
-            <div class="card-content">
-              <h3 class="card-title">BTRFS<br>VS ZFS</h3>
-              <div class="card-bottom">NETIVLY PORTAL</div>
-            </div>
-          </a>
-
-          <a href="artykul.html?id=budowa-nas" class="article-card">
-            <img src="https://raw.githubusercontent.com/123aaaaaaa12/netivly-photos/main/server.jpg" alt="Tlo 10">
-            <div class="card-overlay"></div>
-            <div class="card-content">
-              <h3 class="card-title">SERWER<br>NAS</h3>
-              <div class="card-bottom">NETIVLY PORTAL</div>
-            </div>
-          </a>
-
-          <a href="wip.html" class="article-card">
-            <img src="https://raw.githubusercontent.com/123aaaaaaa12/netivly-photos/main/wip.jpg" alt="Tlo 11">
-            <div class="card-overlay"></div>
-            <div class="card-content">
-              <h3 class="card-title">CI / CD<br>PIPELINES</h3>
-              <div class="card-bottom">NETIVLY PORTAL</div>
-            </div>
-          </a>
-
-          <a href="artykul.html?id=linux-live-usb-poradnik" class="article-card">
-            <img src="https://raw.githubusercontent.com/123aaaaaaa12/netivly-photos/main/usb.jpg" alt="Tlo 12">
-            <div class="card-overlay"></div>
-            <div class="card-content">
-              <h3 class="card-title">HOME LAB<br>CZĘŚĆ PIERWSZA</h3>
-              <div class="card-bottom">NETIVLY PORTAL</div>
-            </div>
-          </a>
-
-        </div>
-      </div>
-    </div>
-
-  </div>
+  
 </div>
 
 <!-- ========================================== -->
@@ -788,11 +686,11 @@
 
             <aside>
                 <div class="sidebar-box">
-                    <h4>E-booki (Wkrótce)</h4>
-                    <p>Przygotowujemy kompleksowe kompendium o sieciach komputerowych.</p>
+                    <h4>Nowości już wkrótce</h4>
+                    <p>Projekt stale jest rozwijany .</p>
                     <div class="ebook-preview">
-                        <strong><a href ="ebooki.html">Networking Mastery</a></strong>
-                        <span><a href="ebooki.html">PDF / EPUB</a></span>
+                        <strong><a href ="ebooki.html">NAJNOWSZE MATERIAŁY</a></strong>
+                        <span><a href="ebooki.html"> <-----</a></span>
                     </div>
                 </div>
 
