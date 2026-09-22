@@ -938,6 +938,23 @@ function escapeHTML(text) {
 
 loadThreads();
 
+/* Auto-odświeżanie co 5 sekund */
+setInterval(() => {
+    if (currentThread) {
+        // Odświeżaj wątek tylko, jeśli użytkownik nie pisze odpowiedzi
+        const replyBox = document.getElementById("replyContent");
+        if (!replyBox || !replyBox.value.trim()) {
+            openThread(currentThread);
+        }
+    } else {
+        // Odświeżaj listę wątków tylko, jeśli okno tworzenia wątku jest zamknięte
+        const createBox = document.getElementById("createBox");
+        if (!createBox || createBox.style.display !== "block") {
+            loadThreads();
+        }
+    }
+}, 5000);
+    
 </script>
 
 </body>
