@@ -905,6 +905,8 @@ async function sendPost() {
 
 function showHome() {
 
+    currentThread = null;
+
     document.getElementById(
         "board"
     ).style.display = "none";
@@ -915,7 +917,7 @@ function showHome() {
 
     loadThreads();
 }
-
+    
 
 /* =========================
    OCHRONA HTML
@@ -938,7 +940,7 @@ function escapeHTML(text) {
 
 loadThreads();
 
-/* Auto-odświeżanie co 5 sekund */
+//* Auto-odświeżanie co 15 sekund */
 setInterval(() => {
     if (currentThread) {
         // Odświeżaj wątek tylko, jeśli użytkownik nie pisze odpowiedzi
@@ -953,7 +955,7 @@ setInterval(() => {
             loadThreads();
         }
     }
-}, 5000);
+}, 15000); // 15000 = 15 sekund
     
 </script>
 
