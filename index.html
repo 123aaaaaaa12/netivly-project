@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -514,6 +513,23 @@ let currentThread = null;
 
 
 /* =========================
+   FORMATOWANIE DATY (STREFA LOKALNA)
+========================= */
+
+function formatDate(dateStr) {
+    if (!dateStr) return "";
+    let str = dateStr.replace(" ", "T");
+    if (!str.endsWith("Z") && !str.includes("+")) {
+        str += "Z";
+    }
+    const date = new Date(str);
+    if (isNaN(date.getTime())) return dateStr;
+    
+    return date.toLocaleString();
+}
+
+
+/* =========================
    CZĄSTECZKI
 ========================= */
 
@@ -599,7 +615,7 @@ async function loadThreads() {
                 </div>
 
                 <div class="thread-meta">
-                    ${thread.created_at}
+                    ${formatDate(thread.created_at)}
                 </div>
             `;
 
@@ -796,7 +812,7 @@ async function openThread(id) {
                 <div class="post-head">
                     ANONIM
                     // #${post.id}
-                    // ${post.created_at}
+                    // ${formatDate(post.created_at)}
                 </div>
 
                 <div class="post-content">
@@ -926,4 +942,3 @@ loadThreads();
 
 </body>
 </html>
-
