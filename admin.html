@@ -3,231 +3,244 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Administratora | Netivly Project</title>
+  <title>netivly // admin</title>
   <link rel="icon" type="image/png" href="favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   
-  <!-- Style główne projektu -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/header.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
   <style>
-    .admin-wrapper {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
+    :root {
+      --bg: #09090b;
+      --card-bg: #121215;
+      --border: #27272a;
+      --text: #f4f4f5;
+      --muted: #71717a;
+      --accent: #3b82f6;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .header-logo {
+      font-size: 3.5rem;
+      font-weight: 800;
+      letter-spacing: -2px;
+      margin-bottom: 5px;
+      color: #ffffff;
+      text-shadow: 0 0 20px rgba(255,255,255,0.1);
+    }
+
+    .sub-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      margin-bottom: 40px;
+      text-transform: uppercase;
     }
 
     .admin-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 30px;
-      margin-bottom: 25px;
-      backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 760px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 20px;
     }
 
-    .admin-header {
+    .admin-card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 16px;
+      font-weight: 700;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 25px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .form-group label {
       display: block;
-      margin-bottom: 8px;
+      font-size: 0.85rem;
       font-weight: 600;
-      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .form-control {
       width: 100%;
-      padding: 12px 16px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: rgba(0, 0, 0, 0.4);
-      color: #fff;
+      padding: 12px 14px;
+      background: #000000;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
       font-family: inherit;
       font-size: 0.95rem;
-      box-sizing: border-box;
     }
 
     .form-control:focus {
       outline: none;
-      border-color: #0070f3;
+      border-color: var(--accent);
     }
 
-    .checkbox-group {
+    textarea.form-control {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .checkbox-container {
       display: flex;
       align-items: center;
       gap: 10px;
+      font-size: 0.9rem;
       cursor: pointer;
+      user-select: none;
     }
 
-    .checkbox-group input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
+    .checkbox-container input {
+      accent-color: var(--accent);
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
       cursor: pointer;
+      border: none;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
     }
 
     .btn-primary {
-      background: #0070f3;
-      color: #fff;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn-primary:hover {
-      background: #0051a8;
+      background: var(--text);
+      color: var(--bg);
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      padding: 12px 24px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: #27272a;
+      color: var(--text);
     }
 
     .btn-danger {
-      background: #e53e3e;
-      color: #fff;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
+      background: var(--danger);
+      color: #ffffff;
     }
 
     .preview-box {
-      margin-top: 20px;
-      padding: 15px;
-      background: rgba(0, 0, 0, 0.6);
-      border-left: 4px solid #0070f3;
+      margin-top: 15px;
+      padding: 14px;
+      background: #000000;
+      border-left: 3px solid var(--accent);
       border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #a1a1aa;
+      white-space: pre-wrap;
     }
 
     .hidden {
       display: none !important;
     }
+
+    .actions-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- NAGŁÓWEK STRONY -->
-  <header class="main-header">
-    <div class="container header-container">
-      <a href="index.html" class="logo">Net<span>ivly</span> Project</a>
-      <div class="header-actions">
-        <span class="badge-premium">Panel Admina</span>
+  <div class="header-logo">netivly</div>
+  <div class="sub-logo">ADMIN PANEL // RODO MODERATION</div>
+
+  <!-- 1. SEKCJA LOGOWANIA -->
+  <div id="login-section" class="admin-card">
+    <h2>Zaloguj się</h2>
+    <form id="login-form">
+      <div class="form-group">
+        <label for="username">Login</label>
+        <input type="text" id="username" class="form-control" autocomplete="username" required>
       </div>
-    </div>
-  </header>
+      <div class="form-group">
+        <label for="password">Hasło</label>
+        <input type="password" id="password" class="form-control" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Zaloguj</button>
+    </form>
+  </div>
 
-  <div class="admin-wrapper">
+  <!-- 2. GŁÓWNY PANEL ZARZĄDZANIA -->
+  <div id="dashboard-section" class="admin-card hidden">
+    <h2>
+      <span>Pulpit Moderatora</span>
+      <button id="logout-btn" class="btn btn-danger">Wyloguj</button>
+    </h2>
 
-    <!-- 1. FORMULARZ LOGOWANIA -->
-    <div id="login-section" class="admin-card">
-      <h2><i class="fas fa-lock"></i> Logowanie do Panelu</h2>
-      <p style="color: #a0aec0; margin-bottom: 20px;">Zaloguj się, aby zarządzać treściami serwisu Netivly.</p>
-      
-      <form id="login-form">
-        <div class="form-group">
-          <label for="username">Login administratora</label>
-          <input type="text" id="username" class="form-control" placeholder="Wpisz login" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Hasło</label>
-          <input type="password" id="password" class="form-control" placeholder="Wpisz hasło" required>
-        </div>
-        <button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Zaloguj się</button>
-      </form>
-    </div>
-
-    <!-- 2. GŁÓWNY PANEL ZARZĄDZANIA (Widoczny po zalogowaniu) -->
-    <div id="dashboard-section" class="hidden">
-      
-      <div class="admin-card">
-        <div class="admin-header">
-          <div>
-            <h2 style="margin: 0;">Pulpit Nawigacyjny</h2>
-            <small style="color: #a0aec0;">Zalogowano jako Administrator</small>
-          </div>
-          <button id="logout-btn" class="btn-danger"><i class="fas fa-sign-out-alt"></i> Wyloguj</button>
-        </div>
-
-        <h3>Dodaj nowy artykuł / treść</h3>
-        <form id="article-form">
-          <div class="form-group">
-            <label for="art-title">Tytuł wpisu</label>
-            <input type="text" id="art-title" class="form-control" placeholder="np. Suwerenność cyfrowa 2026" required>
-          </div>
-
-          <div class="form-group">
-            <label for="art-category">Kategoria</label>
-            <select id="art-category" class="form-control">
-              <option value="artykul">Artykuł / Analiza</option>
-              <option value="poradnik">Poradnik Techniczny</option>
-              <option value="akademia">Akademia / Baza Wiedzy</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="art-content">Treść wpisu (Obsługuje Markdown / HTML)</label>
-            <textarea id="art-content" class="form-control" rows="10" placeholder="Wpisz treść..." required></textarea>
-          </div>
-
-          <!-- Opcja Cenzury RODO -->
-          <div class="form-group">
-            <label class="checkbox-group">
-              <input type="checkbox" id="auto-censor" checked>
-              <span>Automatycznie cenzuruj dane osobowe (e-mail, tel, PESEL, IP)</span>
-            </label>
-          </div>
-
-          <div style="display: flex; gap: 10px; margin-top: 20px;">
-            <button type="button" id="preview-btn" class="btn-secondary"><i class="fas fa-eye"></i> Podgląd cenzury</button>
-            <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Opublikuj wpis</button>
-          </div>
-        </form>
-
-        <!-- Podgląd zcenzurowanego tekstu -->
-        <div id="preview-box" class="preview-box hidden">
-          <h4 style="margin-top: 0;"><i class="fas fa-user-shield"></i> Podgląd po cenzurze RODO:</h4>
-          <pre id="preview-text" style="white-space: pre-wrap; font-family: inherit; color: #e2e8f0;"></pre>
-        </div>
+    <form id="article-form">
+      <div class="form-group">
+        <label for="art-title">Tytuł wpisu / wątku</label>
+        <input type="text" id="art-title" class="form-control" placeholder="np. #27 Ogłoszenie administracyjne" required>
       </div>
 
-    </div>
+      <div class="form-group">
+        <label for="art-content">Treść wpisu</label>
+        <textarea id="art-content" class="form-control" placeholder="Wpisz treść wiadomości..." required></textarea>
+      </div>
 
+      <div class="form-group">
+        <label class="checkbox-container">
+          <input type="checkbox" id="auto-censor" checked>
+          <span>Automatycznie cenzuruj dane osobowe RODO (e-mail, telefon, PESEL, IP)</span>
+        </label>
+      </div>
+
+      <div class="actions-row">
+        <button type="button" id="preview-btn" class="btn btn-secondary">Podgląd cenzury</button>
+        <button type="submit" class="btn btn-primary">Opublikuj jako Admin</button>
+      </div>
+    </form>
+
+    <div id="preview-box" class="preview-box hidden">
+      <strong style="color: var(--text);">[Podgląd RODO]:</strong><br>
+      <span id="preview-text"></span>
+    </div>
   </div>
 
   <script>
-    // ADRES TWOJEGO API (Zmień na właściwy adres np. na Render / Railway / własny serwer)
-    const API_URL = 'http://localhost:3000'; 
+    // PODPIĘTY LINK DO TWOJEGO WORKERA
+    const API_URL = 'https://admin.cosielampisz7.workers.dev';
 
     const loginSection = document.getElementById('login-section');
     const dashboardSection = document.getElementById('dashboard-section');
     const previewBox = document.getElementById('preview-box');
 
-    // Sprawdzenie czy użytkownik ma zapisany token sesji
+    // Sprawdzanie istniejącej sesji
     const token = localStorage.getItem('adminToken');
     if (token) {
       showDashboard();
@@ -247,18 +260,18 @@
         });
 
         const data = await res.json();
-        if (res.ok) {
+        if (res.ok && data.token) {
           localStorage.setItem('adminToken', data.token);
           showDashboard();
         } else {
-          alert(data.error || 'Błąd logowania. Sprawdź dane.');
+          alert(data.error || 'Błąd logowania.');
         }
       } catch (err) {
-        alert('Błąd połączenia z serwerem API.');
+        alert('Nie można połączyć się z serwerem API.');
       }
     });
 
-    // Obsługa wylogowania
+    // Wylogowanie
     document.getElementById('logout-btn').addEventListener('click', () => {
       localStorage.removeItem('adminToken');
       location.reload();
@@ -269,10 +282,10 @@
       dashboardSection.classList.remove('hidden');
     }
 
-    // Podgląd cenzury na żywo
+    // Podgląd Cenzury RODO
     document.getElementById('preview-btn').addEventListener('click', async () => {
       const content = document.getElementById('art-content').value;
-      if (!content) return alert('Wpisz najpierw treść artykułu!');
+      if (!content) return alert('Wpisz najpierw treść!');
 
       try {
         const res = await fetch(`${API_URL}/api/censor-preview`, {
@@ -289,19 +302,18 @@
           document.getElementById('preview-text').innerText = data.censoredText;
           previewBox.classList.remove('hidden');
         } else {
-          alert('Błąd podczas generowania podglądu.');
+          alert('Błąd generowania podglądu.');
         }
       } catch (err) {
         alert('Błąd połączenia z API.');
       }
     });
 
-    // Wysyłanie wpisu do API
+    // Wysyłanie wpisu
     document.getElementById('article-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const title = document.getElementById('art-title').value;
-      const category = document.getElementById('art-category').value;
       const content = document.getElementById('art-content').value;
       const autoCensor = document.getElementById('auto-censor').checked;
 
@@ -312,16 +324,16 @@
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
           },
-          body: JSON.stringify({ title, category, content, autoCensor })
+          body: JSON.stringify({ title, content, autoCensor })
         });
 
         if (res.ok) {
-          alert('Wpis został pomyślnie dodany!');
+          alert('Wpis opublikowany!');
           e.target.reset();
           previewBox.classList.add('hidden');
         } else {
           const data = await res.json();
-          alert(data.error || 'Błąd podczas publikacji.');
+          alert(data.error || 'Błąd zapisu.');
         }
       } catch (err) {
         alert('Błąd połączenia z API.');
