@@ -18,11 +18,7 @@
       --danger: #ef4444;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg);
@@ -41,7 +37,6 @@
       letter-spacing: -2px;
       margin-bottom: 5px;
       color: #ffffff;
-      text-shadow: 0 0 20px rgba(255,255,255,0.1);
     }
 
     .sub-logo {
@@ -72,9 +67,7 @@
       align-items: center;
     }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+    .form-group { margin-bottom: 16px; }
 
     .form-group label {
       display: block;
@@ -83,7 +76,6 @@
       color: var(--muted);
       margin-bottom: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .form-control {
@@ -97,181 +89,109 @@
       font-size: 0.95rem;
     }
 
-    .form-control:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-
-    textarea.form-control {
-      resize: vertical;
-      min-height: 120px;
-    }
-
-    .checkbox-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .checkbox-container input {
-      accent-color: var(--accent);
-      width: 16px;
-      height: 16px;
-    }
-
     .btn {
-      padding: 10px 18px;
+      padding: 8px 14px;
       border-radius: 6px;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       cursor: pointer;
       border: none;
-      transition: opacity 0.2s;
     }
 
-    .btn:hover {
-      opacity: 0.9;
-    }
+    .btn-primary { background: var(--text); color: var(--bg); }
+    .btn-secondary { background: #27272a; color: var(--text); }
+    .btn-danger { background: var(--danger); color: #ffffff; }
 
-    .btn-primary {
-      background: var(--text);
-      color: var(--bg);
-    }
-
-    .btn-secondary {
-      background: #27272a;
-      color: var(--text);
-    }
-
-    .btn-danger {
-      background: var(--danger);
-      color: #ffffff;
-    }
-
-    .preview-box {
-      margin-top: 15px;
-      padding: 14px;
-      background: #000000;
-      border-left: 3px solid var(--accent);
-      border-radius: 4px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
-      color: #a1a1aa;
-      white-space: pre-wrap;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .actions-row {
+    .thread-item {
       display: flex;
-      gap: 10px;
-      margin-top: 15px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 8px;
     }
+
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
   <div class="header-logo">netivly</div>
-  <div class="sub-logo">ADMIN PANEL // RODO MODERATION</div>
+  <div class="sub-logo">ADMIN PANEL // MODERATION D1</div>
 
-  <!-- 1. SEKCJA LOGOWANIA -->
+  <!-- LOGOWANIE -->
   <div id="login-section" class="admin-card">
     <h2>Zaloguj się</h2>
     <form id="login-form">
       <div class="form-group">
-        <label for="username">Login</label>
-        <input type="text" id="username" class="form-control" autocomplete="username" required>
+        <label>Login</label>
+        <input type="text" id="username" class="form-control" required>
       </div>
       <div class="form-group">
-        <label for="password">Hasło</label>
-        <input type="password" id="password" class="form-control" autocomplete="current-password" required>
+        <label>Hasło</label>
+        <input type="password" id="password" class="form-control" required>
       </div>
       <button type="submit" class="btn btn-primary" style="width: 100%;">Zaloguj</button>
     </form>
   </div>
 
-  <!-- 2. GŁÓWNY PANEL ZARZĄDZANIA -->
+  <!-- PANEL MODERACJI -->
   <div id="dashboard-section" class="admin-card hidden">
     <h2>
-      <span>Pulpit Moderatora</span>
+      <span>Moderacja Wątków</span>
       <button id="logout-btn" class="btn btn-danger">Wyloguj</button>
     </h2>
 
-    <form id="article-form">
-      <div class="form-group">
-        <label for="art-title">Tytuł wpisu / wątku</label>
-        <input type="text" id="art-title" class="form-control" placeholder="np. #27 Ogłoszenie administracyjne" required>
-      </div>
-
-      <div class="form-group">
-        <label for="art-content">Treść wpisu</label>
-        <textarea id="art-content" class="form-control" placeholder="Wpisz treść wiadomości..." required></textarea>
-      </div>
-
-      <div class="form-group">
-        <label class="checkbox-container">
-          <input type="checkbox" id="auto-censor" checked>
-          <span>Automatycznie cenzuruj dane osobowe RODO (e-mail, telefon, PESEL, IP)</span>
-        </label>
-      </div>
-
-      <div class="actions-row">
-        <button type="button" id="preview-btn" class="btn btn-secondary">Podgląd cenzury</button>
-        <button type="submit" class="btn btn-primary">Opublikuj jako Admin</button>
-      </div>
-    </form>
-
-    <div id="preview-box" class="preview-box hidden">
-      <strong style="color: var(--text);">[Podgląd RODO]:</strong><br>
-      <span id="preview-text"></span>
+    <div style="margin-bottom: 25px;">
+      <button id="refresh-threads" class="btn btn-secondary" style="margin-bottom: 15px;">🔄 Odśwież listę wątków</button>
+      <div id="threads-list">Ładowanie wątków z bazy D1...</div>
     </div>
+
+    <hr style="border-color: var(--border); margin-bottom: 20px;">
+
+    <h3>Stwórz nowy wątek (jako Admin)</h3>
+    <form id="create-thread-form" style="margin-top: 15px;">
+      <div class="form-group">
+        <label>Tytuł wątku</label>
+        <input type="text" id="thread-title" class="form-control" placeholder="Tytuł wątku..." required>
+      </div>
+      <button type="submit" class="btn btn-primary">Dodaj Wątek</button>
+    </form>
   </div>
 
   <script>
-    // PODPIĘTY LINK DO TWOJEGO WORKERA
     const API_URL = 'https://admin.cosielampisz7.workers.dev';
 
     const loginSection = document.getElementById('login-section');
     const dashboardSection = document.getElementById('dashboard-section');
-    const previewBox = document.getElementById('preview-box');
+    const threadsList = document.getElementById('threads-list');
 
-    // Sprawdzanie istniejącej sesji
-    const token = localStorage.getItem('adminToken');
-    if (token) {
+    if (localStorage.getItem('adminToken')) {
       showDashboard();
     }
 
-    // Obsługa logowania
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
+      const res = await fetch(`${API_URL}/api/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: document.getElementById('username').value,
+          password: document.getElementById('password').value
+        })
+      });
 
-      try {
-        const res = await fetch(`${API_URL}/api/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
-        });
-
-        const data = await res.json();
-        if (res.ok && data.token) {
-          localStorage.setItem('adminToken', data.token);
-          showDashboard();
-        } else {
-          alert(data.error || 'Błąd logowania.');
-        }
-      } catch (err) {
-        alert('Nie można połączyć się z serwerem API.');
+      const data = await res.json();
+      if (res.ok && data.token) {
+        localStorage.setItem('adminToken', data.token);
+        showDashboard();
+      } else {
+        alert(data.error || 'Błąd logowania');
       }
     });
 
-    // Wylogowanie
     document.getElementById('logout-btn').addEventListener('click', () => {
       localStorage.removeItem('adminToken');
       location.reload();
@@ -280,63 +200,68 @@
     function showDashboard() {
       loginSection.classList.add('hidden');
       dashboardSection.classList.remove('hidden');
+      loadThreads();
     }
 
-    // Podgląd Cenzury RODO
-    document.getElementById('preview-btn').addEventListener('click', async () => {
-      const content = document.getElementById('art-content').value;
-      if (!content) return alert('Wpisz najpierw treść!');
-
+    async function loadThreads() {
+      threadsList.innerHTML = 'Ładowanie...';
       try {
-        const res = await fetch(`${API_URL}/api/censor-preview`, {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
-          },
-          body: JSON.stringify({ text: content })
-        });
+        const res = await fetch(`${API_URL}/api/threads`);
+        const threads = await res.json();
 
-        const data = await res.json();
-        if (res.ok) {
-          document.getElementById('preview-text').innerText = data.censoredText;
-          previewBox.classList.remove('hidden');
-        } else {
-          alert('Błąd generowania podglądu.');
+        if (threads.length === 0) {
+          threadsList.innerHTML = '<p style="color: var(--muted);">Brak wątków w bazie.</p>';
+          return;
         }
+
+        threadsList.innerHTML = threads.map(t => `
+          <div class="thread-item">
+            <div>
+              <strong>#${t.id} ${t.title}</strong>
+              <div style="font-size: 0.75rem; color: var(--muted);">${new Date(t.created_at).toLocaleString()}</div>
+            </div>
+            <button class="btn btn-danger" onclick="deleteThread(${t.id})">Usuń</button>
+          </div>
+        `).join('');
       } catch (err) {
-        alert('Błąd połączenia z API.');
+        threadsList.innerHTML = 'Błąd pobierania wątków.';
       }
-    });
+    }
 
-    // Wysyłanie wpisu
-    document.getElementById('article-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const title = document.getElementById('art-title').value;
-      const content = document.getElementById('art-content').value;
-      const autoCensor = document.getElementById('auto-censor').checked;
+    document.getElementById('refresh-threads').addEventListener('click', loadThreads);
 
-      try {
-        const res = await fetch(`${API_URL}/api/articles`, {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
-          },
-          body: JSON.stringify({ title, content, autoCensor })
-        });
+    async function deleteThread(id) {
+      if (!confirm(`Czy na pewno chcesz usunąć wątek #${id} i wszystkie jego posty?`)) return;
 
-        if (res.ok) {
-          alert('Wpis opublikowany!');
-          e.target.reset();
-          previewBox.classList.add('hidden');
-        } else {
-          const data = await res.json();
-          alert(data.error || 'Błąd zapisu.');
+      const res = await fetch(`${API_URL}/api/admin/thread/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }
-      } catch (err) {
-        alert('Błąd połączenia z API.');
+      });
+
+      if (res.ok) {
+        loadThreads();
+      } else {
+        alert('Błąd podczas usuwania wątku.');
+      }
+    }
+
+    document.getElementById('create-thread-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('thread-title').value;
+
+      const res = await fetch(`${API_URL}/api/thread`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title })
+      });
+
+      if (res.ok) {
+        document.getElementById('thread-title').value = '';
+        loadThreads();
+      } else {
+        alert('Błąd tworzenia wątku.');
       }
     });
   </script>
