@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>netivly // admin</title>
+  <title>netivly // admin panel</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   
@@ -16,6 +16,8 @@
       --muted: #71717a;
       --accent: #3b82f6;
       --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,26 +33,12 @@
       padding: 40px 20px;
     }
 
-    .header-logo {
-      font-size: 3.5rem;
-      font-weight: 800;
-      letter-spacing: -2px;
-      margin-bottom: 5px;
-      color: #ffffff;
-    }
-
-    .sub-logo {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--muted);
-      letter-spacing: 2px;
-      margin-bottom: 40px;
-      text-transform: uppercase;
-    }
+    .header-logo { font-size: 3.5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 5px; color: #ffffff; }
+    .sub-logo { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--muted); letter-spacing: 2px; margin-bottom: 40px; text-transform: uppercase; }
 
     .admin-card {
       width: 100%;
-      max-width: 760px;
+      max-width: 850px;
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -58,60 +46,41 @@
       margin-bottom: 20px;
     }
 
-    .admin-card h2 {
-      font-size: 1.25rem;
-      margin-bottom: 16px;
-      font-weight: 700;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
+    .admin-card h2 { font-size: 1.25rem; margin-bottom: 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
     .form-group { margin-bottom: 16px; }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--muted);
-      margin-bottom: 6px;
-      text-transform: uppercase;
-    }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; }
 
     .form-control {
       width: 100%;
-      padding: 12px 14px;
+      padding: 10px 14px;
       background: #000000;
       border: 1px solid var(--border);
       border-radius: 6px;
       color: var(--text);
-      font-family: inherit;
-      font-size: 0.95rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
     }
 
-    .btn {
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-      border: none;
-    }
-
+    .btn { padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; cursor: pointer; border: none; }
     .btn-primary { background: var(--text); color: var(--bg); }
     .btn-secondary { background: #27272a; color: var(--text); }
+    .btn-warning { background: var(--warning); color: #000; }
+    .btn-success { background: var(--success); color: #000; }
     .btn-danger { background: var(--danger); color: #ffffff; }
 
-    .thread-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px;
-      background: #000;
-      border: 1px solid var(--border);
+    .thread-item { padding: 16px; background: #000; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 16px; }
+    .thread-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+
+    .post-item {
+      background: #09090b;
+      border: 1px solid #18181b;
+      padding: 10px 12px;
       border-radius: 6px;
       margin-bottom: 8px;
     }
+
+    .post-content-view { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #a1a1aa; margin-bottom: 8px; white-space: pre-wrap; }
+    .edit-box { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
 
     .hidden { display: none !important; }
   </style>
@@ -119,9 +88,9 @@
 <body>
 
   <div class="header-logo">netivly</div>
-  <div class="sub-logo">ADMIN PANEL // MODERATION D1</div>
+  <div class="sub-logo">ADMIN PANEL // RĘCZNA MODERACJA D1</div>
 
-  <!-- LOGOWANIE -->
+  <!-- FORMULARZ LOGOWANIA -->
   <div id="login-section" class="admin-card">
     <h2>Zaloguj się</h2>
     <form id="login-form">
@@ -140,25 +109,12 @@
   <!-- PANEL MODERACJI -->
   <div id="dashboard-section" class="admin-card hidden">
     <h2>
-      <span>Moderacja Wątków</span>
+      <span>Moderacja Treści</span>
       <button id="logout-btn" class="btn btn-danger">Wyloguj</button>
     </h2>
 
-    <div style="margin-bottom: 25px;">
-      <button id="refresh-threads" class="btn btn-secondary" style="margin-bottom: 15px;">🔄 Odśwież listę wątków</button>
-      <div id="threads-list">Ładowanie wątków z bazy D1...</div>
-    </div>
-
-    <hr style="border-color: var(--border); margin-bottom: 20px;">
-
-    <h3>Stwórz nowy wątek (jako Admin)</h3>
-    <form id="create-thread-form" style="margin-top: 15px;">
-      <div class="form-group">
-        <label>Tytuł wątku</label>
-        <input type="text" id="thread-title" class="form-control" placeholder="Tytuł wątku..." required>
-      </div>
-      <button type="submit" class="btn btn-primary">Dodaj Wątek</button>
-    </form>
+    <button id="refresh-threads" class="btn btn-secondary" style="margin-bottom: 20px;">🔄 Odśwież listę</button>
+    <div id="threads-list">Ładowanie danych...</div>
   </div>
 
   <script>
@@ -168,9 +124,7 @@
     const dashboardSection = document.getElementById('dashboard-section');
     const threadsList = document.getElementById('threads-list');
 
-    if (localStorage.getItem('adminToken')) {
-      showDashboard();
-    }
+    if (localStorage.getItem('adminToken')) showDashboard();
 
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -182,7 +136,6 @@
           password: document.getElementById('password').value
         })
       });
-
       const data = await res.json();
       if (res.ok && data.token) {
         localStorage.setItem('adminToken', data.token);
@@ -204,66 +157,171 @@
     }
 
     async function loadThreads() {
-      threadsList.innerHTML = 'Ładowanie...';
+      threadsList.innerHTML = 'Ładowanie wątków i postów...';
       try {
         const res = await fetch(`${API_URL}/api/threads`);
         const threads = await res.json();
 
-        if (threads.length === 0) {
+        if (!Array.isArray(threads) || threads.length === 0) {
           threadsList.innerHTML = '<p style="color: var(--muted);">Brak wątków w bazie.</p>';
           return;
         }
 
-        threadsList.innerHTML = threads.map(t => `
-          <div class="thread-item">
-            <div>
-              <strong>#${t.id} ${t.title}</strong>
-              <div style="font-size: 0.75rem; color: var(--muted);">${new Date(t.created_at).toLocaleString()}</div>
+        let html = '';
+        for (const t of threads) {
+          const threadRes = await fetch(`${API_URL}/api/thread/${t.id}`);
+          const threadData = await threadRes.json();
+          const posts = threadData.posts || [];
+
+          html += `
+            <div class="thread-item" id="thread-box-${t.id}">
+              <div class="thread-header">
+                <div>
+                  <strong style="font-size: 1.1rem;">#${t.id} <span id="thread-title-text-${t.id}">${t.title}</span></strong>
+                  <div style="font-size: 0.75rem; color: var(--muted);">${new Date(t.created_at).toLocaleString()}</div>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn btn-warning" onclick="toggleEditThread(${t.id})">✏️ Cenzuruj Tytuł</button>
+                  <button class="btn btn-danger" onclick="deleteThread(${t.id})">Usuń Wątek</button>
+                </div>
+              </div>
+
+              <!-- Edycja tytułu wątku -->
+              <div id="thread-edit-form-${t.id}" class="edit-box hidden" style="margin-bottom: 12px;">
+                <input type="text" id="thread-input-${t.id}" class="form-control" value="${t.title}">
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn btn-success" onclick="saveThreadTitle(${t.id})">Zapisz Tytuł w D1</button>
+                  <button class="btn btn-secondary" onclick="autoCensorTitleInput(${t.id})">🪄 Podpowiedź RODO</button>
+                </div>
+              </div>
+
+              <!-- Lista Postów -->
+              <div style="margin-top: 10px; padding-left: 10px; border-left: 2px solid var(--border);">
+                ${posts.map(p => `
+                  <div class="post-item" id="post-box-${p.id}">
+                    <div class="post-content-view" id="post-text-${p.id}">${p.content}</div>
+                    <div style="display: flex; gap: 6px;">
+                      <button class="btn btn-warning" onclick="toggleEditPost(${p.id})">✏️ Edytuj / Cenzuruj Post</button>
+                      <button class="btn btn-danger" onclick="deletePost(${p.id})">Usuń Post</button>
+                    </div>
+
+                    <!-- Edycja Treści Posta -->
+                    <div id="post-edit-form-${p.id}" class="edit-box hidden">
+                      <textarea id="post-input-${p.id}" class="form-control" rows="3">${p.content}</textarea>
+                      <div style="display: flex; gap: 6px;">
+                        <button class="btn btn-success" onclick="savePostContent(${p.id})">Zapisz Zmiany w D1</button>
+                        <button class="btn btn-secondary" onclick="autoCensorPostInput(${p.id})">🪄 Podpowiedź RODO</button>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
             </div>
-            <button class="btn btn-danger" onclick="deleteThread(${t.id})">Usuń</button>
-          </div>
-        `).join('');
+          `;
+        }
+
+        threadsList.innerHTML = html;
       } catch (err) {
-        threadsList.innerHTML = 'Błąd pobierania wątków.';
+        threadsList.innerHTML = `<p style="color: var(--danger);">Błąd: ${err.message}</p>`;
       }
     }
 
     document.getElementById('refresh-threads').addEventListener('click', loadThreads);
 
-    async function deleteThread(id) {
-      if (!confirm(`Czy na pewno chcesz usunąć wątek #${id} i wszystkie jego posty?`)) return;
+    function toggleEditPost(id) {
+      document.getElementById(`post-edit-form-${id}`).classList.toggle('hidden');
+    }
 
-      const res = await fetch(`${API_URL}/api/admin/thread/${id}`, {
-        method: 'DELETE',
+    function toggleEditThread(id) {
+      document.getElementById(`thread-edit-form-${id}`).classList.toggle('hidden');
+    }
+
+    // Pobranie automatycznej propozycji cenzury (przycisk podpowiedzi)
+    async function autoCensorPostInput(id) {
+      const input = document.getElementById(`post-input-${id}`);
+      const res = await fetch(`${API_URL}/api/admin/suggest-censor`, {
+        method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
-        }
+        },
+        body: JSON.stringify({ text: input.value })
+      });
+      const data = await res.json();
+      if (res.ok) input.value = data.suggestedText;
+    }
+
+    async function autoCensorTitleInput(id) {
+      const input = document.getElementById(`thread-input-${id}`);
+      const res = await fetch(`${API_URL}/api/admin/suggest-censor`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify({ text: input.value })
+      });
+      const data = await res.json();
+      if (res.ok) input.value = data.suggestedText;
+    }
+
+    // Zapis zaktualizowanej treści posta w bazie D1
+    async function savePostContent(id) {
+      const newContent = document.getElementById(`post-input-${id}`).value;
+      const res = await fetch(`${API_URL}/api/admin/post/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify({ content: newContent })
       });
 
       if (res.ok) {
-        loadThreads();
+        document.getElementById(`post-text-${id}`).innerText = newContent;
+        toggleEditPost(id);
       } else {
-        alert('Błąd podczas usuwania wątku.');
+        alert('Błąd zapisywania zmian.');
       }
     }
 
-    document.getElementById('create-thread-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const title = document.getElementById('thread-title').value;
-
-      const res = await fetch(`${API_URL}/api/thread`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title })
+    // Zapis zaktualizowanego tytułu wątku w bazie D1
+    async function saveThreadTitle(id) {
+      const newTitle = document.getElementById(`thread-input-${id}`).value;
+      const res = await fetch(`${API_URL}/api/admin/thread/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify({ title: newTitle })
       });
 
       if (res.ok) {
-        document.getElementById('thread-title').value = '';
-        loadThreads();
+        document.getElementById(`thread-title-text-${id}`).innerText = newTitle;
+        toggleEditThread(id);
       } else {
-        alert('Błąd tworzenia wątku.');
+        alert('Błąd zapisywania zmian.');
       }
-    });
+    }
+
+    async function deletePost(id) {
+      if (!confirm('Usunąć ten post?')) return;
+      const res = await fetch(`${API_URL}/api/admin/post/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+      });
+      if (res.ok) loadThreads();
+    }
+
+    async function deleteThread(id) {
+      if (!confirm('Usunąć cały wątek wraz z postami?')) return;
+      const res = await fetch(`${API_URL}/api/admin/thread/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+      });
+      if (res.ok) loadThreads();
+    }
   </script>
 </body>
 </html>
