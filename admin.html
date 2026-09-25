@@ -69,7 +69,6 @@
     .btn-danger { background: var(--danger); color: #ffffff; }
     .btn:hover { opacity: 0.9; }
 
-    /* STYLE ZAKŁADEK / KATEGORII */
     .category-tabs {
       display: flex;
       gap: 8px;
@@ -147,6 +146,22 @@
   <!-- SEKCJA PO ZALOGOWANIU -->
   <div id="dashboard-wrapper" class="hidden" style="width: 100%; max-width: 900px;">
     
+    <!-- SEKCJA HURTOWEJ EDYCJI KATEGORII -->
+    <div class="admin-card" style="border-color: var(--warning);">
+      <h2 style="color: var(--warning);">⚡ Hurtowe przenoszenie wątków</h2>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        <input type="text" id="bulk-ids-input" class="form-control" placeholder="Wpisz ID po przecinku np. 1, 4, 12" style="flex: 1; min-width: 200px;">
+        <select id="bulk-category-select" class="form-control" style="width: auto;">
+          <option value="netivly">Netivly</option>
+          <option value="main">Main</option>
+          <option value="trash">Trash (Kosz)</option>
+          <option value="private">Private</option>
+        </select>
+        <button class="btn btn-warning" onclick="executeBulkMoveFromInput()">Przenieś wpisane ID</button>
+        <button class="btn btn-success" onclick="executeBulkMoveFromCheckboxes()">Przenieś zaznaczone (<span id="selected-count">0</span>)</button>
+      </div>
+    </div>
+
     <!-- TWORZENIE NOWEGO WĄTKU (DLA ADMINA) -->
     <div class="admin-card">
       <h2>➕ Utwórz Oficjalny Wątek jako Admin</h2>
@@ -212,7 +227,7 @@
     const dashboardWrapper = document.getElementById('dashboard-wrapper');
     const threadsList = document.getElementById('threads-list');
 
-    let rawThreadsData = []; // Globalna pamięć podręczna pobranych wątków
+    let rawThreadsData = [];
     let currentCategoryFilter = 'all';
 
     if (localStorage.getItem('adminToken')) showDashboard();
@@ -250,11 +265,8 @@
     function toggleNewPassInput() {
       const cat = document.getElementById('new-thread-category').value;
       const passGroup = document.getElementById('new-pass-group');
-      if (cat === 'private') {
-        passGroup.classList.remove('hidden');
-      } else {
-        passGroup.classList.add('hidden');
-      }
+      if (cat === 'private') passGroup.classList.remove('hidden');
+      else passGroup.classList.add('hidden');
     }
 
     // TWORZENIE NOWEGO WĄTKU
@@ -304,7 +316,6 @@
       }
     });
 
-    // PRZEŁĄCZANIE ZAKŁADEK KATEGORII
     function switchCategory(cat, btn) {
       currentCategoryFilter = cat;
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -312,9 +323,8 @@
       renderThreads();
     }
 
-    // POBIERANIE WĄTKÓW Z D1
     async function loadThreads() {
-      threadsList.innerHTML = 'Ładowanie wątków i postów...';
+      threadsList.innerHTML = 'Ładowanie wątków...';
       try {
         const res = await fetch(`${API_URL}/api/threads`);
         let threads = await res.json();
@@ -326,11 +336,7 @@
         }
 
         rawThreadsData = Array.isArray(threads) ? threads : [];
-        
-        // Aktualizacja liczników na zakładkach
         updateCategoryCounters(rawThreadsData);
-        
-        // Wyrenderowanie wątków według obecnej zakładki
         renderThreads();
 
       } catch (err) {
@@ -346,8 +352,7 @@
       document.getElementById('count-trash').innerText = threads.filter(t => t.category === 'trash').length;
     }
 
-    // RENDEROWANIE WĄTKÓW
-    async function renderThreads() {
+    function renderThreads() {
       let filtered = rawThreadsData;
 
       if (currentCategoryFilter !== 'all') {
@@ -361,38 +366,21 @@
 
       let html = '';
       for (const t of filtered) {
-        let posts = [];
-        try {
-          const threadRes = await fetch(`${API_URL}/api/thread/${t.id}`, {
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
-          });
-          const threadData = await threadRes.json();
-          
-          if (Array.isArray(threadData.posts)) {
-            posts = threadData.posts;
-          } else if (threadData.posts && Array.isArray(threadData.posts.results)) {
-            posts = threadData.posts.results;
-          } else if (Array.isArray(threadData)) {
-            posts = threadData;
-          }
-        } catch(e) {}
-
         const isPinned = t.is_pinned === 1;
 
         html += `
           <div class="thread-item" id="thread-box-${t.id}">
             <div class="thread-header">
-              <div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <input type="checkbox" class="thread-cb" value="${t.id}" onchange="updateSelectedCount()" style="width: 18px; height: 18px;">
                 <strong style="font-size: 1.1rem;">
                   ${isPinned ? '<span class="badge badge-pinned">📌 Przypięty</span>' : ''}
                   <span class="badge badge-${t.category || 'main'}">${t.category || 'main'}</span>
                   #${t.id} <span id="thread-title-text-${t.id}">${t.title}</span>
                 </strong>
-                <div style="font-size: 0.75rem; color: var(--muted); margin-top: 4px;">
-                  ${t.created_at ? new Date(t.created_at).toLocaleString() : ''}
-                </div>
               </div>
               <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <button class="btn btn-secondary" onclick="loadAndShowPosts(${t.id})">📂 Pokaż Posty</button>
                 <button class="btn ${isPinned ? 'btn-secondary' : 'btn-warning'}" onclick="togglePinThread(${t.id}, ${!isPinned})">
                   ${isPinned ? '📌 Odpinaj' : '📌 Przypnij'}
                 </button>
@@ -420,30 +408,98 @@
               </div>
             </div>
 
-            <div style="margin-top: 10px; padding-left: 10px; border-left: 2px solid var(--border);">
-              ${posts.length > 0 ? posts.map(p => `
-                <div class="post-item" id="post-box-${p.id}">
-                  <div class="post-content-view" id="post-text-${p.id}">${p.content}</div>
-                  <div style="display: flex; gap: 6px;">
-                    <button class="btn btn-warning" onclick="toggleEditPost(${p.id})">✏️ Edytuj / Cenzuruj Post</button>
-                    <button class="btn btn-danger" onclick="deletePost(${p.id})">Usuń Post</button>
-                  </div>
-
-                  <div id="post-edit-form-${p.id}" class="edit-box hidden">
-                    <textarea id="post-input-${p.id}" class="form-control" rows="3">${p.content}</textarea>
-                    <div style="display: flex; gap: 6px;">
-                      <button class="btn btn-success" onclick="savePostContent(${p.id})">Zapisz Zmiany w D1</button>
-                      <button class="btn btn-secondary" onclick="autoCensorPostInput(${p.id})">🪄 Podpowiedź RODO</button>
-                    </div>
-                  </div>
-                </div>
-              `).join('') : '<div style="font-size: 0.8rem; color: var(--muted);">Brak postów w tym wątku.</div>'}
+            <div id="posts-container-${t.id}" style="margin-top: 10px; padding-left: 10px; border-left: 2px solid var(--border);" class="hidden">
+              <div style="font-size: 0.8rem; color: var(--muted);">Kliknij "Pokaż Posty", aby załadować zawartość.</div>
             </div>
           </div>
         `;
       }
 
       threadsList.innerHTML = html;
+      updateSelectedCount();
+    }
+
+    async function loadAndShowPosts(threadId) {
+      const container = document.getElementById(`posts-container-${threadId}`);
+      if (!container.classList.contains('hidden')) {
+        container.classList.add('hidden');
+        return;
+      }
+
+      container.classList.remove('hidden');
+      container.innerHTML = '<div style="font-size: 0.8rem; color: var(--muted);">Pobieranie wpisów z D1...</div>';
+
+      try {
+        const res = await fetch(`${API_URL}/api/thread/${threadId}`, {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+        });
+        const threadData = await res.json();
+        const posts = threadData.posts || [];
+
+        if (posts.length === 0) {
+          container.innerHTML = '<div style="font-size: 0.8rem; color: var(--muted);">Brak postów w tym wątku.</div>';
+          return;
+        }
+
+        container.innerHTML = posts.map(p => `
+          <div class="post-item" id="post-box-${p.id}">
+            <div class="post-content-view" id="post-text-${p.id}">${p.content}</div>
+            <div style="display: flex; gap: 6px;">
+              <button class="btn btn-warning" onclick="toggleEditPost(${p.id})">✏️ Edytuj / Cenzuruj Post</button>
+              <button class="btn btn-danger" onclick="deletePost(${p.id})">Usuń Post</button>
+            </div>
+
+            <div id="post-edit-form-${p.id}" class="edit-box hidden">
+              <textarea id="post-input-${p.id}" class="form-control" rows="3">${p.content}</textarea>
+              <div style="display: flex; gap: 6px;">
+                <button class="btn btn-success" onclick="savePostContent(${p.id})">Zapisz Zmiany w D1</button>
+                <button class="btn btn-secondary" onclick="autoCensorPostInput(${p.id})">🪄 Podpowiedź RODO</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+      } catch (err) {
+        container.innerHTML = `<div style="font-size: 0.8rem; color: var(--danger);">Błąd ładowania postów: ${err.message}</div>`;
+      }
+    }
+
+    function updateSelectedCount() {
+      const selected = document.querySelectorAll('.thread-cb:checked');
+      document.getElementById('selected-count').innerText = selected.length;
+    }
+
+    async function sendBulkRequest(ids, category) {
+      if (ids.length === 0) return alert('Brak wytypowanych ID wątków!');
+      
+      const res = await fetch(`${API_URL}/api/admin/threads/bulk-category`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify({ thread_ids: ids, target_category: category })
+      });
+      
+      const data = await res.json();
+      if (res.ok && data.success) {
+        alert(data.message);
+        loadThreads();
+      } else alert('Błąd: ' + (data.error || 'Operacja nie powiodła się.'));
+    }
+
+    function executeBulkMoveFromInput() {
+      const input = document.getElementById('bulk-ids-input').value;
+      const ids = input.split(',').map(x => parseInt(x.trim())).filter(x => !isNaN(x));
+      const targetCat = document.getElementById('bulk-category-select').value;
+      sendBulkRequest(ids, targetCat);
+    }
+
+    function executeBulkMoveFromCheckboxes() {
+      const selected = document.querySelectorAll('.thread-cb:checked');
+      const ids = Array.from(selected).map(cb => parseInt(cb.value));
+      const targetCat = document.getElementById('bulk-category-select').value;
+      sendBulkRequest(ids, targetCat);
     }
 
     document.getElementById('refresh-threads').addEventListener('click', loadThreads);
