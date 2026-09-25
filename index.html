@@ -52,26 +52,10 @@ body {
 }
 
 @keyframes drift {
-    0% {
-        transform: translate(0, 0) scale(1);
-        opacity: 0;
-    }
-
-    15% {
-        opacity: .45;
-    }
-
-    70% {
-        opacity: .18;
-    }
-
-    100% {
-        transform: translate(
-            var(--x),
-            var(--y)
-        ) scale(0);
-        opacity: 0;
-    }
+    0% { transform: translate(0, 0) scale(1); opacity: 0; }
+    15% { opacity: .45; }
+    70% { opacity: .18; }
+    100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
 }
 
 /* =========================
@@ -121,20 +105,9 @@ header {
 }
 
 @keyframes glitch {
-    0%, 88%, 100% {
-        transform: translate(0);
-        opacity: .3;
-    }
-
-    90% {
-        transform: translate(8px, -2px);
-        opacity: .7;
-    }
-
-    92% {
-        transform: translate(-6px, 2px);
-        opacity: .1;
-    }
+    0%, 88%, 100% { transform: translate(0); opacity: .3; }
+    90% { transform: translate(8px, -2px); opacity: .7; }
+    92% { transform: translate(-6px, 2px); opacity: .1; }
 }
 
 .subtitle {
@@ -160,10 +133,11 @@ header {
 
 .categories-bar {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 20px;
     border-bottom: 1px solid #1a1a1a;
     padding-bottom: 10px;
+    flex-wrap: wrap;
 }
 
 .cat-btn {
@@ -256,10 +230,12 @@ button:hover {
     padding: 20px;
     cursor: pointer;
     overflow: hidden;
-    transition:
-        border .3s,
-        transform .3s,
-        background .3s;
+    transition: border .3s, transform .3s, background .3s;
+}
+
+.thread.pinned-thread {
+    border-color: #443810;
+    background: #0e0c05;
 }
 
 .thread:hover {
@@ -288,30 +264,23 @@ button:hover {
 
 .thread::after {
     inset: 0;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255,255,255,.025),
-        transparent
-    );
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.025), transparent);
     transform: translateX(-100%);
     animation: scan 6s infinite;
 }
 
 @keyframes scan {
-    0%, 70% {
-        transform: translateX(-100%);
-    }
-
-    90%, 100% {
-        transform: translateX(100%);
-    }
+    0%, 70% { transform: translateX(-100%); }
+    90%, 100% { transform: translateX(100%); }
 }
 
 .thread-title {
     font-size: 19px;
     color: #eee;
     margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .thread-meta {
@@ -331,6 +300,8 @@ button:hover {
     border: 1px solid #333;
 }
 
+.badge-pinned { border-color: #aa8800; color: #ffd700; font-weight: bold; }
+.badge-netivly { border-color: #38a; color: #8cf; }
 .badge-private { border-color: #833; color: #f88; }
 .badge-trash { border-color: #555; color: #888; }
 .badge-main { border-color: #383; color: #8f8; }
@@ -398,10 +369,6 @@ button:hover {
     margin-bottom: 10px;
 }
 
-/* =========================
-   FOOTER
-========================= */
-
 footer {
     color: #292929;
     text-align: center;
@@ -410,51 +377,11 @@ footer {
     letter-spacing: 2px;
 }
 
-/* =========================
-   EFEKT ROZPADU
-========================= */
-
-.dissolve {
-    animation: dissolve .8s forwards;
-}
-
-@keyframes dissolve {
-    0% {
-        opacity: 1;
-        filter: blur(0);
-        transform: translateX(0);
-    }
-
-    50% {
-        opacity: .6;
-        filter: blur(1px);
-        transform: translateX(4px);
-    }
-
-    100% {
-        opacity: 0;
-        filter: blur(6px);
-        transform: translateX(25px);
-    }
-}
-
 @media (max-width: 600px) {
-    header {
-        min-height: 140px;
-    }
-
-    .logo {
-        letter-spacing: -3px;
-    }
-
-    .controls {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .thread {
-        padding: 16px;
-    }
+    header { min-height: 140px; }
+    .logo { letter-spacing: -3px; }
+    .controls { align-items: flex-start; flex-direction: column; }
+    .thread { padding: 16px; }
 }
 </style>
 </head>
@@ -482,9 +409,10 @@ footer {
         </div>
     </div>
 
-    <!-- ZAKŁADKI SEKCJI / KATEGORII -->
+    <!-- ZAKŁADKI KATEGORII (4 KATEGORIE) -->
     <div class="categories-bar">
         <button class="cat-btn active" onclick="switchCategory('main', this)">GŁÓWNA (MAIN)</button>
+        <button class="cat-btn" onclick="switchCategory('netivly', this)">NETIVLY (ADMIN)</button>
         <button class="cat-btn" onclick="switchCategory('trash', this)">KOSZ (TRASH)</button>
         <button class="cat-btn" onclick="switchCategory('private', this)">PRYWATNE (PRIVATE)</button>
     </div>
@@ -493,9 +421,10 @@ footer {
         <input id="threadTitle" type="text" maxlength="100" placeholder="Temat wątku...">
         
         <select id="threadCategory" onchange="togglePasswordInput()">
-            <option value="main">Główna (Main - pisanie tylko dla Admina)</option>
+            <option value="main">Główna (Main)</option>
             <option value="trash">Kosz (Trash)</option>
             <option value="private">Prywatna (Private - chroniona hasłem)</option>
+            <option value="netivly" id="netivlyAdminOption" disabled>Netivly (Tylko Admin)</option>
         </select>
 
         <input id="threadPassword" type="password" placeholder="Wprowadź hasło do wątku prywatnego..." style="display: none;">
@@ -530,17 +459,24 @@ footer {
 </div>
 
 <script>
-/* =========================
-   API CONFIGURATION
-========================= */
 const API = "https://netivly-api.cosielampisz7.workers.dev";
 
 let currentThread = null;
 let currentCategory = 'main';
 let currentThreadPassword = '';
+let adminToken = localStorage.getItem('adminToken') || '';
+
+// Jeśli istnieje token admina, odblokuj pisanie w kategorii Netivly
+if (adminToken) {
+    const opt = document.getElementById("netivlyAdminOption");
+    if (opt) {
+        opt.disabled = false;
+        opt.innerText = "Netivly (Tryb Admina)";
+    }
+}
 
 /* =========================
-   HISTORIA I PRZYCISK WSTECZ (NAV)
+   HISTORIA I WSTECZ
 ========================= */
 window.addEventListener('popstate', (event) => {
     if (event.state && event.state.threadId) {
@@ -558,26 +494,19 @@ function goBackHome() {
     }
 }
 
-/* =========================
-   FORMATOWANIE DATY
-========================= */
 function formatDate(dateStr) {
     if (!dateStr) return "";
     let str = dateStr.replace(" ", "T");
-    if (!str.endsWith("Z") && !str.includes("+")) {
-        str += "Z";
-    }
+    if (!str.endsWith("Z") && !str.includes("+")) str += "Z";
     const date = new Date(str);
     if (isNaN(date.getTime())) return dateStr;
-    
     return date.toLocaleString();
 }
 
 /* =========================
-   ANIMACJA CZĄSTECZEK
+   CZĄSTECZKI
 ========================= */
 const particles = document.getElementById("particles");
-
 for (let i = 0; i < 120; i++) {
     const p = document.createElement("div");
     p.className = "particle";
@@ -591,7 +520,7 @@ for (let i = 0; i < 120; i++) {
 }
 
 /* =========================
-   ZARZĄDZANIE KATEGORIAMI
+   SEKCJE / KATEGORIE
 ========================= */
 function switchCategory(cat, btn) {
     currentCategory = cat;
@@ -601,7 +530,7 @@ function switchCategory(cat, btn) {
 }
 
 /* =========================
-   POBIERANIE LISTY WĄTKÓW
+   LISTA WĄTKÓW (Z PRZYPIĘTYMI)
 ========================= */
 async function loadThreads() {
     const container = document.getElementById("threads");
@@ -620,19 +549,21 @@ async function loadThreads() {
             return;
         }
 
+        // Sortowanie: najpierw przypięte (is_pinned === 1), potem wg id DESC
+        threads.sort((a, b) => (b.is_pinned || 0) - (a.is_pinned || 0));
+
         container.innerHTML = "";
 
         threads.forEach(thread => {
             const div = document.createElement("div");
-            div.className = "thread";
+            div.className = `thread ${thread.is_pinned ? 'pinned-thread' : ''}`;
 
-            const catBadge = thread.category 
-                ? `<span class="badge badge-${thread.category}">${thread.category}</span>` 
-                : '';
+            const pinBadge = thread.is_pinned ? `<span class="badge badge-pinned">📌 PINNED</span>` : '';
+            const catBadge = thread.category ? `<span class="badge badge-${thread.category}">${thread.category}</span>` : '';
 
             div.innerHTML = `
                 <div class="thread-title">
-                    #${thread.id} ${escapeHTML(thread.title)}
+                    ${pinBadge} #${thread.id} ${escapeHTML(thread.title)}
                 </div>
                 <div class="thread-meta">
                     <span>${formatDate(thread.created_at)}</span>
@@ -651,15 +582,10 @@ async function loadThreads() {
 }
 
 /* =========================
-   TWORZENIE NOWEGO WĄTKU
+   TWORZENIE WĄTKU
 ========================= */
-function showCreate() {
-    document.getElementById("createBox").style.display = "block";
-}
-
-function hideCreate() {
-    document.getElementById("createBox").style.display = "none";
-}
+function showCreate() { document.getElementById("createBox").style.display = "block"; }
+function hideCreate() { document.getElementById("createBox").style.display = "none"; }
 
 function togglePasswordInput() {
     const cat = document.getElementById("threadCategory").value;
@@ -682,12 +608,15 @@ async function createThread() {
         return;
     }
 
+    const headers = { "Content-Type": "application/json" };
+    if (adminToken) {
+        headers["Authorization"] = `Bearer ${adminToken}`;
+    }
+
     try {
         const response = await fetch(API + "/api/thread", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers,
             body: JSON.stringify({ title, category, password })
         });
 
@@ -698,12 +627,10 @@ async function createThread() {
             return;
         }
 
-        /* dodanie pierwszego posta */
+        /* pierwszy post */
         await fetch(API + "/api/post", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 thread_id: result.thread_id,
                 content: content
@@ -723,7 +650,7 @@ async function createThread() {
 }
 
 /* =========================
-   OTWIERANIE WĄTKU (Z HASŁEM I WSTECZ)
+   OTWIERANIE WĄTKU
 ========================= */
 async function openThread(id, pushHistory = true) {
     try {
@@ -731,10 +658,12 @@ async function openThread(id, pushHistory = true) {
         if (currentThreadPassword) {
             headers["X-Thread-Password"] = currentThreadPassword;
         }
+        if (adminToken) {
+            headers["Authorization"] = `Bearer ${adminToken}`;
+        }
 
         let response = await fetch(`${API}/api/thread/${id}`, { headers });
 
-        // Jeśli wątek wymaga hasła prywatnego (Status 401)
         if (response.status === 401) {
             const pass = prompt("Wątek jest prywatny. Podaj hasło dostępu:");
             if (!pass) return;
@@ -768,7 +697,7 @@ async function openThread(id, pushHistory = true) {
         const board = document.getElementById("boardContent");
         board.innerHTML = `
             <h2 style="color:#eee; font-weight:normal; margin-bottom:25px;">
-                #${data.thread.id} ${escapeHTML(data.thread.title)}
+                ${data.thread.is_pinned ? '📌 ' : ''}#${data.thread.id} ${escapeHTML(data.thread.title)}
             </h2>
         `;
 
@@ -791,7 +720,7 @@ async function openThread(id, pushHistory = true) {
 }
 
 /* =========================
-   WYSYŁANIE ODPOWIEDZI
+   ODPOWIEDŹ
 ========================= */
 async function sendPost() {
     const textarea = document.getElementById("replyContent");
@@ -829,9 +758,6 @@ async function sendPost() {
     }
 }
 
-/* =========================
-   POWRÓT DO STRONY GŁÓWNEJ
-========================= */
 function showHome() {
     window.history.pushState(null, "", window.location.pathname);
     showHomeUI();
@@ -845,9 +771,6 @@ function showHomeUI() {
     loadThreads();
 }
 
-/* =========================
-   OCHRONA HTML
-========================= */
 function escapeHTML(text) {
     const div = document.createElement("div");
     div.textContent = text;
@@ -855,7 +778,7 @@ function escapeHTML(text) {
 }
 
 /* =========================
-   START & AUTO-REFRESH
+   START & REFRESH
 ========================= */
 const urlParams = new URLSearchParams(window.location.search);
 const initialThreadId = urlParams.get('thread');
