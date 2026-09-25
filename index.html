@@ -107,6 +107,7 @@ header {
     position: relative;
     display: inline-block;
     width: max-content;
+    cursor: pointer;
 }
 
 .logo::after {
@@ -145,15 +146,41 @@ header {
 }
 
 /* =========================
-   PRZYCISKI
+   PRZYCISKI I FILTRY SEKCJI
 ========================= */
 
 .controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px 0;
+    padding: 25px 0 15px 0;
     gap: 15px;
+    flex-wrap: wrap;
+}
+
+.categories-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #1a1a1a;
+    padding-bottom: 10px;
+}
+
+.cat-btn {
+    background: #050505;
+    color: #888;
+    border: 1px solid #1a1a1a;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.cat-btn:hover, .cat-btn.active {
+    background: #151515;
+    color: #fff;
+    border-color: #444;
 }
 
 button {
@@ -190,6 +217,7 @@ button:hover {
 }
 
 #createBox input,
+#createBox select,
 #createBox textarea {
     width: 100%;
     background: #000;
@@ -201,6 +229,7 @@ button:hover {
 }
 
 #createBox input:focus,
+#createBox select:focus,
 #createBox textarea:focus {
     border-color: #555;
 }
@@ -239,8 +268,6 @@ button:hover {
     transform: translateX(4px);
 }
 
-/* rozpadające się drobinki przy wątku */
-
 .thread::before,
 .thread::after {
     content: "";
@@ -253,8 +280,7 @@ button:hover {
     height: 70px;
     right: -20px;
     top: -20px;
-    background:
-        radial-gradient(circle, #777 1px, transparent 1px);
+    background: radial-gradient(circle, #777 1px, transparent 1px);
     background-size: 8px 8px;
     opacity: .08;
     mask-image: linear-gradient(135deg, black, transparent);
@@ -289,9 +315,25 @@ button:hover {
 }
 
 .thread-meta {
-    color: #444;
+    color: #555;
     font-size: 12px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
 }
+
+.badge {
+    text-transform: uppercase;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    background: #111;
+    border: 1px solid #333;
+}
+
+.badge-private { border-color: #833; color: #f88; }
+.badge-trash { border-color: #555; color: #888; }
+.badge-main { border-color: #383; color: #8f8; }
 
 .empty {
     padding: 80px 20px;
@@ -424,7 +466,7 @@ footer {
 <div class="wrapper">
 
 <header>
-    <div class="logo">netivly</div>
+    <div class="logo" onclick="showHome()">netivly</div>
     <div class="subtitle">anonymous imageboard // text mode</div>
 </header>
 
@@ -440,64 +482,46 @@ footer {
         </div>
     </div>
 
+    <!-- ZAKŁADKI SEKCJI / KATEGORII -->
+    <div class="categories-bar">
+        <button class="cat-btn active" onclick="switchCategory('main', this)">GŁÓWNA (MAIN)</button>
+        <button class="cat-btn" onclick="switchCategory('trash', this)">KOSZ (TRASH)</button>
+        <button class="cat-btn" onclick="switchCategory('private', this)">PRYWATNE (PRIVATE)</button>
+    </div>
+
     <div id="createBox">
+        <input id="threadTitle" type="text" maxlength="100" placeholder="Temat wątku...">
+        
+        <select id="threadCategory" onchange="togglePasswordInput()">
+            <option value="main">Główna (Main - pisanie tylko dla Admina)</option>
+            <option value="trash">Kosz (Trash)</option>
+            <option value="private">Prywatna (Private - chroniona hasłem)</option>
+        </select>
 
-        <input
-            id="threadTitle"
-            type="text"
-            maxlength="100"
-            placeholder="Temat wątku..."
-        >
+        <input id="threadPassword" type="password" placeholder="Wprowadź hasło do wątku prywatnego..." style="display: none;">
 
-        <textarea
-            id="threadContent"
-            maxlength="5000"
-            placeholder="Treść pierwszego posta..."
-        ></textarea>
+        <textarea id="threadContent" maxlength="5000" placeholder="Treść pierwszego posta..."></textarea>
 
-        <button onclick="createThread()">
-            UTWÓRZ WĄTEK
-        </button>
-
-        <button onclick="hideCreate()">
-            ANULUJ
-        </button>
-
+        <button onclick="createThread()">UTWÓRZ WĄTEK</button>
+        <button onclick="hideCreate()">ANULUJ</button>
     </div>
 
     <div id="threads">
-        <div class="empty">
-            ŁADOWANIE...
-        </div>
+        <div class="empty">ŁADOWANIE...</div>
     </div>
 
 </div>
 
-
 <div id="board">
-
-    <button class="back" onclick="showHome()">
-        ← WRÓĆ
-    </button>
+    <button class="back" onclick="goBackHome()">← WRÓĆ</button>
 
     <div id="boardContent"></div>
 
     <div class="reply">
-
-        <textarea
-            id="replyContent"
-            maxlength="5000"
-            placeholder="Napisz anonimowo..."
-        ></textarea>
-
-        <button onclick="sendPost()">
-            WYŚLIJ
-        </button>
-
+        <textarea id="replyContent" maxlength="5000" placeholder="Napisz anonimowo..."></textarea>
+        <button onclick="sendPost()">WYŚLIJ</button>
     </div>
-
 </div>
-
 
 <footer>
     NETIVLY // NOTHING REMAINS
@@ -505,24 +529,38 @@ footer {
 
 </div>
 
-
 <script>
-
 /* =========================
-   API
+   API CONFIGURATION
 ========================= */
-
-const API =
-    "https://netivly-api.cosielampisz7.workers.dev";
-
+const API = "https://netivly-api.cosielampisz7.workers.dev";
 
 let currentThread = null;
-
+let currentCategory = 'main';
+let currentThreadPassword = '';
 
 /* =========================
-   FORMATOWANIE DATY (STREFA LOKALNA)
+   HISTORIA I PRZYCISK WSTECZ (NAV)
 ========================= */
+window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.threadId) {
+        openThread(event.state.threadId, false);
+    } else {
+        showHomeUI();
+    }
+});
 
+function goBackHome() {
+    if (window.history.state && window.history.state.threadId) {
+        window.history.back();
+    } else {
+        showHome();
+    }
+}
+
+/* =========================
+   FORMATOWANIE DATY
+========================= */
 function formatDate(dateStr) {
     if (!dateStr) return "";
     let str = dateStr.replace(" ", "T");
@@ -535,435 +573,312 @@ function formatDate(dateStr) {
     return date.toLocaleString();
 }
 
-
 /* =========================
-   CZĄSTECZKI
+   ANIMACJA CZĄSTECZEK
 ========================= */
-
-const particles =
-    document.getElementById("particles");
+const particles = document.getElementById("particles");
 
 for (let i = 0; i < 120; i++) {
-
     const p = document.createElement("div");
-
     p.className = "particle";
-
-    p.style.left =
-        Math.random() * 100 + "%";
-
-    p.style.top =
-        Math.random() * 100 + "%";
-
-    p.style.setProperty(
-        "--x",
-        (Math.random() * 180 - 90) + "px"
-    );
-
-    p.style.setProperty(
-        "--y",
-        (Math.random() * 180 - 90) + "px"
-    );
-
-    p.style.animationDuration =
-        (4 + Math.random() * 8) + "s";
-
-    p.style.animationDelay =
-        (Math.random() * 8) + "s";
-
+    p.style.left = Math.random() * 100 + "%";
+    p.style.top = Math.random() * 100 + "%";
+    p.style.setProperty("--x", (Math.random() * 180 - 90) + "px");
+    p.style.setProperty("--y", (Math.random() * 180 - 90) + "px");
+    p.style.animationDuration = (4 + Math.random() * 8) + "s";
+    p.style.animationDelay = (Math.random() * 8) + "s";
     particles.appendChild(p);
 }
 
+/* =========================
+   ZARZĄDZANIE KATEGORIAMI
+========================= */
+function switchCategory(cat, btn) {
+    currentCategory = cat;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    loadThreads();
+}
 
 /* =========================
-   POBIERANIE WĄTKÓW
+   POBIERANIE LISTY WĄTKÓW
 ========================= */
-
 async function loadThreads() {
-
-    const container =
-        document.getElementById("threads");
+    const container = document.getElementById("threads");
 
     try {
+        const response = await fetch(`${API}/api/threads?category=${currentCategory}`);
+        const threads = await response.json();
 
-        const response =
-            await fetch(API + "/api/threads");
-
-        const threads =
-            await response.json();
-
-        if (!threads.length) {
-
+        if (!threads || !threads.length) {
             container.innerHTML = `
                 <div class="empty">
-                    BRAK WĄTKÓW<br><br>
-                    <span style="color:#222">
-                    cisza w próżni
-                    </span>
+                    BRAK WĄTKÓW W TEJ KATEGORII<br><br>
+                    <span style="color:#222">cisza w próżni</span>
                 </div>
             `;
-
             return;
         }
 
         container.innerHTML = "";
 
         threads.forEach(thread => {
-
-            const div =
-                document.createElement("div");
-
+            const div = document.createElement("div");
             div.className = "thread";
+
+            const catBadge = thread.category 
+                ? `<span class="badge badge-${thread.category}">${thread.category}</span>` 
+                : '';
 
             div.innerHTML = `
                 <div class="thread-title">
-                    #${thread.id}
-                    ${escapeHTML(thread.title)}
+                    #${thread.id} ${escapeHTML(thread.title)}
                 </div>
-
                 <div class="thread-meta">
-                    ${formatDate(thread.created_at)}
+                    <span>${formatDate(thread.created_at)}</span>
+                    ${catBadge}
                 </div>
             `;
 
-            div.onclick = () =>
-                openThread(thread.id);
-
+            div.onclick = () => openThread(thread.id, true);
             container.appendChild(div);
-
         });
 
     } catch (error) {
-
-        container.innerHTML = `
-            <div class="empty">
-                BŁĄD POŁĄCZENIA Z NETIVLY API
-            </div>
-        `;
-
+        container.innerHTML = `<div class="empty">BŁĄD POŁĄCZENIA Z NETIVLY API</div>`;
         console.error(error);
     }
 }
 
-
 /* =========================
-   TWORZENIE WĄTKU
+   TWORZENIE NOWEGO WĄTKU
 ========================= */
-
 function showCreate() {
-
-    document.getElementById(
-        "createBox"
-    ).style.display = "block";
-
+    document.getElementById("createBox").style.display = "block";
 }
 
 function hideCreate() {
-
-    document.getElementById(
-        "createBox"
-    ).style.display = "none";
-
+    document.getElementById("createBox").style.display = "none";
 }
 
+function togglePasswordInput() {
+    const cat = document.getElementById("threadCategory").value;
+    document.getElementById("threadPassword").style.display = (cat === 'private') ? 'block' : 'none';
+}
 
 async function createThread() {
-
-    const title =
-        document.getElementById(
-            "threadTitle"
-        ).value.trim();
-
-    const content =
-        document.getElementById(
-            "threadContent"
-        ).value.trim();
+    const title = document.getElementById("threadTitle").value.trim();
+    const content = document.getElementById("threadContent").value.trim();
+    const category = document.getElementById("threadCategory").value;
+    const password = document.getElementById("threadPassword").value.trim();
 
     if (!title || !content) {
+        alert("Podaj temat i treść posta.");
+        return;
+    }
 
-        alert(
-            "Podaj temat i treść posta."
-        );
-
+    if (category === 'private' && !password) {
+        alert("Wprowadź hasło dla wątku prywatnego.");
         return;
     }
 
     try {
+        const response = await fetch(API + "/api/thread", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ title, category, password })
+        });
 
-        const response =
-            await fetch(
-                API + "/api/thread",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        title: title
-                    })
-                }
-            );
-
-        const result =
-            await response.json();
+        const result = await response.json();
 
         if (!result.success) {
-
-            alert(
-                result.error ||
-                "Nie udało się utworzyć wątku."
-            );
-
+            alert(result.error || "Nie udało się utworzyć wątku.");
             return;
         }
 
-        /* pierwszy post */
-
-        await fetch(
-            API + "/api/post",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
-
-                body: JSON.stringify({
-                    thread_id:
-                        result.thread_id,
-
-                    content: content
-                })
-            }
-        );
+        /* dodanie pierwszego posta */
+        await fetch(API + "/api/post", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                thread_id: result.thread_id,
+                content: content
+            })
+        });
 
         hideCreate();
-
-        document.getElementById(
-            "threadTitle"
-        ).value = "";
-
-        document.getElementById(
-            "threadContent"
-        ).value = "";
-
+        document.getElementById("threadTitle").value = "";
+        document.getElementById("threadContent").value = "";
+        document.getElementById("threadPassword").value = "";
         loadThreads();
 
     } catch (error) {
-
-        alert(
-            "Nie można połączyć się z API."
-        );
-
+        alert("Nie można połączyć się z API.");
         console.error(error);
     }
 }
 
-
 /* =========================
-   OTWIERANIE WĄTKU
+   OTWIERANIE WĄTKU (Z HASŁEM I WSTECZ)
 ========================= */
-
-async function openThread(id) {
-
+async function openThread(id, pushHistory = true) {
     try {
+        const headers = {};
+        if (currentThreadPassword) {
+            headers["X-Thread-Password"] = currentThreadPassword;
+        }
 
-        const response =
-            await fetch(
-                API + "/api/thread/" + id
-            );
+        let response = await fetch(`${API}/api/thread/${id}`, { headers });
 
-        const data =
-            await response.json();
+        // Jeśli wątek wymaga hasła prywatnego (Status 401)
+        if (response.status === 401) {
+            const pass = prompt("Wątek jest prywatny. Podaj hasło dostępu:");
+            if (!pass) return;
+
+            currentThreadPassword = pass;
+            headers["X-Thread-Password"] = pass;
+            response = await fetch(`${API}/api/thread/${id}`, { headers });
+
+            if (response.status === 401) {
+                alert("Niepoprawne hasło!");
+                currentThreadPassword = '';
+                return;
+            }
+        }
+
+        const data = await response.json();
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
 
         currentThread = id;
 
-        document.getElementById(
-            "home"
-        ).style.display = "none";
+        if (pushHistory) {
+            window.history.pushState({ threadId: id }, "", `?thread=${id}`);
+        }
 
-        document.getElementById(
-            "board"
-        ).style.display = "block";
+        document.getElementById("home").style.display = "none";
+        document.getElementById("board").style.display = "block";
 
-        const board =
-            document.getElementById(
-                "boardContent"
-            );
-
+        const board = document.getElementById("boardContent");
         board.innerHTML = `
-            <h2 style="
-                color:#eee;
-                font-weight:normal;
-                margin-bottom:25px;
-            ">
-                #${data.thread.id}
-                ${escapeHTML(
-                    data.thread.title
-                )}
+            <h2 style="color:#eee; font-weight:normal; margin-bottom:25px;">
+                #${data.thread.id} ${escapeHTML(data.thread.title)}
             </h2>
         `;
 
         data.posts.forEach(post => {
-
-            const div =
-                document.createElement("div");
-
+            const div = document.createElement("div");
             div.className = "post";
-
             div.innerHTML = `
                 <div class="post-head">
-                    ANONIM
-                    // #${post.id}
-                    // ${formatDate(post.created_at)}
+                    ANONIM // #${post.id} // ${formatDate(post.created_at)}
                 </div>
-
-                <div class="post-content">
-                    ${escapeHTML(post.content)}
-                </div>
+                <div class="post-content">${escapeHTML(post.content)}</div>
             `;
-
             board.appendChild(div);
-
         });
 
     } catch (error) {
-
         console.error(error);
-
-        alert(
-            "Nie udało się otworzyć wątku."
-        );
+        alert("Nie udało się otworzyć wątku.");
     }
 }
 
-
 /* =========================
-   ODPOWIEDŹ
+   WYSYŁANIE ODPOWIEDZI
 ========================= */
-
 async function sendPost() {
-
-    const textarea =
-        document.getElementById(
-            "replyContent"
-        );
-
-    const content =
-        textarea.value.trim();
+    const textarea = document.getElementById("replyContent");
+    const content = textarea.value.trim();
 
     if (!content) return;
 
     try {
+        const headers = { "Content-Type": "application/json" };
+        if (currentThreadPassword) {
+            headers["X-Thread-Password"] = currentThreadPassword;
+        }
 
-        const response =
-            await fetch(
-                API + "/api/post",
-                {
-                    method: "POST",
+        const response = await fetch(API + "/api/post", {
+            method: "POST",
+            headers,
+            body: JSON.stringify({
+                thread_id: currentThread,
+                content: content
+            })
+        });
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        thread_id:
-                            currentThread,
-
-                        content: content
-                    })
-                }
-            );
-
-        const result =
-            await response.json();
+        const result = await response.json();
 
         if (!result.success) {
-
-            alert(
-                result.error ||
-                "Błąd wysyłania."
-            );
-
+            alert(result.error || "Błąd wysyłania.");
             return;
         }
 
         textarea.value = "";
-
-        openThread(currentThread);
+        openThread(currentThread, false);
 
     } catch (error) {
-
-        alert(
-            "Błąd połączenia z API."
-        );
+        alert("Błąd połączenia z API.");
     }
 }
 
-
 /* =========================
-   POWRÓT
+   POWRÓT DO STRONY GŁÓWNEJ
 ========================= */
-
 function showHome() {
+    window.history.pushState(null, "", window.location.pathname);
+    showHomeUI();
+}
 
+function showHomeUI() {
     currentThread = null;
-
-    document.getElementById(
-        "board"
-    ).style.display = "none";
-
-    document.getElementById(
-        "home"
-    ).style.display = "block";
-
+    currentThreadPassword = '';
+    document.getElementById("board").style.display = "none";
+    document.getElementById("home").style.display = "block";
     loadThreads();
 }
-    
 
 /* =========================
    OCHRONA HTML
 ========================= */
-
 function escapeHTML(text) {
-
-    const div =
-        document.createElement("div");
-
+    const div = document.createElement("div");
     div.textContent = text;
-
     return div.innerHTML;
 }
 
-
 /* =========================
-   START
+   START & AUTO-REFRESH
 ========================= */
+const urlParams = new URLSearchParams(window.location.search);
+const initialThreadId = urlParams.get('thread');
 
-loadThreads();
+if (initialThreadId) {
+    openThread(initialThreadId, false);
+} else {
+    loadThreads();
+}
 
-//* Auto-odświeżanie co 15 sekund */
 setInterval(() => {
     if (currentThread) {
-        // Odświeżaj wątek tylko, jeśli użytkownik nie pisze odpowiedzi
         const replyBox = document.getElementById("replyContent");
         if (!replyBox || !replyBox.value.trim()) {
-            openThread(currentThread);
+            openThread(currentThread, false);
         }
     } else {
-        // Odświeżaj listę wątków tylko, jeśli okno tworzenia wątku jest zamknięte
         const createBox = document.getElementById("createBox");
         if (!createBox || createBox.style.display !== "block") {
             loadThreads();
         }
     }
-}, 15000); // 15000 = 15 sekund
-    
+}, 15000);
 </script>
 
 </body>
