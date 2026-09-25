@@ -38,7 +38,7 @@
 
     .admin-card {
       width: 100%;
-      max-width: 850px;
+      max-width: 900px;
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -61,15 +61,23 @@
       font-size: 0.9rem;
     }
 
-    .btn { padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; cursor: pointer; border: none; }
+    .btn { padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; cursor: pointer; border: none; transition: .2s; }
     .btn-primary { background: var(--text); color: var(--bg); }
     .btn-secondary { background: #27272a; color: var(--text); }
     .btn-warning { background: var(--warning); color: #000; }
     .btn-success { background: var(--success); color: #000; }
     .btn-danger { background: var(--danger); color: #ffffff; }
+    .btn:hover { opacity: 0.9; }
 
     .thread-item { padding: 16px; background: #000; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 16px; }
-    .thread-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .thread-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+
+    .badge { text-transform: uppercase; font-size: 10px; padding: 2px 6px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }
+    .badge-pinned { background: #3a2e00; border: 1px solid #aa8800; color: #ffd700; font-weight: bold; }
+    .badge-netivly { background: #0d2238; border: 1px solid #38a; color: #8cf; }
+    .badge-private { background: #380d0d; border: 1px solid #833; color: #f88; }
+    .badge-trash { background: #1a1a1a; border: 1px solid #555; color: #888; }
+    .badge-main { background: #0d3810; border: 1px solid #383; color: #8f8; }
 
     .post-item {
       background: #09090b;
@@ -80,7 +88,7 @@
     }
 
     .post-content-view { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #a1a1aa; margin-bottom: 8px; white-space: pre-wrap; }
-    .edit-box { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+    .edit-box { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; padding: 12px; background: #0a0a0c; border: 1px dashed var(--border); border-radius: 6px; }
 
     .hidden { display: none !important; }
   </style>
@@ -88,18 +96,18 @@
 <body>
 
   <div class="header-logo">netivly</div>
-  <div class="sub-logo">ADMIN PANEL // RĘCZNA MODERACJA D1</div>
+  <div class="sub-logo">ADMIN PANEL // MODERACJA BAZY D1</div>
 
   <!-- FORMULARZ LOGOWANIA -->
   <div id="login-section" class="admin-card">
     <h2>Zaloguj się</h2>
     <form id="login-form">
       <div class="form-group">
-        <label>Login</label>
+        <label>Login Admina</label>
         <input type="text" id="username" class="form-control" required>
       </div>
       <div class="form-group">
-        <label>Hasło</label>
+        <label>Hasło Admina</label>
         <input type="password" id="password" class="form-control" required>
       </div>
       <button type="submit" class="btn btn-primary" style="width: 100%;">Zaloguj</button>
@@ -109,11 +117,11 @@
   <!-- PANEL MODERACJI -->
   <div id="dashboard-section" class="admin-card hidden">
     <h2>
-      <span>Moderacja Treści</span>
+      <span>Zarządzanie Wątkami i Postami</span>
       <button id="logout-btn" class="btn btn-danger">Wyloguj</button>
     </h2>
 
-    <button id="refresh-threads" class="btn btn-secondary" style="margin-bottom: 20px;">🔄 Odśwież listę</button>
+    <button id="refresh-threads" class="btn btn-secondary" style="margin-bottom: 20px;">🔄 Odśwież Baze D1</button>
     <div id="threads-list">Ładowanie danych...</div>
   </div>
 
@@ -169,33 +177,63 @@
 
         let html = '';
         for (const t of threads) {
-          const threadRes = await fetch(`${API_URL}/api/thread/${t.id}`);
-          const threadData = await threadRes.json();
-          const posts = threadData.posts || [];
+          let posts = [];
+          try {
+            const threadRes = await fetch(`${API_URL}/api/thread/${t.id}`, {
+              headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+            });
+            const threadData = await threadRes.json();
+            posts = threadData.posts || [];
+          } catch(e) {}
+
+          const isPinned = t.is_pinned === 1;
 
           html += `
             <div class="thread-item" id="thread-box-${t.id}">
               <div class="thread-header">
                 <div>
-                  <strong style="font-size: 1.1rem;">#${t.id} <span id="thread-title-text-${t.id}">${t.title}</span></strong>
-                  <div style="font-size: 0.75rem; color: var(--muted);">${new Date(t.created_at).toLocaleString()}</div>
+                  <strong style="font-size: 1.1rem;">
+                    ${isPinned ? '<span class="badge badge-pinned">📌 Przypięty</span>' : ''}
+                    <span class="badge badge-${t.category || 'main'}">${t.category || 'main'}</span>
+                    #${t.id} <span id="thread-title-text-${t.id}">${t.title}</span>
+                  </strong>
+                  <div style="font-size: 0.75rem; color: var(--muted); margin-top: 4px;">
+                    ${new Date(t.created_at).toLocaleString()}
+                  </div>
                 </div>
-                <div style="display: flex; gap: 6px;">
-                  <button class="btn btn-warning" onclick="toggleEditThread(${t.id})">✏️ Cenzuruj Tytuł</button>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <button class="btn ${isPinned ? 'btn-secondary' : 'btn-warning'}" onclick="togglePinThread(${t.id}, ${!isPinned})">
+                    ${isPinned ? '📌 Odpinaj' : '📌 Przypnij'}
+                  </button>
+                  <button class="btn btn-warning" onclick="toggleEditThread(${t.id})">⚙️ Kategoria / Tytuł</button>
                   <button class="btn btn-danger" onclick="deleteThread(${t.id})">Usuń Wątek</button>
                 </div>
               </div>
 
-              <!-- Edycja tytułu wątku -->
-              <div id="thread-edit-form-${t.id}" class="edit-box hidden" style="margin-bottom: 12px;">
-                <input type="text" id="thread-input-${t.id}" class="form-control" value="${t.title}">
-                <div style="display: flex; gap: 6px;">
-                  <button class="btn btn-success" onclick="saveThreadTitle(${t.id})">Zapisz Tytuł w D1</button>
-                  <button class="btn btn-secondary" onclick="autoCensorTitleInput(${t.id})">🪄 Podpowiedź RODO</button>
+              <!-- OPCJE MONITOWANIA KATEGORII ORAZ EDYCYJNE -->
+              <div id="thread-edit-form-${t.id}" class="edit-box hidden">
+                <div style="font-size: 0.8rem; color: var(--muted); font-weight: bold;">USTAWIENIA WĄTKU</div>
+                
+                <input type="text" id="thread-input-${t.id}" class="form-control" value="${t.title}" placeholder="Tytuł wątku...">
+                
+                <div style="display: flex; gap: 8px;">
+                  <select id="thread-cat-select-${t.id}" class="form-control" onchange="toggleAdminPasswordInput(${t.id})">
+                    <option value="main" ${t.category === 'main' ? 'selected' : ''}>Kategoria: Main (Główna)</option>
+                    <option value="netivly" ${t.category === 'netivly' ? 'selected' : ''}>Kategoria: Netivly (Oficjalny Admin)</option>
+                    <option value="trash" ${t.category === 'trash' ? 'selected' : ''}>Kategoria: Trash (Kosz)</option>
+                    <option value="private" ${t.category === 'private' ? 'selected' : ''}>Kategoria: Private (Prywatna)</option>
+                  </select>
+                </div>
+
+                <input type="password" id="thread-pass-input-${t.id}" class="form-control ${t.category === 'private' ? '' : 'hidden'}" placeholder="Ustaw nowe hasło dla kategorii Private...">
+
+                <div style="display: flex; gap: 6px; margin-top: 4px;">
+                  <button class="btn btn-success" onclick="saveThreadSettings(${t.id})">Zapisz Zmiany w D1</button>
+                  <button class="btn btn-secondary" onclick="autoCensorTitleInput(${t.id})">🪄 Cenzura RODO</button>
                 </div>
               </div>
 
-              <!-- Lista Postów -->
+              <!-- Lista Postów w wątku -->
               <div style="margin-top: 10px; padding-left: 10px; border-left: 2px solid var(--border);">
                 ${posts.map(p => `
                   <div class="post-item" id="post-box-${p.id}">
@@ -236,7 +274,75 @@
       document.getElementById(`thread-edit-form-${id}`).classList.toggle('hidden');
     }
 
-    // Pobranie automatycznej propozycji cenzury (przycisk podpowiedzi)
+    function toggleAdminPasswordInput(id) {
+      const cat = document.getElementById(`thread-cat-select-${id}`).value;
+      const passInput = document.getElementById(`thread-pass-input-${id}`);
+      if (cat === 'private') {
+        passInput.classList.remove('hidden');
+      } else {
+        passInput.classList.add('hidden');
+      }
+    }
+
+    // PRZYPIĘCIE / ODPIĘCIE WĄTKU (is_pinned)
+    async function togglePinThread(id, shouldPin) {
+      const res = await fetch(`${API_URL}/api/admin/thread/update`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify({
+          thread_id: id,
+          is_pinned: shouldPin ? 1 : 0
+        })
+      });
+
+      if (res.ok) {
+        loadThreads();
+      } else {
+        alert('Nie udało się zmienić przypięcia.');
+      }
+    }
+
+    // ZAPIS NOWEJ KATEGORII, TYTUŁU ORAZ HASŁA
+    async function saveThreadSettings(id) {
+      const newTitle = document.getElementById(`thread-input-${id}`).value;
+      const targetCat = document.getElementById(`thread-cat-select-${id}`).value;
+      const pass = document.getElementById(`thread-pass-input-${id}`).value;
+
+      // 1. Zmiana kategorii i hasła
+      const updateRes = await fetch(`${API_URL}/api/admin/thread/update`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify({
+          thread_id: id,
+          target_category: targetCat,
+          password: pass
+        })
+      });
+
+      // 2. Aktualizacja tytułu w D1
+      const titleRes = await fetch(`${API_URL}/api/admin/thread/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify({ title: newTitle })
+      });
+
+      if (updateRes.ok && titleRes.ok) {
+        loadThreads();
+      } else {
+        alert('Błąd podczas zapisywania zmian wątku.');
+      }
+    }
+
+    // SUGOSCJE RODO / CENZURY
     async function autoCensorPostInput(id) {
       const input = document.getElementById(`post-input-${id}`);
       const res = await fetch(`${API_URL}/api/admin/suggest-censor`, {
@@ -265,7 +371,7 @@
       if (res.ok) input.value = data.suggestedText;
     }
 
-    // Zapis zaktualizowanej treści posta w bazie D1
+    // ZAPIS POSTA
     async function savePostContent(id) {
       const newContent = document.getElementById(`post-input-${id}`).value;
       const res = await fetch(`${API_URL}/api/admin/post/${id}`, {
@@ -285,26 +391,7 @@
       }
     }
 
-    // Zapis zaktualizowanego tytułu wątku w bazie D1
-    async function saveThreadTitle(id) {
-      const newTitle = document.getElementById(`thread-input-${id}`).value;
-      const res = await fetch(`${API_URL}/api/admin/thread/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
-        },
-        body: JSON.stringify({ title: newTitle })
-      });
-
-      if (res.ok) {
-        document.getElementById(`thread-title-text-${id}`).innerText = newTitle;
-        toggleEditThread(id);
-      } else {
-        alert('Błąd zapisywania zmian.');
-      }
-    }
-
+    // USUWANIE
     async function deletePost(id) {
       if (!confirm('Usunąć ten post?')) return;
       const res = await fetch(`${API_URL}/api/admin/post/${id}`, {
