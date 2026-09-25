@@ -69,6 +69,36 @@
     .btn-danger { background: var(--danger); color: #ffffff; }
     .btn:hover { opacity: 0.9; }
 
+    /* STYLE ZAKŁADEK / KATEGORII */
+    .category-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: #18181b;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover { color: var(--text); background: #27272a; }
+    .tab-btn.active {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
     .thread-item { padding: 16px; background: #000; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 16px; }
     .thread-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
 
@@ -157,7 +187,19 @@
         <button id="logout-btn" class="btn btn-danger">Wyloguj</button>
       </h2>
 
-      <button id="refresh-threads" class="btn btn-secondary" style="margin-bottom: 20px;">🔄 Odśwież Bazę D1</button>
+      <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 16px;">
+        <button id="refresh-threads" class="btn btn-secondary">🔄 Odśwież Baze D1</button>
+      </div>
+
+      <!-- PASEK ZAKŁADEK KATEGORII -->
+      <div class="category-tabs">
+        <button class="tab-btn active" onclick="switchCategory('all', this)">Wszystkie (<span id="count-all">0</span>)</button>
+        <button class="tab-btn" onclick="switchCategory('netivly', this)">🌐 Netivly (<span id="count-netivly">0</span>)</button>
+        <button class="tab-btn" onclick="switchCategory('main', this)">💬 Main (<span id="count-main">0</span>)</button>
+        <button class="tab-btn" onclick="switchCategory('private', this)">🔒 Private (<span id="count-private">0</span>)</button>
+        <button class="tab-btn" onclick="switchCategory('trash', this)">🗑️ Trash (<span id="count-trash">0</span>)</button>
+      </div>
+
       <div id="threads-list">Ładowanie danych...</div>
     </div>
 
@@ -170,12 +212,8 @@
     const dashboardWrapper = document.getElementById('dashboard-wrapper');
     const threadsList = document.getElementById('threads-list');
 
-    function escapeHTML(str) {
-      if (!str) return '';
-      return str.replace(/[&<>'"]/g, 
-        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-      );
-    }
+    let rawThreadsData = []; // Globalna pamięć podręczna pobranych wątków
+    let currentCategoryFilter = 'all';
 
     if (localStorage.getItem('adminToken')) showDashboard();
 
@@ -219,6 +257,7 @@
       }
     }
 
+    // TWORZENIE NOWEGO WĄTKU
     document.getElementById('create-thread-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const title = document.getElementById('new-thread-title').value.trim();
@@ -265,111 +304,146 @@
       }
     });
 
+    // PRZEŁĄCZANIE ZAKŁADEK KATEGORII
+    function switchCategory(cat, btn) {
+      currentCategoryFilter = cat;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderThreads();
+    }
+
+    // POBIERANIE WĄTKÓW Z D1
     async function loadThreads() {
       threadsList.innerHTML = 'Ładowanie wątków i postów...';
       try {
-        let threads = [];
-        const resFull = await fetch(`${API_URL}/api/admin/threads-full`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
-        });
+        const res = await fetch(`${API_URL}/api/threads`);
+        let threads = await res.json();
 
-        if (resFull.ok) {
-          threads = await resFull.json();
-        } else {
-          const res = await fetch(`${API_URL}/api/threads`);
-          threads = await res.json();
+        if (threads && threads.results && Array.isArray(threads.results)) {
+          threads = threads.results;
+        } else if (threads && threads.data && Array.isArray(threads.data)) {
+          threads = threads.data;
         }
 
-        if (!Array.isArray(threads) || threads.length === 0) {
-          threadsList.innerHTML = '<p style="color: var(--muted);">Brak wątków w bazie.</p>';
-          return;
-        }
+        rawThreadsData = Array.isArray(threads) ? threads : [];
+        
+        // Aktualizacja liczników na zakładkach
+        updateCategoryCounters(rawThreadsData);
+        
+        // Wyrenderowanie wątków według obecnej zakładki
+        renderThreads();
 
-        let html = '';
-        for (const t of threads) {
-          let posts = t.posts;
-          if (!posts) {
-            try {
-              const threadRes = await fetch(`${API_URL}/api/thread/${t.id}`, {
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
-              });
-              const threadData = await threadRes.json();
-              posts = threadData.posts || [];
-            } catch(e) {
-              posts = [];
-            }
-          }
-
-          const isPinned = t.is_pinned === 1;
-
-          html += `
-            <div class="thread-item" id="thread-box-${t.id}">
-              <div class="thread-header">
-                <div>
-                  <strong style="font-size: 1.1rem;">
-                    <span id="thread-pin-badge-${t.id}">${isPinned ? '<span class="badge badge-pinned">📌 Przypięty</span>' : ''}</span>
-                    <span id="thread-cat-badge-${t.id}" class="badge badge-${t.category || 'main'}">${t.category || 'main'}</span>
-                    #${t.id} <span id="thread-title-text-${t.id}">${escapeHTML(t.title)}</span>
-                  </strong>
-                  <div style="font-size: 0.75rem; color: var(--muted); margin-top: 4px;">
-                    ${new Date(t.created_at).toLocaleString()}
-                  </div>
-                </div>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                  <button id="pin-btn-${t.id}" class="btn ${isPinned ? 'btn-secondary' : 'btn-warning'}" onclick="togglePinThread(${t.id}, ${!isPinned})">
-                    ${isPinned ? '📌 Odpinaj' : '📌 Przypnij'}
-                  </button>
-                  <button class="btn btn-warning" onclick="toggleEditThread(${t.id})">⚙️ Kategoria / Tytuł</button>
-                  <button class="btn btn-danger" onclick="deleteThread(${t.id})">Usuń Wątek</button>
-                </div>
-              </div>
-
-              <div id="thread-edit-form-${t.id}" class="edit-box hidden">
-                <div style="font-size: 0.8rem; color: var(--muted); font-weight: bold;">USTAWIENIA WĄTKU</div>
-                <input type="text" id="thread-input-${t.id}" class="form-control" value="${escapeHTML(t.title)}">
-                
-                <select id="thread-cat-select-${t.id}" class="form-control" onchange="toggleAdminPasswordInput(${t.id})">
-                  <option value="netivly" ${t.category === 'netivly' ? 'selected' : ''}>Kategoria: Netivly (Oficjalny Admin)</option>
-                  <option value="main" ${t.category === 'main' ? 'selected' : ''}>Kategoria: Main (Główna)</option>
-                  <option value="trash" ${t.category === 'trash' ? 'selected' : ''}>Kategoria: Trash (Kosz)</option>
-                  <option value="private" ${t.category === 'private' ? 'selected' : ''}>Kategoria: Private (Prywatna)</option>
-                </select>
-
-                <input type="password" id="thread-pass-input-${t.id}" class="form-control ${t.category === 'private' ? '' : 'hidden'}" placeholder="Ustaw nowe hasło dla kategorii Private...">
-
-                <div style="display: flex; gap: 6px; margin-top: 4px;">
-                  <button class="btn btn-success" onclick="saveThreadSettings(${t.id})">Zapisz Zmiany w D1</button>
-                  <button class="btn btn-secondary" onclick="autoCensorTitleInput(${t.id})">🪄 Cenzura RODO</button>
-                </div>
-              </div>
-
-              <div style="margin-top: 10px; padding-left: 10px; border-left: 2px solid var(--border);">
-                ${posts.map(p => `
-                  <div class="post-item" id="post-box-${p.id}">
-                    <div class="post-content-view" id="post-text-${p.id}">${escapeHTML(p.content)}</div>
-                    <div style="display: flex; gap: 6px;">
-                      <button class="btn btn-warning" onclick="toggleEditPost(${p.id})">✏️ Edytuj / Cenzuruj Post</button>
-                      <button class="btn btn-danger" onclick="deletePost(${p.id})">Usuń Post</button>
-                    </div>
-
-                    <div id="post-edit-form-${p.id}" class="edit-box hidden">
-                      <textarea id="post-input-${p.id}" class="form-control" rows="3">${escapeHTML(p.content)}</textarea>
-                      <div style="display: flex; gap: 6px;">
-                        <button class="btn btn-success" onclick="savePostContent(${p.id})">Zapisz Zmiany w D1</button>
-                        <button class="btn btn-secondary" onclick="autoCensorPostInput(${p.id})">🪄 Podpowiedź RODO</button>
-                      </div>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          `;
-        }
-
-        threadsList.innerHTML = html;
       } catch (err) {
         threadsList.innerHTML = `<p style="color: var(--danger);">Błąd: ${err.message}</p>`;
       }
+    }
+
+    function updateCategoryCounters(threads) {
+      document.getElementById('count-all').innerText = threads.length;
+      document.getElementById('count-netivly').innerText = threads.filter(t => (t.category || 'main') === 'netivly').length;
+      document.getElementById('count-main').innerText = threads.filter(t => (t.category || 'main') === 'main').length;
+      document.getElementById('count-private').innerText = threads.filter(t => t.category === 'private').length;
+      document.getElementById('count-trash').innerText = threads.filter(t => t.category === 'trash').length;
+    }
+
+    // RENDEROWANIE WĄTKÓW
+    async function renderThreads() {
+      let filtered = rawThreadsData;
+
+      if (currentCategoryFilter !== 'all') {
+        filtered = rawThreadsData.filter(t => (t.category || 'main') === currentCategoryFilter);
+      }
+
+      if (filtered.length === 0) {
+        threadsList.innerHTML = '<p style="color: var(--muted); padding: 10px 0;">Brak wątków w tej kategorii.</p>';
+        return;
+      }
+
+      let html = '';
+      for (const t of filtered) {
+        let posts = [];
+        try {
+          const threadRes = await fetch(`${API_URL}/api/thread/${t.id}`, {
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+          });
+          const threadData = await threadRes.json();
+          
+          if (Array.isArray(threadData.posts)) {
+            posts = threadData.posts;
+          } else if (threadData.posts && Array.isArray(threadData.posts.results)) {
+            posts = threadData.posts.results;
+          } else if (Array.isArray(threadData)) {
+            posts = threadData;
+          }
+        } catch(e) {}
+
+        const isPinned = t.is_pinned === 1;
+
+        html += `
+          <div class="thread-item" id="thread-box-${t.id}">
+            <div class="thread-header">
+              <div>
+                <strong style="font-size: 1.1rem;">
+                  ${isPinned ? '<span class="badge badge-pinned">📌 Przypięty</span>' : ''}
+                  <span class="badge badge-${t.category || 'main'}">${t.category || 'main'}</span>
+                  #${t.id} <span id="thread-title-text-${t.id}">${t.title}</span>
+                </strong>
+                <div style="font-size: 0.75rem; color: var(--muted); margin-top: 4px;">
+                  ${t.created_at ? new Date(t.created_at).toLocaleString() : ''}
+                </div>
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <button class="btn ${isPinned ? 'btn-secondary' : 'btn-warning'}" onclick="togglePinThread(${t.id}, ${!isPinned})">
+                  ${isPinned ? '📌 Odpinaj' : '📌 Przypnij'}
+                </button>
+                <button class="btn btn-warning" onclick="toggleEditThread(${t.id})">⚙️ Kategoria / Tytuł</button>
+                <button class="btn btn-danger" onclick="deleteThread(${t.id})">Usuń Wątek</button>
+              </div>
+            </div>
+
+            <div id="thread-edit-form-${t.id}" class="edit-box hidden">
+              <div style="font-size: 0.8rem; color: var(--muted); font-weight: bold;">USTAWIENIA WĄTKU</div>
+              <input type="text" id="thread-input-${t.id}" class="form-control" value="${t.title}">
+              
+              <select id="thread-cat-select-${t.id}" class="form-control" onchange="toggleAdminPasswordInput(${t.id})">
+                <option value="netivly" ${t.category === 'netivly' ? 'selected' : ''}>Kategoria: Netivly (Oficjalny Admin)</option>
+                <option value="main" ${t.category === 'main' ? 'selected' : ''}>Kategoria: Main (Główna)</option>
+                <option value="trash" ${t.category === 'trash' ? 'selected' : ''}>Kategoria: Trash (Kosz)</option>
+                <option value="private" ${t.category === 'private' ? 'selected' : ''}>Kategoria: Private (Prywatna)</option>
+              </select>
+
+              <input type="password" id="thread-pass-input-${t.id}" class="form-control ${t.category === 'private' ? '' : 'hidden'}" placeholder="Ustaw nowe hasło dla kategorii Private...">
+
+              <div style="display: flex; gap: 6px; margin-top: 4px;">
+                <button class="btn btn-success" onclick="saveThreadSettings(${t.id})">Zapisz Zmiany w D1</button>
+                <button class="btn btn-secondary" onclick="autoCensorTitleInput(${t.id})">🪄 Cenzura RODO</button>
+              </div>
+            </div>
+
+            <div style="margin-top: 10px; padding-left: 10px; border-left: 2px solid var(--border);">
+              ${posts.length > 0 ? posts.map(p => `
+                <div class="post-item" id="post-box-${p.id}">
+                  <div class="post-content-view" id="post-text-${p.id}">${p.content}</div>
+                  <div style="display: flex; gap: 6px;">
+                    <button class="btn btn-warning" onclick="toggleEditPost(${p.id})">✏️ Edytuj / Cenzuruj Post</button>
+                    <button class="btn btn-danger" onclick="deletePost(${p.id})">Usuń Post</button>
+                  </div>
+
+                  <div id="post-edit-form-${p.id}" class="edit-box hidden">
+                    <textarea id="post-input-${p.id}" class="form-control" rows="3">${p.content}</textarea>
+                    <div style="display: flex; gap: 6px;">
+                      <button class="btn btn-success" onclick="savePostContent(${p.id})">Zapisz Zmiany w D1</button>
+                      <button class="btn btn-secondary" onclick="autoCensorPostInput(${p.id})">🪄 Podpowiedź RODO</button>
+                    </div>
+                  </div>
+                </div>
+              `).join('') : '<div style="font-size: 0.8rem; color: var(--muted);">Brak postów w tym wątku.</div>'}
+            </div>
+          </div>
+        `;
+      }
+
+      threadsList.innerHTML = html;
     }
 
     document.getElementById('refresh-threads').addEventListener('click', loadThreads);
@@ -393,25 +467,8 @@
         },
         body: JSON.stringify({ thread_id: id, is_pinned: shouldPin ? 1 : 0 })
       });
-
-      if (res.ok) {
-        const pinBadge = document.getElementById(`thread-pin-badge-${id}`);
-        const pinBtn = document.getElementById(`pin-btn-${id}`);
-        
-        if (shouldPin) {
-          pinBadge.innerHTML = '<span class="badge badge-pinned">📌 Przypięty</span>';
-          pinBtn.className = 'btn btn-secondary';
-          pinBtn.innerText = '📌 Odpinaj';
-          pinBtn.setAttribute('onclick', `togglePinThread(${id}, false)`);
-        } else {
-          pinBadge.innerHTML = '';
-          pinBtn.className = 'btn btn-warning';
-          pinBtn.innerText = '📌 Przypnij';
-          pinBtn.setAttribute('onclick', `togglePinThread(${id}, true)`);
-        }
-      } else {
-        alert('Nie udało się zmienić przypięcia.');
-      }
+      if (res.ok) loadThreads();
+      else alert('Nie udało się zmienić przypięcia.');
     }
 
     async function saveThreadSettings(id) {
@@ -437,15 +494,8 @@
         body: JSON.stringify({ title: newTitle })
       });
 
-      if (updateRes.ok && titleRes.ok) {
-        document.getElementById(`thread-title-text-${id}`).innerText = newTitle;
-        const catBadge = document.getElementById(`thread-cat-badge-${id}`);
-        catBadge.className = `badge badge-${targetCat}`;
-        catBadge.innerText = targetCat;
-        toggleEditThread(id);
-      } else {
-        alert('Błąd podczas zapisywania zmian.');
-      }
+      if (updateRes.ok && titleRes.ok) loadThreads();
+      else alert('Błąd podczas zapisywania zmian.');
     }
 
     async function autoCensorPostInput(id) {
@@ -499,12 +549,7 @@
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
       });
-      if (res.ok) {
-        const postBox = document.getElementById(`post-box-${id}`);
-        if (postBox) postBox.remove();
-      } else {
-        alert('Nie удалось usunąć posta.');
-      }
+      if (res.ok) loadThreads();
     }
 
     async function deleteThread(id) {
@@ -513,12 +558,7 @@
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
       });
-      if (res.ok) {
-        const threadBox = document.getElementById(`thread-box-${id}`);
-        if (threadBox) threadBox.remove();
-      } else {
-        alert('Nie udało się usunąć wątku.');
-      }
+      if (res.ok) loadThreads();
     }
   </script>
 </body>
