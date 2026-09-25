@@ -157,7 +157,7 @@
         <button id="logout-btn" class="btn btn-danger">Wyloguj</button>
       </h2>
 
-      <button id="refresh-threads" class="btn btn-secondary" style="margin-bottom: 20px;">🔄 Odśwież Baze D1</button>
+      <button id="refresh-threads" class="btn btn-secondary" style="margin-bottom: 20px;">🔄 Odśwież Bazę D1</button>
       <div id="threads-list">Ładowanie danych...</div>
     </div>
 
@@ -169,6 +169,13 @@
     const loginSection = document.getElementById('login-section');
     const dashboardWrapper = document.getElementById('dashboard-wrapper');
     const threadsList = document.getElementById('threads-list');
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return str.replace(/[&<>'"]/g, 
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+      );
+    }
 
     if (localStorage.getItem('adminToken')) showDashboard();
 
@@ -212,7 +219,6 @@
       }
     }
 
-    // OBSŁUGA TWORZENIA WĄTKU Z PANELA ADMINA
     document.getElementById('create-thread-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const title = document.getElementById('new-thread-title').value.trim();
@@ -222,7 +228,6 @@
       const token = localStorage.getItem('adminToken');
 
       try {
-        // 1. Utworzenie wątku
         const resThread = await fetch(`${API_URL}/api/thread`, {
           method: 'POST',
           headers: {
@@ -238,7 +243,6 @@
           return;
         }
 
-        // 2. Utworzenie pierwszego posta
         await fetch(`${API_URL}/api/post`, {
           method: 'POST',
           headers: {
@@ -264,8 +268,17 @@
     async function loadThreads() {
       threadsList.innerHTML = 'Ładowanie wątków i postów...';
       try {
-        const res = await fetch(`${API_URL}/api/threads`);
-        const threads = await res.json();
+        let threads = [];
+        const resFull = await fetch(`${API_URL}/api/admin/threads-full`, {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+        });
+
+        if (resFull.ok) {
+          threads = await resFull.json();
+        } else {
+          const res = await fetch(`${API_URL}/api/threads`);
+          threads = await res.json();
+        }
 
         if (!Array.isArray(threads) || threads.length === 0) {
           threadsList.innerHTML = '<p style="color: var(--muted);">Brak wątków w bazie.</p>';
@@ -274,14 +287,18 @@
 
         let html = '';
         for (const t of threads) {
-          let posts = [];
-          try {
-            const threadRes = await fetch(`${API_URL}/api/thread/${t.id}`, {
-              headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
-            });
-            const threadData = await threadRes.json();
-            posts = threadData.posts || [];
-          } catch(e) {}
+          let posts = t.posts;
+          if (!posts) {
+            try {
+              const threadRes = await fetch(`${API_URL}/api/thread/${t.id}`, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+              });
+              const threadData = await threadRes.json();
+              posts = threadData.posts || [];
+            } catch(e) {
+              posts = [];
+            }
+          }
 
           const isPinned = t.is_pinned === 1;
 
@@ -290,16 +307,16 @@
               <div class="thread-header">
                 <div>
                   <strong style="font-size: 1.1rem;">
-                    ${isPinned ? '<span class="badge badge-pinned">📌 Przypięty</span>' : ''}
-                    <span class="badge badge-${t.category || 'main'}">${t.category || 'main'}</span>
-                    #${t.id} <span id="thread-title-text-${t.id}">${t.title}</span>
+                    <span id="thread-pin-badge-${t.id}">${isPinned ? '<span class="badge badge-pinned">📌 Przypięty</span>' : ''}</span>
+                    <span id="thread-cat-badge-${t.id}" class="badge badge-${t.category || 'main'}">${t.category || 'main'}</span>
+                    #${t.id} <span id="thread-title-text-${t.id}">${escapeHTML(t.title)}</span>
                   </strong>
                   <div style="font-size: 0.75rem; color: var(--muted); margin-top: 4px;">
                     ${new Date(t.created_at).toLocaleString()}
                   </div>
                 </div>
                 <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                  <button class="btn ${isPinned ? 'btn-secondary' : 'btn-warning'}" onclick="togglePinThread(${t.id}, ${!isPinned})">
+                  <button id="pin-btn-${t.id}" class="btn ${isPinned ? 'btn-secondary' : 'btn-warning'}" onclick="togglePinThread(${t.id}, ${!isPinned})">
                     ${isPinned ? '📌 Odpinaj' : '📌 Przypnij'}
                   </button>
                   <button class="btn btn-warning" onclick="toggleEditThread(${t.id})">⚙️ Kategoria / Tytuł</button>
@@ -309,7 +326,7 @@
 
               <div id="thread-edit-form-${t.id}" class="edit-box hidden">
                 <div style="font-size: 0.8rem; color: var(--muted); font-weight: bold;">USTAWIENIA WĄTKU</div>
-                <input type="text" id="thread-input-${t.id}" class="form-control" value="${t.title}">
+                <input type="text" id="thread-input-${t.id}" class="form-control" value="${escapeHTML(t.title)}">
                 
                 <select id="thread-cat-select-${t.id}" class="form-control" onchange="toggleAdminPasswordInput(${t.id})">
                   <option value="netivly" ${t.category === 'netivly' ? 'selected' : ''}>Kategoria: Netivly (Oficjalny Admin)</option>
@@ -329,14 +346,14 @@
               <div style="margin-top: 10px; padding-left: 10px; border-left: 2px solid var(--border);">
                 ${posts.map(p => `
                   <div class="post-item" id="post-box-${p.id}">
-                    <div class="post-content-view" id="post-text-${p.id}">${p.content}</div>
+                    <div class="post-content-view" id="post-text-${p.id}">${escapeHTML(p.content)}</div>
                     <div style="display: flex; gap: 6px;">
                       <button class="btn btn-warning" onclick="toggleEditPost(${p.id})">✏️ Edytuj / Cenzuruj Post</button>
                       <button class="btn btn-danger" onclick="deletePost(${p.id})">Usuń Post</button>
                     </div>
 
                     <div id="post-edit-form-${p.id}" class="edit-box hidden">
-                      <textarea id="post-input-${p.id}" class="form-control" rows="3">${p.content}</textarea>
+                      <textarea id="post-input-${p.id}" class="form-control" rows="3">${escapeHTML(p.content)}</textarea>
                       <div style="display: flex; gap: 6px;">
                         <button class="btn btn-success" onclick="savePostContent(${p.id})">Zapisz Zmiany w D1</button>
                         <button class="btn btn-secondary" onclick="autoCensorPostInput(${p.id})">🪄 Podpowiedź RODO</button>
@@ -376,8 +393,25 @@
         },
         body: JSON.stringify({ thread_id: id, is_pinned: shouldPin ? 1 : 0 })
       });
-      if (res.ok) loadThreads();
-      else alert('Nie udało się zmienić przypięcia.');
+
+      if (res.ok) {
+        const pinBadge = document.getElementById(`thread-pin-badge-${id}`);
+        const pinBtn = document.getElementById(`pin-btn-${id}`);
+        
+        if (shouldPin) {
+          pinBadge.innerHTML = '<span class="badge badge-pinned">📌 Przypięty</span>';
+          pinBtn.className = 'btn btn-secondary';
+          pinBtn.innerText = '📌 Odpinaj';
+          pinBtn.setAttribute('onclick', `togglePinThread(${id}, false)`);
+        } else {
+          pinBadge.innerHTML = '';
+          pinBtn.className = 'btn btn-warning';
+          pinBtn.innerText = '📌 Przypnij';
+          pinBtn.setAttribute('onclick', `togglePinThread(${id}, true)`);
+        }
+      } else {
+        alert('Nie udało się zmienić przypięcia.');
+      }
     }
 
     async function saveThreadSettings(id) {
@@ -403,8 +437,15 @@
         body: JSON.stringify({ title: newTitle })
       });
 
-      if (updateRes.ok && titleRes.ok) loadThreads();
-      else alert('Błąd podczas zapisywania zmian.');
+      if (updateRes.ok && titleRes.ok) {
+        document.getElementById(`thread-title-text-${id}`).innerText = newTitle;
+        const catBadge = document.getElementById(`thread-cat-badge-${id}`);
+        catBadge.className = `badge badge-${targetCat}`;
+        catBadge.innerText = targetCat;
+        toggleEditThread(id);
+      } else {
+        alert('Błąd podczas zapisywania zmian.');
+      }
     }
 
     async function autoCensorPostInput(id) {
@@ -458,7 +499,12 @@
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
       });
-      if (res.ok) loadThreads();
+      if (res.ok) {
+        const postBox = document.getElementById(`post-box-${id}`);
+        if (postBox) postBox.remove();
+      } else {
+        alert('Nie удалось usunąć posta.');
+      }
     }
 
     async function deleteThread(id) {
@@ -467,7 +513,12 @@
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
       });
-      if (res.ok) loadThreads();
+      if (res.ok) {
+        const threadBox = document.getElementById(`thread-box-${id}`);
+        if (threadBox) threadBox.remove();
+      } else {
+        alert('Nie udało się usunąć wątku.');
+      }
     }
   </script>
 </body>
