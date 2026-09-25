@@ -114,22 +114,60 @@
     </form>
   </div>
 
-  <!-- PANEL MODERACJI -->
-  <div id="dashboard-section" class="admin-card hidden">
-    <h2>
-      <span>Zarządzanie Wątkami i Postami</span>
-      <button id="logout-btn" class="btn btn-danger">Wyloguj</button>
-    </h2>
+  <!-- SEKCJA PO ZALOGOWANIU -->
+  <div id="dashboard-wrapper" class="hidden" style="width: 100%; max-width: 900px;">
+    
+    <!-- TWORZENIE NOWEGO WĄTKU (DLA ADMINA) -->
+    <div class="admin-card">
+      <h2>➕ Utwórz Oficjalny Wątek jako Admin</h2>
+      <form id="create-thread-form">
+        <div class="form-group">
+          <label>Tytuł wątku</label>
+          <input type="text" id="new-thread-title" class="form-control" placeholder="Wpisz tytuł..." required>
+        </div>
+        
+        <div class="form-group">
+          <label>Kategoria</label>
+          <select id="new-thread-category" class="form-control" onchange="toggleNewPassInput()">
+            <option value="netivly" selected>Netivly (Oficjalne ogłoszenia)</option>
+            <option value="main">Main (Główna)</option>
+            <option value="trash">Trash (Kosz)</option>
+            <option value="private">Private (Chronione hasłem)</option>
+          </select>
+        </div>
 
-    <button id="refresh-threads" class="btn btn-secondary" style="margin-bottom: 20px;">🔄 Odśwież Baze D1</button>
-    <div id="threads-list">Ładowanie danych...</div>
+        <div class="form-group hidden" id="new-pass-group">
+          <label>Hasło (dla kategorii Private)</label>
+          <input type="password" id="new-thread-password" class="form-control" placeholder="Wpisz hasło do wątku...">
+        </div>
+
+        <div class="form-group">
+          <label>Treść pierwszego posta</label>
+          <textarea id="new-thread-content" class="form-control" rows="4" placeholder="Napisz wiadomość..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success" style="width: 100%; padding: 12px;">Opublikuj Wątek w D1</button>
+      </form>
+    </div>
+
+    <!-- PANEL MODERACJI I LISTA WĄTKÓW -->
+    <div class="admin-card">
+      <h2>
+        <span>Zarządzanie Wątkami i Postami</span>
+        <button id="logout-btn" class="btn btn-danger">Wyloguj</button>
+      </h2>
+
+      <button id="refresh-threads" class="btn btn-secondary" style="margin-bottom: 20px;">🔄 Odśwież Baze D1</button>
+      <div id="threads-list">Ładowanie danych...</div>
+    </div>
+
   </div>
 
   <script>
     const API_URL = 'https://admin.cosielampisz7.workers.dev';
 
     const loginSection = document.getElementById('login-section');
-    const dashboardSection = document.getElementById('dashboard-section');
+    const dashboardWrapper = document.getElementById('dashboard-wrapper');
     const threadsList = document.getElementById('threads-list');
 
     if (localStorage.getItem('adminToken')) showDashboard();
@@ -160,9 +198,68 @@
 
     function showDashboard() {
       loginSection.classList.add('hidden');
-      dashboardSection.classList.remove('hidden');
+      dashboardWrapper.classList.remove('hidden');
       loadThreads();
     }
+
+    function toggleNewPassInput() {
+      const cat = document.getElementById('new-thread-category').value;
+      const passGroup = document.getElementById('new-pass-group');
+      if (cat === 'private') {
+        passGroup.classList.remove('hidden');
+      } else {
+        passGroup.classList.add('hidden');
+      }
+    }
+
+    // OBSŁUGA TWORZENIA WĄTKU Z PANELA ADMINA
+    document.getElementById('create-thread-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('new-thread-title').value.trim();
+      const category = document.getElementById('new-thread-category').value;
+      const password = document.getElementById('new-thread-password').value.trim();
+      const content = document.getElementById('new-thread-content').value.trim();
+      const token = localStorage.getItem('adminToken');
+
+      try {
+        // 1. Utworzenie wątku
+        const resThread = await fetch(`${API_URL}/api/thread`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ title, category, password })
+        });
+        const dataThread = await resThread.json();
+
+        if (!dataThread.success) {
+          alert('Błąd: ' + (dataThread.error || 'Nie udało się utworzyć wątku.'));
+          return;
+        }
+
+        // 2. Utworzenie pierwszego posta
+        await fetch(`${API_URL}/api/post`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            thread_id: dataThread.thread_id,
+            content: content
+          })
+        });
+
+        alert('Wątek został dodany!');
+        document.getElementById('create-thread-form').reset();
+        toggleNewPassInput();
+        loadThreads();
+
+      } catch (err) {
+        alert('Błąd połączenia z serwerem.');
+      }
+    });
 
     async function loadThreads() {
       threadsList.innerHTML = 'Ładowanie wątków i postów...';
@@ -210,20 +307,16 @@
                 </div>
               </div>
 
-              <!-- OPCJE MONITOWANIA KATEGORII ORAZ EDYCYJNE -->
               <div id="thread-edit-form-${t.id}" class="edit-box hidden">
                 <div style="font-size: 0.8rem; color: var(--muted); font-weight: bold;">USTAWIENIA WĄTKU</div>
+                <input type="text" id="thread-input-${t.id}" class="form-control" value="${t.title}">
                 
-                <input type="text" id="thread-input-${t.id}" class="form-control" value="${t.title}" placeholder="Tytuł wątku...">
-                
-                <div style="display: flex; gap: 8px;">
-                  <select id="thread-cat-select-${t.id}" class="form-control" onchange="toggleAdminPasswordInput(${t.id})">
-                    <option value="main" ${t.category === 'main' ? 'selected' : ''}>Kategoria: Main (Główna)</option>
-                    <option value="netivly" ${t.category === 'netivly' ? 'selected' : ''}>Kategoria: Netivly (Oficjalny Admin)</option>
-                    <option value="trash" ${t.category === 'trash' ? 'selected' : ''}>Kategoria: Trash (Kosz)</option>
-                    <option value="private" ${t.category === 'private' ? 'selected' : ''}>Kategoria: Private (Prywatna)</option>
-                  </select>
-                </div>
+                <select id="thread-cat-select-${t.id}" class="form-control" onchange="toggleAdminPasswordInput(${t.id})">
+                  <option value="netivly" ${t.category === 'netivly' ? 'selected' : ''}>Kategoria: Netivly (Oficjalny Admin)</option>
+                  <option value="main" ${t.category === 'main' ? 'selected' : ''}>Kategoria: Main (Główna)</option>
+                  <option value="trash" ${t.category === 'trash' ? 'selected' : ''}>Kategoria: Trash (Kosz)</option>
+                  <option value="private" ${t.category === 'private' ? 'selected' : ''}>Kategoria: Private (Prywatna)</option>
+                </select>
 
                 <input type="password" id="thread-pass-input-${t.id}" class="form-control ${t.category === 'private' ? '' : 'hidden'}" placeholder="Ustaw nowe hasło dla kategorii Private...">
 
@@ -233,7 +326,6 @@
                 </div>
               </div>
 
-              <!-- Lista Postów w wątku -->
               <div style="margin-top: 10px; padding-left: 10px; border-left: 2px solid var(--border);">
                 ${posts.map(p => `
                   <div class="post-item" id="post-box-${p.id}">
@@ -243,7 +335,6 @@
                       <button class="btn btn-danger" onclick="deletePost(${p.id})">Usuń Post</button>
                     </div>
 
-                    <!-- Edycja Treści Posta -->
                     <div id="post-edit-form-${p.id}" class="edit-box hidden">
                       <textarea id="post-input-${p.id}" class="form-control" rows="3">${p.content}</textarea>
                       <div style="display: flex; gap: 6px;">
@@ -266,25 +357,16 @@
 
     document.getElementById('refresh-threads').addEventListener('click', loadThreads);
 
-    function toggleEditPost(id) {
-      document.getElementById(`post-edit-form-${id}`).classList.toggle('hidden');
-    }
-
-    function toggleEditThread(id) {
-      document.getElementById(`thread-edit-form-${id}`).classList.toggle('hidden');
-    }
+    function toggleEditPost(id) { document.getElementById(`post-edit-form-${id}`).classList.toggle('hidden'); }
+    function toggleEditThread(id) { document.getElementById(`thread-edit-form-${id}`).classList.toggle('hidden'); }
 
     function toggleAdminPasswordInput(id) {
       const cat = document.getElementById(`thread-cat-select-${id}`).value;
       const passInput = document.getElementById(`thread-pass-input-${id}`);
-      if (cat === 'private') {
-        passInput.classList.remove('hidden');
-      } else {
-        passInput.classList.add('hidden');
-      }
+      if (cat === 'private') passInput.classList.remove('hidden');
+      else passInput.classList.add('hidden');
     }
 
-    // PRZYPIĘCIE / ODPIĘCIE WĄTKU (is_pinned)
     async function togglePinThread(id, shouldPin) {
       const res = await fetch(`${API_URL}/api/admin/thread/update`, {
         method: 'PATCH',
@@ -292,40 +374,26 @@
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         },
-        body: JSON.stringify({
-          thread_id: id,
-          is_pinned: shouldPin ? 1 : 0
-        })
+        body: JSON.stringify({ thread_id: id, is_pinned: shouldPin ? 1 : 0 })
       });
-
-      if (res.ok) {
-        loadThreads();
-      } else {
-        alert('Nie udało się zmienić przypięcia.');
-      }
+      if (res.ok) loadThreads();
+      else alert('Nie udało się zmienić przypięcia.');
     }
 
-    // ZAPIS NOWEJ KATEGORII, TYTUŁU ORAZ HASŁA
     async function saveThreadSettings(id) {
       const newTitle = document.getElementById(`thread-input-${id}`).value;
       const targetCat = document.getElementById(`thread-cat-select-${id}`).value;
       const pass = document.getElementById(`thread-pass-input-${id}`).value;
 
-      // 1. Zmiana kategorii i hasła
       const updateRes = await fetch(`${API_URL}/api/admin/thread/update`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         },
-        body: JSON.stringify({
-          thread_id: id,
-          target_category: targetCat,
-          password: pass
-        })
+        body: JSON.stringify({ thread_id: id, target_category: targetCat, password: pass })
       });
 
-      // 2. Aktualizacja tytułu w D1
       const titleRes = await fetch(`${API_URL}/api/admin/thread/${id}`, {
         method: 'PUT',
         headers: {
@@ -335,14 +403,10 @@
         body: JSON.stringify({ title: newTitle })
       });
 
-      if (updateRes.ok && titleRes.ok) {
-        loadThreads();
-      } else {
-        alert('Błąd podczas zapisywania zmian wątku.');
-      }
+      if (updateRes.ok && titleRes.ok) loadThreads();
+      else alert('Błąd podczas zapisywania zmian.');
     }
 
-    // SUGOSCJE RODO / CENZURY
     async function autoCensorPostInput(id) {
       const input = document.getElementById(`post-input-${id}`);
       const res = await fetch(`${API_URL}/api/admin/suggest-censor`, {
@@ -371,7 +435,6 @@
       if (res.ok) input.value = data.suggestedText;
     }
 
-    // ZAPIS POSTA
     async function savePostContent(id) {
       const newContent = document.getElementById(`post-input-${id}`).value;
       const res = await fetch(`${API_URL}/api/admin/post/${id}`, {
@@ -386,12 +449,9 @@
       if (res.ok) {
         document.getElementById(`post-text-${id}`).innerText = newContent;
         toggleEditPost(id);
-      } else {
-        alert('Błąd zapisywania zmian.');
-      }
+      } else alert('Błąd zapisywania zmian.');
     }
 
-    // USUWANIE
     async function deletePost(id) {
       if (!confirm('Usunąć ten post?')) return;
       const res = await fetch(`${API_URL}/api/admin/post/${id}`, {
