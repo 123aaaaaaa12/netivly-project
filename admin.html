@@ -119,6 +119,14 @@
     .post-content-view { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #a1a1aa; margin-bottom: 8px; white-space: pre-wrap; }
     .edit-box { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; padding: 12px; background: #0a0a0c; border: 1px dashed var(--border); border-radius: 6px; }
 
+    .post-img {
+      max-width: 100%;
+      max-height: 250px;
+      border-radius: 6px;
+      margin-top: 8px;
+      border: 1px solid var(--border);
+    }
+
     .hidden { display: none !important; }
   </style>
 </head>
@@ -203,7 +211,7 @@
       </h2>
 
       <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 16px;">
-        <button id="refresh-threads" class="btn btn-secondary">🔄 Odśwież Baze D1</button>
+        <button id="refresh-threads" class="btn btn-secondary">🔄 Odśwież Bazę D1</button>
       </div>
 
       <!-- PASEK ZAKŁADEK KATEGORII -->
@@ -269,7 +277,6 @@
       else passGroup.classList.add('hidden');
     }
 
-    // TWORZENIE NOWEGO WĄTKU
     document.getElementById('create-thread-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const title = document.getElementById('new-thread-title').value.trim();
@@ -444,7 +451,8 @@
         container.innerHTML = posts.map(p => `
           <div class="post-item" id="post-box-${p.id}">
             <div class="post-content-view" id="post-text-${p.id}">${p.content}</div>
-            <div style="display: flex; gap: 6px;">
+            ${p.image_url ? `<img src="${API_URL}${p.image_url}" class="post-img" alt="Załącznik">` : ''}
+            <div style="display: flex; gap: 6px; margin-top: 8px;">
               <button class="btn btn-warning" onclick="toggleEditPost(${p.id})">✏️ Edytuj / Cenzuruj Post</button>
               <button class="btn btn-danger" onclick="deletePost(${p.id})">Usuń Post</button>
             </div>
