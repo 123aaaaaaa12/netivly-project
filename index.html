@@ -550,13 +550,15 @@ let currentThreadPassword = '';
 let adminToken = localStorage.getItem('adminToken') || '';
 let loadedPostCount = 0;
 
-if (adminToken) {
-    const opt = document.getElementById("netivlyAdminOption");
-    if (opt) {
-        opt.disabled = false;
-        opt.innerText = "Netivly (Tryb Admina)";
+document.addEventListener('DOMContentLoaded', () => {
+    if (adminToken) {
+        const opt = document.getElementById("netivlyAdminOption");
+        if (opt) {
+            opt.disabled = false;
+            opt.innerText = "Netivly (Tryb Admina)";
+        }
     }
-}
+});
 
 /* =========================
    HISTORIA I WSTECZ
@@ -816,41 +818,44 @@ async function createThread() {
 ========================= */
 async function openThread(id, pushHistory = true) {
     try {
-        const buildHeaders = (pass) => {
-            const h = {};
-            if (pass && pass.trim() !== "") {
-                h["X-Thread-Password"] = pass;
+        const createHeaders = (pass) => {
+            const h = new Headers();
+            if (pass && pass.trim() !== '') {
+                h.append("X-Thread-Password", pass);
             }
             if (adminToken) {
-                h["Authorization"] = `Bearer ${adminToken}`;
+                h.append("Authorization", `Bearer ${adminToken}`);
             }
             return h;
         };
 
-        let response = await fetch(`${API}/api/thread/${id}`, { 
-            headers: buildHeaders(currentThreadPassword) 
+        let response = await fetch(`${API}/api/thread/${id}`, {
+            method: 'GET',
+            headers: createHeaders(currentThreadPassword)
         });
 
         let data = await response.json();
 
-        if (response.status === 401 || data.is_private) {
+        // Jeśli wątek wymaga podania hasła (status 401)
+        if (response.status === 401) {
             const pass = prompt("Wątek jest prywatny. Podaj hasło dostępu:");
             if (!pass) return;
 
             currentThreadPassword = pass;
-            response = await fetch(`${API}/api/thread/${id}`, { 
-                headers: buildHeaders(pass) 
+            response = await fetch(`${API}/api/thread/${id}`, {
+                method: 'GET',
+                headers: createHeaders(pass)
             });
             data = await response.json();
 
-            if (response.status === 401 || data.error) {
+            if (response.status === 401) {
                 alert(data.error || "Niepoprawne hasło!");
                 currentThreadPassword = '';
                 return;
             }
         }
 
-        if (!response.ok || data.error) {
+        if (!response.ok) {
             alert(data.error || "Nie udało się otworzyć wątku.");
             return;
         }
@@ -869,39 +874,41 @@ async function openThread(id, pushHistory = true) {
         const board = document.getElementById("boardContent");
         board.innerHTML = `
             <h2 style="color:#eee; font-weight:normal; margin-bottom:25px;">
-                ${data.thread.is_pinned ? '📌 ' : ''}#${data.thread.id} ${escapeHTML(data.thread.title)}
+                ${data.thread && data.thread.is_pinned ? '📌 ' : ''}#${data.thread ? data.thread.id : id} ${escapeHTML(data.thread ? data.thread.title : '')}
             </h2>
         `;
 
-        data.posts.forEach(post => {
-            const div = document.createElement("div");
-            div.className = "post";
+        if (data.posts && Array.isArray(data.posts)) {
+            data.posts.forEach(post => {
+                const div = document.createElement("div");
+                div.className = "post";
 
-            let imageHtml = '';
-            if (post.image_key) {
-                const imgUrl = `${PUBLIC_R2_URL}/${post.image_key}`;
-                imageHtml = `
-                    <div class="post-image-container">
-                        <a href="${imgUrl}" target="_blank">
-                            <img src="${imgUrl}" class="post-image" alt="Zdjęcie" loading="lazy" />
-                        </a>
+                let imageHtml = '';
+                if (post.image_key) {
+                    const imgUrl = `${PUBLIC_R2_URL}/${post.image_key}`;
+                    imageHtml = `
+                        <div class="post-image-container">
+                            <a href="${imgUrl}" target="_blank">
+                                <img src="${imgUrl}" class="post-image" alt="Zdjęcie" loading="lazy" />
+                            </a>
+                        </div>
+                    `;
+                }
+
+                div.innerHTML = `
+                    <div class="post-head">
+                        <span>ANONIM // <span class="post-id-btn" onclick="quotePost(${post.id})">#${post.id}</span></span>
+                        <span>${formatDate(post.created_at)}</span>
                     </div>
+                    <div class="post-content" onclick="quotePost(${post.id})">${escapeHTML(post.content)}</div>
+                    ${imageHtml}
                 `;
-            }
-
-            div.innerHTML = `
-                <div class="post-head">
-                    <span>ANONIM // <span class="post-id-btn" onclick="quotePost(${post.id})">#${post.id}</span></span>
-                    <span>${formatDate(post.created_at)}</span>
-                </div>
-                <div class="post-content" onclick="quotePost(${post.id})">${escapeHTML(post.content)}</div>
-                ${imageHtml}
-            `;
-            board.appendChild(div);
-        });
+                board.appendChild(div);
+            });
+        }
 
     } catch (error) {
-        console.error("Błąd podczas pobierania wątku:", error);
+        console.error("Błąd podczas odczytu wątku:", error);
         alert("Nie udało się otworzyć wątku.");
     }
 }
@@ -997,6 +1004,7 @@ function showHomeUI(reload = true) {
 }
 
 function escapeHTML(text) {
+    if (!text) return "";
     const div = document.createElement("div");
     div.textContent = text;
     return div.innerHTML;
