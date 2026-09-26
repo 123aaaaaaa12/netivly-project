@@ -448,24 +448,29 @@
           return;
         }
 
-        container.innerHTML = posts.map(p => `
-          <div class="post-item" id="post-box-${p.id}">
-            <div class="post-content-view" id="post-text-${p.id}">${p.content}</div>
-            ${p.image_url ? `<img src="${API_URL}${p.image_url}" class="post-img" alt="Załącznik">` : ''}
-            <div style="display: flex; gap: 6px; margin-top: 8px;">
-              <button class="btn btn-warning" onclick="toggleEditPost(${p.id})">✏️ Edytuj / Cenzuruj Post</button>
-              <button class="btn btn-danger" onclick="deletePost(${p.id})">Usuń Post</button>
-            </div>
+        container.innerHTML = posts.map(p => {
+          const imgPath = p.image_url || p.image_key;
+          const imgSrc = imgPath ? (imgPath.startsWith('/') ? imgPath : `/uploads/${imgPath}`) : null;
 
-            <div id="post-edit-form-${p.id}" class="edit-box hidden">
-              <textarea id="post-input-${p.id}" class="form-control" rows="3">${p.content}</textarea>
-              <div style="display: flex; gap: 6px;">
-                <button class="btn btn-success" onclick="savePostContent(${p.id})">Zapisz Zmiany w D1</button>
-                <button class="btn btn-secondary" onclick="autoCensorPostInput(${p.id})">🪄 Podpowiedź RODO</button>
+          return `
+            <div class="post-item" id="post-box-${p.id}">
+              <div class="post-content-view" id="post-text-${p.id}">${p.content}</div>
+              ${imgSrc ? `<img src="${API_URL}${imgSrc}" class="post-img" alt="Załącznik">` : ''}
+              <div style="display: flex; gap: 6px; margin-top: 8px;">
+                <button class="btn btn-warning" onclick="toggleEditPost(${p.id})">✏️ Edytuj / Cenzuruj Post</button>
+                <button class="btn btn-danger" onclick="deletePost(${p.id})">Usuń Post</button>
+              </div>
+
+              <div id="post-edit-form-${p.id}" class="edit-box hidden">
+                <textarea id="post-input-${p.id}" class="form-control" rows="3">${p.content}</textarea>
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn btn-success" onclick="savePostContent(${p.id})">Zapisz Zmiany w D1</button>
+                  <button class="btn btn-secondary" onclick="autoCensorPostInput(${p.id})">🪄 Podpowiedź RODO</button>
+                </div>
               </div>
             </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
 
       } catch (err) {
         container.innerHTML = `<div style="font-size: 0.8rem; color: var(--danger);">Błąd ładowania postów: ${err.message}</div>`;
