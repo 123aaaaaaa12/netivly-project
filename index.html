@@ -306,6 +306,14 @@ button:hover {
 .badge-trash { border-color: #555; color: #888; }
 .badge-main { border-color: #383; color: #8f8; }
 
+.posts-count {
+    color: #777;
+    font-size: 11px;
+    border: 1px solid #222;
+    padding: 2px 6px;
+    background: #000;
+}
+
 .empty {
     padding: 80px 20px;
     text-align: center;
@@ -314,7 +322,7 @@ button:hover {
 }
 
 /* =========================
-   WĄTEK
+   WĄTEK & POSTY
 ========================= */
 
 #board {
@@ -342,12 +350,46 @@ button:hover {
     color: #555;
     font-size: 12px;
     margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-id-btn {
+    color: #888;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.post-id-btn:hover {
+    color: #fff;
+    text-decoration: underline;
 }
 
 .post-content {
     white-space: pre-wrap;
     color: #ccc;
     line-height: 1.6;
+}
+
+.post-image-container {
+    margin-top: 12px;
+}
+
+.post-image {
+    max-width: 320px;
+    max-height: 320px;
+    border-radius: 4px;
+    border: 1px solid #222;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.post-image:hover {
+    transform: scale(1.01);
+    border-color: #555;
 }
 
 .reply {
@@ -369,6 +411,42 @@ button:hover {
     margin-bottom: 10px;
 }
 
+.file-input-wrapper {
+    margin-bottom: 12px;
+}
+
+.file-input-wrapper input[type="file"] {
+    font-size: 12px;
+    color: #888;
+}
+
+/* =========================
+   POWIADOMIENIA O NOWYCH POSTACH
+========================= */
+
+#newPostsBanner {
+    display: none;
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #111;
+    color: #6f6;
+    border: 1px solid #383;
+    padding: 12px 24px;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#newPostsBanner:hover {
+    background: #1a1a1a;
+    border-color: #8f8;
+}
+
 footer {
     color: #292929;
     text-align: center;
@@ -382,6 +460,7 @@ footer {
     .logo { letter-spacing: -3px; }
     .controls { align-items: flex-start; flex-direction: column; }
     .thread { padding: 16px; }
+    .post-image { max-width: 100%; }
 }
 </style>
 </head>
@@ -394,7 +473,7 @@ footer {
 
 <header>
     <div class="logo" onclick="showHome()">netivly</div>
-    <div class="subtitle">anonymous imageboard // text mode</div>
+    <div class="subtitle">anonymous imageboard // text & media mode</div>
 </header>
 
 <div id="home">
@@ -409,7 +488,7 @@ footer {
         </div>
     </div>
 
-    <!-- ZAKŁADKI KATEGORII (4 KATEGORIE) -->
+    <!-- ZAKŁADKI KATEGORII -->
     <div class="categories-bar">
         <button id="cat-btn-main" class="cat-btn active" onclick="switchCategory('main', this)">GŁÓWNA (MAIN)</button>
         <button id="cat-btn-netivly" class="cat-btn" onclick="switchCategory('netivly', this)">NETIVLY (ADMIN)</button>
@@ -431,6 +510,10 @@ footer {
 
         <textarea id="threadContent" maxlength="5000" placeholder="Treść pierwszego posta..."></textarea>
 
+        <div class="file-input-wrapper">
+            <input id="threadImage" type="file" accept="image/*">
+        </div>
+
         <button onclick="createThread()">UTWÓRZ WĄTEK</button>
         <button onclick="hideCreate()">ANULUJ</button>
     </div>
@@ -447,9 +530,16 @@ footer {
     <div id="boardContent"></div>
 
     <div class="reply">
-        <textarea id="replyContent" maxlength="5000" placeholder="Napisz anonimowo..."></textarea>
-        <button onclick="sendPost()">WYŚLIJ</button>
+        <textarea id="replyContent" maxlength="5000" placeholder="Napisz anonimowo... (kliknij w post, aby dodać cytat)"></textarea>
+        <div class="file-input-wrapper">
+            <input id="replyImage" type="file" accept="image/*">
+        </div>
+        <button onclick="sendPost()">WYŚLIJ ODPOWIEDŹ</button>
     </div>
+</div>
+
+<div id="newPostsBanner" onclick="refreshCurrentThread()">
+    ⚡ NOWE ODPOWIEDZI W WĄTKU! KLIKNIJ, ABY ODŚWIEŻYĆ
 </div>
 
 <footer>
@@ -460,13 +550,14 @@ footer {
 
 <script>
 const API = "https://netivly-api.cosielampisz7.workers.dev";
+const PUBLIC_R2_URL = "https://pub-7a09632add214d85b55e3b4f71c39208.r2.dev";
 
 let currentThread = null;
 let currentCategory = 'main';
 let currentThreadPassword = '';
 let adminToken = localStorage.getItem('adminToken') || '';
+let loadedPostCount = 0;
 
-// Jeśli istnieje token admina, odblokuj pisanie w kategorii Netivly
 if (adminToken) {
     const opt = document.getElementById("netivlyAdminOption");
     if (opt) {
@@ -524,6 +615,57 @@ for (let i = 0; i < 120; i++) {
 }
 
 /* =========================
+   KOMPRESYJNA KONTROLA ZDJĘĆ (.WEBP)
+========================= */
+async function compressImage(file) {
+    if (!file) return null;
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                const maxDim = 1000;
+
+                if (width > maxDim || height > maxDim) {
+                    if (width > height) {
+                        height = Math.round((height * maxDim) / width);
+                        width = maxDim;
+                    } else {
+                        width = Math.round((width * maxDim) / height);
+                        height = maxDim;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                canvas.toBlob((blob) => {
+                    if (!blob) {
+                        reject(new Error("Błąd kompresji pliku."));
+                        return;
+                    }
+                    if (blob.size > 2 * 1024 * 1024) {
+                        reject(new Error("Plik po kompresji nadal przekracza 2MB. Wybierz mniejsze zdjęcie."));
+                        return;
+                    }
+                    const compressedFile = new File([blob], "upload.webp", { type: "image/webp" });
+                    resolve(compressedFile);
+                }, "image/webp", 0.7);
+            };
+            img.onerror = (err) => reject(err);
+        };
+        reader.onerror = (err) => reject(err);
+    });
+}
+
+/* =========================
    SEKCJE / KATEGORIE
 ========================= */
 function switchCategory(cat, btn, updateUrl = true) {
@@ -544,7 +686,7 @@ function switchCategory(cat, btn, updateUrl = true) {
 }
 
 /* =========================
-   LISTA WĄTKÓW (Z PRZYPIĘTYMI)
+   LISTA WĄTKÓW (Z LICZNIKIEM ODPOWIEDZI)
 ========================= */
 async function loadThreads() {
     const container = document.getElementById("threads");
@@ -563,7 +705,6 @@ async function loadThreads() {
             return;
         }
 
-        // Sortowanie: najpierw przypięte (is_pinned === 1), potem wg id DESC
         threads.sort((a, b) => (b.is_pinned || 0) - (a.is_pinned || 0));
 
         container.innerHTML = "";
@@ -611,6 +752,7 @@ async function createThread() {
     const content = document.getElementById("threadContent").value.trim();
     const category = document.getElementById("threadCategory").value;
     const password = document.getElementById("threadPassword").value.trim();
+    const imageFileInput = document.getElementById("threadImage").files[0];
 
     if (!title || !content) {
         alert("Podaj temat i treść posta.");
@@ -622,12 +764,17 @@ async function createThread() {
         return;
     }
 
-    const headers = { "Content-Type": "application/json" };
-    if (adminToken) {
-        headers["Authorization"] = `Bearer ${adminToken}`;
-    }
-
     try {
+        let compressedFile = null;
+        if (imageFileInput) {
+            compressedFile = await compressImage(imageFileInput);
+        }
+
+        const headers = { "Content-Type": "application/json" };
+        if (adminToken) {
+            headers["Authorization"] = `Bearer ${adminToken}`;
+        }
+
         const response = await fetch(API + "/api/thread", {
             method: "POST",
             headers,
@@ -641,31 +788,39 @@ async function createThread() {
             return;
         }
 
-        /* pierwszy post */
+        /* Pierwszy post z obsługą pliku (FormData) */
+        const formData = new FormData();
+        formData.append("thread_id", result.thread_id);
+        formData.append("content", content);
+        if (compressedFile) {
+            formData.append("image", compressedFile);
+        }
+
+        const postHeaders = {};
+        if (password) postHeaders["X-Thread-Password"] = password;
+
         await fetch(API + "/api/post", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                thread_id: result.thread_id,
-                content: content
-            })
+            headers: postHeaders,
+            body: formData
         });
 
         hideCreate();
         document.getElementById("threadTitle").value = "";
         document.getElementById("threadContent").value = "";
         document.getElementById("threadPassword").value = "";
+        document.getElementById("threadImage").value = "";
         
         switchCategory(category);
 
     } catch (error) {
-        alert("Nie można połączyć się z API.");
+        alert(error.message || "Nie można połączyć się z API.");
         console.error(error);
     }
 }
 
 /* =========================
-   OTWIERANIE WĄTKU
+   OTWIERANIE WĄTKU I CYTOWANIE
 ========================= */
 async function openThread(id, pushHistory = true) {
     try {
@@ -701,6 +856,8 @@ async function openThread(id, pushHistory = true) {
         }
 
         currentThread = id;
+        loadedPostCount = data.posts ? data.posts.length : 0;
+        document.getElementById("newPostsBanner").style.display = "none";
 
         if (pushHistory) {
             window.history.pushState({ threadId: id }, "", `?thread=${id}`);
@@ -719,11 +876,26 @@ async function openThread(id, pushHistory = true) {
         data.posts.forEach(post => {
             const div = document.createElement("div");
             div.className = "post";
+
+            let imageHtml = '';
+            if (post.image_key) {
+                const imgUrl = `${PUBLIC_R2_URL}/${post.image_key}`;
+                imageHtml = `
+                    <div class="post-image-container">
+                        <a href="${imgUrl}" target="_blank">
+                            <img src="${imgUrl}" class="post-image" alt="Zdjęcie" loading="lazy" />
+                        </a>
+                    </div>
+                `;
+            }
+
             div.innerHTML = `
                 <div class="post-head">
-                    ANONIM // #${post.id} // ${formatDate(post.created_at)}
+                    <span>ANONIM // <span class="post-id-btn" onclick="quotePost(${post.id})">#${post.id}</span></span>
+                    <span>${formatDate(post.created_at)}</span>
                 </div>
-                <div class="post-content">${escapeHTML(post.content)}</div>
+                <div class="post-content" onclick="quotePost(${post.id})">${escapeHTML(post.content)}</div>
+                ${imageHtml}
             `;
             board.appendChild(div);
         });
@@ -734,17 +906,49 @@ async function openThread(id, pushHistory = true) {
     }
 }
 
+/* Cytowanie wpisów po kliknięciu */
+function quotePost(postId) {
+    const textarea = document.getElementById("replyContent");
+    const selection = window.getSelection().toString().trim();
+
+    let quoteText = `>>${postId}\n`;
+    if (selection) {
+        quoteText += selection.split('\n').map(line => `> ${line}`).join('\n') + '\n';
+    }
+
+    textarea.value += quoteText;
+    textarea.focus();
+    textarea.scrollIntoView({ behavior: 'smooth' });
+}
+
 /* =========================
    ODPOWIEDŹ
 ========================= */
 async function sendPost() {
     const textarea = document.getElementById("replyContent");
+    const imageInput = document.getElementById("replyImage");
     const content = textarea.value.trim();
+    const file = imageInput.files[0];
 
-    if (!content) return;
+    if (!content && !file) {
+        alert("Treść posta lub zdjęcie jest wymagane.");
+        return;
+    }
 
     try {
-        const headers = { "Content-Type": "application/json" };
+        let compressedFile = null;
+        if (file) {
+            compressedFile = await compressImage(file);
+        }
+
+        const formData = new FormData();
+        formData.append("thread_id", currentThread);
+        formData.append("content", content || "(brak treści)");
+        if (compressedFile) {
+            formData.append("image", compressedFile);
+        }
+
+        const headers = {};
         if (currentThreadPassword) {
             headers["X-Thread-Password"] = currentThreadPassword;
         }
@@ -752,10 +956,7 @@ async function sendPost() {
         const response = await fetch(API + "/api/post", {
             method: "POST",
             headers,
-            body: JSON.stringify({
-                thread_id: currentThread,
-                content: content
-            })
+            body: formData
         });
 
         const result = await response.json();
@@ -766,10 +967,17 @@ async function sendPost() {
         }
 
         textarea.value = "";
+        imageInput.value = "";
         openThread(currentThread, false);
 
     } catch (error) {
-        alert("Błąd połączenia z API.");
+        alert(error.message || "Błąd połączenia z API.");
+    }
+}
+
+function refreshCurrentThread() {
+    if (currentThread) {
+        openThread(currentThread, false);
     }
 }
 
@@ -784,6 +992,7 @@ function showHomeUI(reload = true) {
     currentThreadPassword = '';
     document.getElementById("board").style.display = "none";
     document.getElementById("home").style.display = "block";
+    document.getElementById("newPostsBanner").style.display = "none";
     if (reload) loadThreads();
 }
 
@@ -794,7 +1003,7 @@ function escapeHTML(text) {
 }
 
 /* =========================
-   START & REFRESH
+   START & REFRESH (DETEKCJA NOWYCH POSTÓW)
 ========================= */
 const urlParams = new URLSearchParams(window.location.search);
 const initialThreadId = urlParams.get('thread');
@@ -814,11 +1023,23 @@ if (initialThreadId) {
     loadThreads();
 }
 
-setInterval(() => {
+/* Polling sprawdzający czy są nowe posty w tle */
+setInterval(async () => {
     if (currentThread) {
-        const replyBox = document.getElementById("replyContent");
-        if (!replyBox || !replyBox.value.trim()) {
-            openThread(currentThread, false);
+        try {
+            const headers = {};
+            if (currentThreadPassword) headers["X-Thread-Password"] = currentThreadPassword;
+            if (adminToken) headers["Authorization"] = `Bearer ${adminToken}`;
+
+            const response = await fetch(`${API}/api/thread/${currentThread}`, { headers });
+            if (response.ok) {
+                const data = await response.json();
+                if (data.posts && data.posts.length > loadedPostCount) {
+                    document.getElementById("newPostsBanner").style.display = "block";
+                }
+            }
+        } catch (e) {
+            // Cichy błąd odświeżania w tle
         }
     } else {
         const createBox = document.getElementById("createBox");
