@@ -306,14 +306,6 @@ button:hover {
 .badge-trash { border-color: #555; color: #888; }
 .badge-main { border-color: #383; color: #8f8; }
 
-.posts-count {
-    color: #777;
-    font-size: 11px;
-    border: 1px solid #222;
-    padding: 2px 6px;
-    background: #000;
-}
-
 .empty {
     padding: 80px 20px;
     text-align: center;
@@ -686,7 +678,7 @@ function switchCategory(cat, btn, updateUrl = true) {
 }
 
 /* =========================
-   LISTA WĄTKÓW (Z LICZNIKIEM ODPOWIEDZI)
+   LISTA WĄTKÓW
 ========================= */
 async function loadThreads() {
     const container = document.getElementById("threads");
@@ -824,34 +816,42 @@ async function createThread() {
 ========================= */
 async function openThread(id, pushHistory = true) {
     try {
-        const headers = {};
-        if (currentThreadPassword) {
-            headers["X-Thread-Password"] = currentThreadPassword;
-        }
-        if (adminToken) {
-            headers["Authorization"] = `Bearer ${adminToken}`;
-        }
+        const buildHeaders = (pass) => {
+            const h = {};
+            if (pass && pass.trim() !== "") {
+                h["X-Thread-Password"] = pass;
+            }
+            if (adminToken) {
+                h["Authorization"] = `Bearer ${adminToken}`;
+            }
+            return h;
+        };
 
-        let response = await fetch(`${API}/api/thread/${id}`, { headers });
+        let response = await fetch(`${API}/api/thread/${id}`, { 
+            headers: buildHeaders(currentThreadPassword) 
+        });
 
-        if (response.status === 401) {
+        let data = await response.json();
+
+        if (response.status === 401 || data.is_private) {
             const pass = prompt("Wątek jest prywatny. Podaj hasło dostępu:");
             if (!pass) return;
 
             currentThreadPassword = pass;
-            headers["X-Thread-Password"] = pass;
-            response = await fetch(`${API}/api/thread/${id}`, { headers });
+            response = await fetch(`${API}/api/thread/${id}`, { 
+                headers: buildHeaders(pass) 
+            });
+            data = await response.json();
 
-            if (response.status === 401) {
-                alert("Niepoprawne hasło!");
+            if (response.status === 401 || data.error) {
+                alert(data.error || "Niepoprawne hasło!");
                 currentThreadPassword = '';
                 return;
             }
         }
 
-        const data = await response.json();
-        if (data.error) {
-            alert(data.error);
+        if (!response.ok || data.error) {
+            alert(data.error || "Nie udało się otworzyć wątku.");
             return;
         }
 
@@ -901,7 +901,7 @@ async function openThread(id, pushHistory = true) {
         });
 
     } catch (error) {
-        console.error(error);
+        console.error("Błąd podczas pobierania wątku:", error);
         alert("Nie udało się otworzyć wątku.");
     }
 }
@@ -949,7 +949,7 @@ async function sendPost() {
         }
 
         const headers = {};
-        if (currentThreadPassword) {
+        if (currentThreadPassword && currentThreadPassword.trim() !== '') {
             headers["X-Thread-Password"] = currentThreadPassword;
         }
 
@@ -1028,7 +1028,9 @@ setInterval(async () => {
     if (currentThread) {
         try {
             const headers = {};
-            if (currentThreadPassword) headers["X-Thread-Password"] = currentThreadPassword;
+            if (currentThreadPassword && currentThreadPassword.trim() !== '') {
+                headers["X-Thread-Password"] = currentThreadPassword;
+            }
             if (adminToken) headers["Authorization"] = `Bearer ${adminToken}`;
 
             const response = await fetch(`${API}/api/thread/${currentThread}`, { headers });
