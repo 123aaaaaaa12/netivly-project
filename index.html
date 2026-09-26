@@ -748,8 +748,8 @@ async function createThread() {
     const password = document.getElementById("threadPassword").value.trim();
     const imageFileInput = document.getElementById("threadImage").files[0];
 
-    if (!title || !content) {
-        alert("Podaj temat i treść posta.");
+    if (!title || (!content && !imageFileInput)) {
+        alert("Podaj temat oraz treść lub zdjęcie posta.");
         return;
     }
 
@@ -895,12 +895,21 @@ async function openThread(id, pushHistory = true) {
                     `;
                 }
 
+                // Sprawdzamy czy treść faktycznie istnieje i nie jest dawnym "brak treści"
+                let contentHtml = '';
+                if (post.content && post.content.trim() !== "" && post.content !== "(brak treści)") {
+                    contentHtml = `<div class="post-content" onclick="quotePost(${post.id})">${escapeHTML(post.content)}</div>`;
+                } else if (!post.image_key) {
+                    // Jeśli nie ma ani tekstu, ani zdjęcia, wyświetlamy puste pole
+                    contentHtml = `<div class="post-content" onclick="quotePost(${post.id})"></div>`;
+                }
+
                 div.innerHTML = `
                     <div class="post-head">
                         <span>ANONIM // <span class="post-id-btn" onclick="quotePost(${post.id})">#${post.id}</span></span>
                         <span>${formatDate(post.created_at)}</span>
                     </div>
-                    <div class="post-content" onclick="quotePost(${post.id})">${escapeHTML(post.content)}</div>
+                    ${contentHtml}
                     ${imageHtml}
                 `;
                 board.appendChild(div);
@@ -950,7 +959,8 @@ async function sendPost() {
 
         const formData = new FormData();
         formData.append("thread_id", currentThread);
-        formData.append("content", content || "(brak treści)");
+        // Poprawka: przekazujemy czystą treść (bez dopisywania sztucznego "(brak treści)")
+        formData.append("content", content);
         if (compressedFile) {
             formData.append("image", compressedFile);
         }
