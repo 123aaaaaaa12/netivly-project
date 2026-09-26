@@ -412,33 +412,6 @@ button:hover {
     color: #888;
 }
 
-/* =========================
-   POWIADOMIENIA O NOWYCH POSTACH
-========================= */
-
-#newPostsBanner {
-    display: none;
-    position: fixed;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #111;
-    color: #6f6;
-    border: 1px solid #383;
-    padding: 12px 24px;
-    cursor: pointer;
-    z-index: 100;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-    font-size: 13px;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
-
-#newPostsBanner:hover {
-    background: #1a1a1a;
-    border-color: #8f8;
-}
-
 footer {
     color: #292929;
     text-align: center;
@@ -528,10 +501,6 @@ footer {
         </div>
         <button onclick="sendPost()">WYŚLIJ ODPOWIEDŹ</button>
     </div>
-</div>
-
-<div id="newPostsBanner" onclick="refreshCurrentThread()">
-    ⚡ NOWE ODPOWIEDZI W WĄTKU! KLIKNIJ, ABY ODŚWIEŻYĆ
 </div>
 
 <footer>
@@ -782,7 +751,6 @@ async function createThread() {
             return;
         }
 
-        /* Pierwszy post z obsługą pliku (FormData) */
         const formData = new FormData();
         formData.append("thread_id", result.thread_id);
         formData.append("content", content);
@@ -816,7 +784,7 @@ async function createThread() {
 /* =========================
    OTWIERANIE WĄTKU I CYTOWANIE
 ========================= */
-async function openThread(id, pushHistory = true) {
+async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
     try {
         const createHeaders = (pass) => {
             const h = new Headers();
@@ -836,8 +804,8 @@ async function openThread(id, pushHistory = true) {
 
         let data = await response.json();
 
-        // Jeśli wątek wymaga podania hasła (status 401)
         if (response.status === 401) {
+            if (isBackgroundRefresh) return; // Jeśli to odświeżanie w tle i nie ma hasła, pomijamy
             const pass = prompt("Wątek jest prywatny. Podaj hasło dostępu:");
             if (!pass) return;
 
@@ -856,69 +824,72 @@ async function openThread(id, pushHistory = true) {
         }
 
         if (!response.ok) {
-            alert(data.error || "Nie udało się otworzyć wątku.");
+            if (!isBackgroundRefresh) alert(data.error || "Nie udało się otworzyć wątku.");
             return;
         }
 
         currentThread = id;
-        loadedPostCount = data.posts ? data.posts.length : 0;
-        document.getElementById("newPostsBanner").style.display = "none";
+        
+        // Jeśli liczba postów się zmieniła, przebudowujemy widok postów
+        if (!isBackgroundRefresh || (data.posts && data.posts.length !== loadedPostCount)) {
+            loadedPostCount = data.posts ? data.posts.length : 0;
 
-        if (pushHistory) {
-            window.history.pushState({ threadId: id }, "", `?thread=${id}`);
-        }
+            if (pushHistory) {
+                window.history.pushState({ threadId: id }, "", `?thread=${id}`);
+            }
 
-        document.getElementById("home").style.display = "none";
-        document.getElementById("board").style.display = "block";
+            document.getElementById("home").style.display = "none";
+            document.getElementById("board").style.display = "block";
 
-        const board = document.getElementById("boardContent");
-        board.innerHTML = `
-            <h2 style="color:#eee; font-weight:normal; margin-bottom:25px;">
-                ${data.thread && data.thread.is_pinned ? '📌 ' : ''}#${data.thread ? data.thread.id : id} ${escapeHTML(data.thread ? data.thread.title : '')}
-            </h2>
-        `;
+            const board = document.getElementById("boardContent");
+            board.innerHTML = `
+                <h2 style="color:#eee; font-weight:normal; margin-bottom:25px;">
+                    ${data.thread && data.thread.is_pinned ? '📌 ' : ''}#${data.thread ? data.thread.id : id} ${escapeHTML(data.thread ? data.thread.title : '')}
+                </h2>
+            `;
 
-        if (data.posts && Array.isArray(data.posts)) {
-            data.posts.forEach(post => {
-                const div = document.createElement("div");
-                div.className = "post";
+            if (data.posts && Array.isArray(data.posts)) {
+                data.posts.forEach(post => {
+                    const div = document.createElement("div");
+                    div.className = "post";
 
-                let imageHtml = '';
-                if (post.image_key) {
-                    const imgUrl = `${PUBLIC_R2_URL}/${post.image_key}`;
-                    imageHtml = `
-                        <div class="post-image-container">
-                            <a href="${imgUrl}" target="_blank">
-                                <img src="${imgUrl}" class="post-image" alt="Zdjęcie" loading="lazy" />
-                            </a>
+                    let imageHtml = '';
+                    if (post.image_key) {
+                        const imgUrl = `${PUBLIC_R2_URL}/${post.image_key}`;
+                        imageHtml = `
+                            <div class="post-image-container">
+                                <a href="${imgUrl}" target="_blank">
+                                    <img src="${imgUrl}" class="post-image" alt="Zdjęcie" loading="lazy" />
+                                </a>
+                            </div>
+                        `;
+                    }
+
+                    let contentHtml = '';
+                    if (post.content && post.content.trim() !== "" && post.content !== "(brak treści)") {
+                        contentHtml = `<div class="post-content" onclick="quotePost(${post.id})">${escapeHTML(post.content)}</div>`;
+                    } else if (!post.image_key) {
+                        contentHtml = `<div class="post-content" onclick="quotePost(${post.id})"></div>`;
+                    }
+
+                    div.innerHTML = `
+                        <div class="post-head">
+                            <span>ANONIM // <span class="post-id-btn" onclick="quotePost(${post.id})">#${post.id}</span></span>
+                            <span>${formatDate(post.created_at)}</span>
                         </div>
+                        ${contentHtml}
+                        ${imageHtml}
                     `;
-                }
-
-                // Sprawdzamy czy treść faktycznie istnieje i nie jest dawnym "brak treści"
-                let contentHtml = '';
-                if (post.content && post.content.trim() !== "" && post.content !== "(brak treści)") {
-                    contentHtml = `<div class="post-content" onclick="quotePost(${post.id})">${escapeHTML(post.content)}</div>`;
-                } else if (!post.image_key) {
-                    // Jeśli nie ma ani tekstu, ani zdjęcia, wyświetlamy puste pole
-                    contentHtml = `<div class="post-content" onclick="quotePost(${post.id})"></div>`;
-                }
-
-                div.innerHTML = `
-                    <div class="post-head">
-                        <span>ANONIM // <span class="post-id-btn" onclick="quotePost(${post.id})">#${post.id}</span></span>
-                        <span>${formatDate(post.created_at)}</span>
-                    </div>
-                    ${contentHtml}
-                    ${imageHtml}
-                `;
-                board.appendChild(div);
-            });
+                    board.appendChild(div);
+                });
+            }
         }
 
     } catch (error) {
-        console.error("Błąd podczas odczytu wątku:", error);
-        alert("Nie udało się otworzyć wątku.");
+        if (!isBackgroundRefresh) {
+            console.error("Błąd podczas odczytu wątku:", error);
+            alert("Nie udało się otworzyć wątku.");
+        }
     }
 }
 
@@ -959,7 +930,6 @@ async function sendPost() {
 
         const formData = new FormData();
         formData.append("thread_id", currentThread);
-        // Poprawka: przekazujemy czystą treść (bez dopisywania sztucznego "(brak treści)")
         formData.append("content", content);
         if (compressedFile) {
             formData.append("image", compressedFile);
@@ -992,12 +962,6 @@ async function sendPost() {
     }
 }
 
-function refreshCurrentThread() {
-    if (currentThread) {
-        openThread(currentThread, false);
-    }
-}
-
 function showHome() {
     const newUrl = currentCategory === 'main' ? window.location.pathname : `?cat=${currentCategory}`;
     window.history.pushState(null, "", newUrl);
@@ -1009,7 +973,6 @@ function showHomeUI(reload = true) {
     currentThreadPassword = '';
     document.getElementById("board").style.display = "none";
     document.getElementById("home").style.display = "block";
-    document.getElementById("newPostsBanner").style.display = "none";
     if (reload) loadThreads();
 }
 
@@ -1021,7 +984,7 @@ function escapeHTML(text) {
 }
 
 /* =========================
-   START & REFRESH (DETEKCJA NOWYCH POSTÓW)
+   START & AUTO-REFRESH W TLE
 ========================= */
 const urlParams = new URLSearchParams(window.location.search);
 const initialThreadId = urlParams.get('thread');
@@ -1041,33 +1004,19 @@ if (initialThreadId) {
     loadThreads();
 }
 
-/* Polling sprawdzający czy są nowe posty w tle */
-setInterval(async () => {
+/* Automatyczne odświeżanie co 10 sekund */
+setInterval(() => {
     if (currentThread) {
-        try {
-            const headers = {};
-            if (currentThreadPassword && currentThreadPassword.trim() !== '') {
-                headers["X-Thread-Password"] = currentThreadPassword;
-            }
-            if (adminToken) headers["Authorization"] = `Bearer ${adminToken}`;
-
-            const response = await fetch(`${API}/api/thread/${currentThread}`, { headers });
-            if (response.ok) {
-                const data = await response.json();
-                if (data.posts && data.posts.length > loadedPostCount) {
-                    document.getElementById("newPostsBanner").style.display = "block";
-                }
-            }
-        } catch (e) {
-            // Cichy błąd odświeżania w tle
-        }
+        // Jeśli jesteśmy w wątku, pobieraj najnowsze posty automatycznie w tle
+        openThread(currentThread, false, true);
     } else {
+        // Jeśli jesteśmy na stronie głównej, odświeżaj listę wątków (o ile okno tworzenia wątku jest zamknięte)
         const createBox = document.getElementById("createBox");
         if (!createBox || createBox.style.display !== "block") {
             loadThreads();
         }
     }
-}, 15000);
+}, 10000);
 </script>
 
 </body>
