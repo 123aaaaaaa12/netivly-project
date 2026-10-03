@@ -29,15 +29,15 @@ function initTheme() {
     if (select) {
         select.value = savedTheme;
     }
-    applyTheme(savedTheme, false);
+    applyTheme(savedTheme);
 }
 
 function changeTheme(themeName) {
     localStorage.setItem('netivly_theme', themeName);
-    applyTheme(themeName, true);
+    applyTheme(themeName);
 }
 
-function applyTheme(themeName, manual = false) {
+function applyTheme(themeName) {
     const linkElement = document.getElementById('theme-style');
     if (!linkElement) return;
 
@@ -48,13 +48,10 @@ function applyTheme(themeName, manual = false) {
         const month = now.getMonth() + 1; // 1-12
         const day = now.getDate();
 
-        // Przykład logiki sezonowej:
-        // Halloween: np. od 25 do 31 października
+        // Sezonowość automatyczna
         if (month === 10 && day >= 25 && day <= 31) {
             targetFile = 'halloween.css';
-        }
-        // Święta / Zima: np. od 15 grudnia do 6 stycznia
-        else if ((month === 12 && day >= 15) || (month === 1 && day <= 6)) {
+        } else if ((month === 12 && day >= 15) || (month === 1 && day <= 6)) {
             targetFile = 'christmas.css';
         } else {
             targetFile = 'style.css';
