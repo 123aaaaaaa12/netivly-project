@@ -221,14 +221,14 @@ function formatPostContent(rawText) {
     const lines = text.split('\n').map(line => {
         const trimmed = line.trim();
 
-        // Obsługa cytowania posta np. >>12345 (zabezpieczone przez escapeHTML jako &gt;&gt;)
+        // Obsługa cytowania posta np. >>12345
         if (trimmed.startsWith('&gt;&gt;') || trimmed.startsWith('>>')) {
             return line.replace(/(?:&gt;&gt;|>>)(\d+)/g, (m, id) => {
                 return `<a class="post-quote-ref" href="javascript:void(0)" onclick="scrollToPost(${id})" onmouseenter="showQuotePreview(event, ${id})" onmouseleave="hideQuotePreview()">&gt;&gt;${id}</a>`;
             });
         }
 
-        // Obsługa Greentextu dla linii zaczynających się od > / &gt;
+        // Obsługa Greentextu dla linii zaczynających się od >
         if (trimmed.startsWith('&gt;') || trimmed.startsWith('>')) {
             return `<span class="post-greentext">${line}</span>`;
         }
@@ -261,10 +261,12 @@ function insertFormatting(textareaId, formatType) {
     if (formatType === 'spoiler') {
         const replacement = `||${selectedText || 'tekst'}||`;
         ta.value = ta.value.substring(0, start) + replacement + ta.value.substring(end);
+        ta.setSelectionRange(start + 2, start + 2 + (selectedText ? selectedText.length : 5));
     } else if (formatType === 'greentext') {
         const prefix = (start > 0 && ta.value[start - 1] !== '\n') ? '\n>' : '>';
         const replacement = `${prefix}${selectedText || 'cytat'}`;
         ta.value = ta.value.substring(0, start) + replacement + ta.value.substring(end);
+        ta.setSelectionRange(start + prefix.length, start + prefix.length + (selectedText ? selectedText.length : 5));
     }
 
     ta.focus();
