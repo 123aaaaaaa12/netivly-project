@@ -26,7 +26,7 @@ function resetTs(name) {
     if (tsWidgets[name] !== undefined && window.turnstile) window.turnstile.reset(tsWidgets[name]);
 }
 
-const VALID_CATEGORIES = ['main', 'netivly', 'trash', 'private', 'nsfw'];
+const VALID_CATEGORIES = ['main', 'netivly', 'trash', 'private'];
 
 document.addEventListener('DOMContentLoaded', () => {
     if (adminToken) {
@@ -366,18 +366,7 @@ function scrollToPost(postId) {
 /* =========================
    SEKCJE / KATEGORIE
 ========================= */
-function confirmAdult() {
-    if (localStorage.getItem('netivly_syf_ok') === '1') return true;
-    const ok = confirm("Sekcja SYF (NSFW) może zawierać drastyczne lub nieodpowiednie treści.\n\nWchodzisz na własną odpowiedzialność. Kontynuować?");
-    if (ok) localStorage.setItem('netivly_syf_ok', '1');
-    return ok;
-}
-
 function switchCategory(cat, btn, updateUrl = true) {
-    if (cat === 'nsfw' && !confirmAdult()) {
-        cat = 'main';
-        btn = null;
-    }
     currentCategory = cat;
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
     
@@ -463,7 +452,7 @@ async function createThread() {
     const content = document.getElementById("threadContent").value.trim();
     const category = document.getElementById("threadCategory").value;
     const password = document.getElementById("threadPassword").value.trim();
-    const isNsfw = category === 'nsfw' || document.getElementById("threadIsNsfw").checked;
+    const isNsfw = document.getElementById("threadIsNsfw").checked;
     const imageFileInput = document.getElementById("threadImage").files[0];
 
     if (!title || (!content && !imageFileInput)) {
@@ -601,10 +590,6 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
             return;
         }
 
-        if (data.thread && data.thread.category === 'nsfw' && !isBackgroundRefresh && !confirmAdult()) {
-            return;
-        }
-
         currentThread = id;
         
         if (!isBackgroundRefresh || (data.posts && data.posts.length !== loadedPostCount)) {
@@ -619,7 +604,7 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
             ensureTs('reply');
 
             const board = document.getElementById("boardContent");
-            const isThreadNsfw = data.thread && (data.thread.is_nsfw == 1 || data.thread.category === 'nsfw');
+            const isThreadNsfw = data.thread && data.thread.is_nsfw == 1;
             const replyNsfwBox = document.getElementById("replyIsNsfw");
             if (replyNsfwBox) {
                 replyNsfwBox.checked = !!isThreadNsfw;
@@ -831,7 +816,7 @@ const initialCategory = urlParams.get('cat');
 if (initialThreadId) {
     openThread(initialThreadId, false);
 } else {
-    if (initialCategory && VALID_CATEGORIES.includes(initialCategory) && (initialCategory !== 'nsfw' || confirmAdult())) {
+    if (initialCategory && VALID_CATEGORIES.includes(initialCategory)) {
         currentCategory = initialCategory;
         const btn = document.getElementById(`cat-btn-${initialCategory}`);
         if (btn) {
