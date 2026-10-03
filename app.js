@@ -15,7 +15,60 @@ document.addEventListener('DOMContentLoaded', () => {
             opt.innerText = "Netivly (Tryb Admina)";
         }
     }
+
+    // Inicjalizacja motywu przy starcie
+    initTheme();
 });
+
+/* =========================
+   ZARZĄDZANIE MOTYWAMI (SEZONOWE CSS)
+========================= */
+function initTheme() {
+    const savedTheme = localStorage.getItem('netivly_theme') || 'auto';
+    const select = document.getElementById('themeSelect');
+    if (select) {
+        select.value = savedTheme;
+    }
+    applyTheme(savedTheme, false);
+}
+
+function changeTheme(themeName) {
+    localStorage.setItem('netivly_theme', themeName);
+    applyTheme(themeName, true);
+}
+
+function applyTheme(themeName, manual = false) {
+    const linkElement = document.getElementById('theme-style');
+    if (!linkElement) return;
+
+    let targetFile = 'style.css';
+
+    if (themeName === 'auto') {
+        const now = new Date();
+        const month = now.getMonth() + 1; // 1-12
+        const day = now.getDate();
+
+        // Przykład logiki sezonowej:
+        // Halloween: np. od 25 do 31 października
+        if (month === 10 && day >= 25 && day <= 31) {
+            targetFile = 'halloween.css';
+        }
+        // Święta / Zima: np. od 15 grudnia do 6 stycznia
+        else if ((month === 12 && day >= 15) || (month === 1 && day <= 6)) {
+            targetFile = 'christmas.css';
+        } else {
+            targetFile = 'style.css';
+        }
+    } else if (themeName === 'halloween') {
+        targetFile = 'halloween.css';
+    } else if (themeName === 'christmas') {
+        targetFile = 'christmas.css';
+    } else {
+        targetFile = 'style.css';
+    }
+
+    linkElement.href = targetFile;
+}
 
 /* =========================
    HISTORIA I WSTECZ
@@ -53,16 +106,18 @@ function formatDate(dateStr) {
    CZĄSTECZKI
 ========================= */
 const particles = document.getElementById("particles");
-for (let i = 0; i < 120; i++) {
-    const p = document.createElement("div");
-    p.className = "particle";
-    p.style.left = Math.random() * 100 + "%";
-    p.style.top = Math.random() * 100 + "%";
-    p.style.setProperty("--x", (Math.random() * 180 - 90) + "px");
-    p.style.setProperty("--y", (Math.random() * 180 - 90) + "px");
-    p.style.animationDuration = (4 + Math.random() * 8) + "s";
-    p.style.animationDelay = (Math.random() * 8) + "s";
-    particles.appendChild(p);
+if (particles) {
+    for (let i = 0; i < 120; i++) {
+        const p = document.createElement("div");
+        p.className = "particle";
+        p.style.left = Math.random() * 100 + "%";
+        p.style.top = Math.random() * 100 + "%";
+        p.style.setProperty("--x", (Math.random() * 180 - 90) + "px");
+        p.style.setProperty("--y", (Math.random() * 180 - 90) + "px");
+        p.style.animationDuration = (4 + Math.random() * 8) + "s";
+        p.style.animationDelay = (Math.random() * 8) + "s";
+        particles.appendChild(p);
+    }
 }
 
 /* =========================
@@ -194,6 +249,7 @@ function switchCategory(cat, btn, updateUrl = true) {
 ========================= */
 async function loadThreads() {
     const container = document.getElementById("threads");
+    if (!container) return;
 
     try {
         const response = await fetch(`${API}/api/threads?category=${currentCategory}`);
