@@ -22,6 +22,9 @@
 
 <div id="particles"></div>
 
+<!-- Hover Preview Popup -->
+<div id="quote-preview-popup"></div>
+
 <div class="wrapper">
 
 <header>
@@ -71,10 +74,14 @@
 
         <input id="threadPassword" type="password" placeholder="Wprowadź hasło do wątku prywatnego..." style="display: none;">
 
-        <textarea id="threadContent" maxlength="5000" placeholder="Treść pierwszego posta..."></textarea>
+        <textarea id="threadContent" maxlength="5000" placeholder="Treść pierwszego posta... (użyj ||tekst|| dla spoilera)" oninput="updateCharCount('threadContent', 'threadCharCount')"></textarea>
+        <div id="threadCharCount" class="char-counter">0 / 5000</div>
 
         <div class="file-input-wrapper">
             <input id="threadImage" type="file" accept="image/*">
+            <label class="option-checkbox">
+                <input type="checkbox" id="threadIsNsfw"> 🔞 Treść / Plik NSFW
+            </label>
         </div>
 
         <button id="btnCreateThread" onclick="createThread()">UTWÓRZ WĄTEK</button>
@@ -93,9 +100,14 @@
     <div id="boardContent"></div>
 
     <div class="reply">
-        <textarea id="replyContent" maxlength="5000" placeholder="Napisz anonimowo... (kliknij w post, aby dodać cytat)"></textarea>
+        <textarea id="replyContent" maxlength="5000" placeholder="Napisz anonimowo... (kliknij w post, aby dodać cytat, ||tekst|| dla spoilera)" oninput="updateCharCount('replyContent', 'replyCharCount')"></textarea>
+        <div id="replyCharCount" class="char-counter">0 / 5000</div>
+
         <div class="file-input-wrapper">
             <input id="replyImage" type="file" accept="image/*">
+            <label class="option-checkbox">
+                <input type="checkbox" id="replyIsNsfw"> 🔞 Ukryj zdjęcie (NSFW Blur)
+            </label>
         </div>
         <button id="btnSendReply" onclick="sendPost()">WYŚLIJ ODPOWIEDŹ</button>
     </div>
