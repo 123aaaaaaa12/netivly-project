@@ -389,12 +389,14 @@ button:disabled {
     border-radius: 2px;
     cursor: pointer;
     user-select: none;
-    transition: background 0.2s, color 0.2s;
+    filter: blur(4px);
+    transition: background 0.2s, color 0.2s, filter 0.2s;
 }
 
 .spoiler:hover, .spoiler.revealed {
     background: #333;
     color: #eee;
+    filter: none;
 }
 
 .youtube-embed {
