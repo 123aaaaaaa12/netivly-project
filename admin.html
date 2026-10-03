@@ -168,7 +168,7 @@
           <option value="main">Main</option>
           <option value="trash">Trash (Kosz)</option>
           <option value="private">Private</option>
-          <option value="nsfw">🔞 NSFW</option>
+          <option value="nsfw">☣️ SYF (NSFW)</option>
         </select>
         <button class="btn btn-warning" onclick="executeBulkMoveFromInput()">Przenieś wpisane ID</button>
         <button class="btn btn-success" onclick="executeBulkMoveFromCheckboxes()">Przenieś zaznaczone (<span id="selected-count">0</span>)</button>
@@ -191,7 +191,7 @@
             <option value="main">Main (Główna)</option>
             <option value="trash">Trash (Kosz)</option>
             <option value="private">Private (Chronione hasłem)</option>
-            <option value="nsfw">🔞 NSFW (18+)</option>
+            <option value="nsfw">☣️ SYF (NSFW)</option>
           </select>
         </div>
 
@@ -226,7 +226,7 @@
         <button class="tab-btn" onclick="switchCategory('netivly', this)">🌐 Netivly (<span id="count-netivly">0</span>)</button>
         <button class="tab-btn" onclick="switchCategory('main', this)">💬 Main (<span id="count-main">0</span>)</button>
         <button class="tab-btn" onclick="switchCategory('private', this)">🔒 Private (<span id="count-private">0</span>)</button>
-        <button class="tab-btn" onclick="switchCategory('nsfw', this)">🔞 NSFW (<span id="count-nsfw">0</span>)</button>
+        <button class="tab-btn" onclick="switchCategory('nsfw', this)">☣️ SYF (<span id="count-nsfw">0</span>)</button>
         <button class="tab-btn" onclick="switchCategory('trash', this)">🗑️ Trash (<span id="count-trash">0</span>)</button>
       </div>
 
@@ -422,7 +422,7 @@
                 <option value="main" ${t.category === 'main' ? 'selected' : ''}>Kategoria: Main (Główna)</option>
                 <option value="trash" ${t.category === 'trash' ? 'selected' : ''}>Kategoria: Trash (Kosz)</option>
                 <option value="private" ${t.category === 'private' ? 'selected' : ''}>Kategoria: Private (Prywatna)</option>
-                <option value="nsfw" ${t.category === 'nsfw' ? 'selected' : ''}>Kategoria: NSFW (18+)</option>
+                <option value="nsfw" ${t.category === 'nsfw' ? 'selected' : ''}>Kategoria: SYF (NSFW)</option>
               </select>
 
               <input type="password" id="thread-pass-input-${t.id}" class="form-control ${t.category === 'private' ? '' : 'hidden'}" placeholder="Ustaw nowe hasło dla kategorii Private...">
