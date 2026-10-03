@@ -469,6 +469,38 @@ button:disabled {
     white-space: nowrap;
 }
 
+/* =========================
+   BLUR DLA WĄTKÓW PRYWATNYCH
+========================= */
+
+.post-image.private-blurred {
+    filter: blur(25px);
+    opacity: 0.5;
+}
+
+.post-image.private-blurred:hover {
+    opacity: 0.75;
+}
+
+.private-overlay-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(40, 10, 10, 0.9);
+    color: #f88;
+    border: 1px solid #833;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 4px;
+    pointer-events: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    white-space: nowrap;
+}
+
 /* Hover Preview dla cytatów */
 #quote-preview-popup {
     position: absolute;
