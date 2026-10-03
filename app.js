@@ -8,7 +8,7 @@ let adminToken = localStorage.getItem('adminToken') || '';
 let loadedPostCount = 0;
 let lastPostTime = 0; // Cooldown anti-spam
 // Turnstile: wklej SITE KEY (publiczny) z Cloudflare -> Turnstile -> netivly-prod
-const TURNSTILE_SITE_KEY = "0x4AAAAAAFMyFipLXZavvS-_";
+const TURNSTILE_SITE_KEY = "WKLEJ_TUTAJ_SITE_KEY";
 const tsWidgets = {};
 
 function ensureTs(name) {
@@ -367,9 +367,9 @@ function scrollToPost(postId) {
    SEKCJE / KATEGORIE
 ========================= */
 function confirmAdult() {
-    if (localStorage.getItem('netivly_adult') === '1') return true;
-    const ok = confirm("Sekcja NSFW zawiera treści tylko dla osób pełnoletnich (18+).\n\nCzy potwierdzasz, że masz ukończone 18 lat?");
-    if (ok) localStorage.setItem('netivly_adult', '1');
+    if (localStorage.getItem('netivly_syf_ok') === '1') return true;
+    const ok = confirm("Sekcja SYF (NSFW) może zawierać drastyczne lub nieodpowiednie treści.\n\nWchodzisz na własną odpowiedzialność. Kontynuować?");
+    if (ok) localStorage.setItem('netivly_syf_ok', '1');
     return ok;
 }
 
