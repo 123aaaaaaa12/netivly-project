@@ -17,6 +17,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Obsługa skrótów klawiszowych (Ctrl + Enter do wysyłania)
+    const replyTa = document.getElementById("replyContent");
+    if (replyTa) {
+        replyTa.addEventListener("keydown", (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                sendPost();
+            }
+        });
+    }
+
+    const threadTa = document.getElementById("threadContent");
+    if (threadTa) {
+        threadTa.addEventListener("keydown", (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                createThread();
+            }
+        });
+    }
+
     // Inicjalizacja motywu przy starcie
     initTheme();
 });
@@ -175,16 +196,15 @@ async function compressImage(file) {
 }
 
 /* =========================
-   PARSER TEKSTU Z BEZPIECZEŃSTWEM XSS & QoL (LINKI, YT, CYTATY, SPOILER)
+   PARSER TEKSTU Z BEZPIECZEŃSTWEM XSS & QoL
 ========================= */
 function formatPostContent(rawText) {
     if (!rawText) return { html: "", youtubeEmbeds: [] };
 
-    // KROK 1: Ścisła sanitizacja wejścia przeciwdziałająca XSS
     let text = escapeHTML(rawText);
     const youtubeEmbeds = [];
 
-    // KROK 2: Parser wyciągający identyfikatory filmów YouTube
+    // Wyciąganie YouTube
     const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[^\s<]*)?/g;
     let match;
     while ((match = ytRegex.exec(text)) !== null) {
@@ -194,22 +214,19 @@ function formatPostContent(rawText) {
         }
     }
 
-    // KROK 3: Spoilery ||tekst||
+    // Spoilery ||tekst||
     text = text.replace(/\|\|(.*?)\|\|/g, '<span class="spoiler" onclick="this.classList.toggle(\'revealed\')">$1</span>');
 
-    // KROK 4: Linie, Cytaty & Odnośniki
+    // Linie, Cytaty & Odnośniki
     const lines = text.split('\n').map(line => {
-        // Cytowanie z podglądem najechania (Hover Preview)
         line = line.replace(/&gt;&gt;(\d+)/g, (m, id) => {
             return `<a class="post-quote-ref" href="javascript:void(0)" onclick="scrollToPost(${id})" onmouseenter="showQuotePreview(event, ${id})" onmouseleave="hideQuotePreview()">&gt;&gt;${id}</a>`;
         });
 
-        // Greentext
         if (line.startsWith('&gt;') && !line.startsWith('&gt;&gt;')) {
             return `<span class="post-greentext">${line}</span>`;
         }
 
-        // Aktywne hiperłącza
         const urlRegex = /(https?:\/\/[^\s<]+)/g;
         line = line.replace(urlRegex, (url) => {
             return `<a class="post-link" href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
@@ -225,8 +242,28 @@ function formatPostContent(rawText) {
 }
 
 /* =========================
-   QoL: LICZNIK ZNAKÓW
+   QoL: POMOCNIKI TEKSTOWE (SPOILER / GREENTEXT BUTTONS)
 ========================= */
+function insertFormatting(textareaId, formatType) {
+    const ta = document.getElementById(textareaId);
+    if (!ta) return;
+
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    const selectedText = ta.value.substring(start, end);
+
+    if (formatType === 'spoiler') {
+        const replacement = `||${selectedText || 'tekst'}||`;
+        ta.value = ta.value.substring(0, start) + replacement + ta.value.substring(end);
+    } else if (formatType === 'greentext') {
+        const replacement = `>${selectedText || 'cytat'}`;
+        ta.value = ta.value.substring(0, start) + replacement + ta.value.substring(end);
+    }
+
+    ta.focus();
+    updateCharCount(textareaId, textareaId === 'replyContent' ? 'replyCharCount' : 'threadCharCount');
+}
+
 function updateCharCount(textareaId, counterId) {
     const ta = document.getElementById(textareaId);
     const cnt = document.getElementById(counterId);
@@ -236,7 +273,7 @@ function updateCharCount(textareaId, counterId) {
 }
 
 /* =========================
-   QoL: PODGLĄD CYTATÓW NA HOVER & ZOOM ZDJĘĆ
+   QoL: PODGLĄD CYTATÓW & MULTIMEDIA
 ========================= */
 function showQuotePreview(event, postId) {
     const targetPost = document.getElementById(`post-${postId}`);
@@ -244,7 +281,6 @@ function showQuotePreview(event, postId) {
     if (!targetPost || !popup) return;
 
     popup.innerHTML = targetPost.innerHTML;
-    // Usuwamy identyfikatory aby zapobiec zduplikowanym hookom DOM
     popup.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
 
     popup.style.display = 'block';
@@ -380,7 +416,6 @@ async function createThread() {
         return;
     }
 
-    // Cooldown check
     if (Date.now() - lastPostTime < 5000) {
         alert("Odczekaj chwilę przed utworzeniem kolejnego wątku.");
         return;
@@ -529,7 +564,6 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
 
                     let imageHtml = '';
                     if (post.image_key) {
-                        // Sanitizacja pod kątem kluczy R2
                         const safeKey = encodeURIComponent(post.image_key).replace(/%2F/g, '/');
                         const imgUrl = `${PUBLIC_R2_URL}/${safeKey}`;
                         const isNsfwMedia = post.is_nsfw || isThreadNsfw;
@@ -618,7 +652,6 @@ async function sendPost() {
         return;
     }
 
-    // Cooldown check
     if (Date.now() - lastPostTime < 4000) {
         alert("Odczekaj chwilę przed wysłaniem kolejnej odpowiedzi.");
         return;
@@ -666,13 +699,19 @@ async function sendPost() {
         document.getElementById("replyIsNsfw").checked = false;
         updateCharCount('replyContent', 'replyCharCount');
 
-        openThread(currentThread, false);
+        await openThread(currentThread, false);
+
+        // Auto-scroll do nowego posta
+        const posts = document.querySelectorAll('.post');
+        if (posts.length > 0) {
+            posts[posts.length - 1].scrollIntoView({ behavior: 'smooth' });
+        }
 
     } catch (error) {
         alert(error.message || "Błąd połączenia z API.");
     } finally {
         btn.disabled = false;
-        btn.innerText = "WYŚLIJ ODPOWIEDŹ";
+        btn.innerText = "WYŚLIJ ODPOWIEDŹ (Ctrl + Enter)";
     }
 }
 
