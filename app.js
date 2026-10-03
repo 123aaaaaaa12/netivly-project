@@ -7,6 +7,25 @@ let currentThreadPassword = '';
 let adminToken = localStorage.getItem('adminToken') || '';
 let loadedPostCount = 0;
 let lastPostTime = 0; // Cooldown anti-spam
+// Turnstile: wklej SITE KEY (publiczny) z Cloudflare -> Turnstile -> netivly-prod
+const TURNSTILE_SITE_KEY = "0x4AAAAAAFMyFipLXZavvS-_";
+const tsWidgets = {};
+
+function ensureTs(name) {
+    const elId = name === 'thread' ? 'ts-thread' : 'ts-reply';
+    const el = document.getElementById(elId);
+    if (!el || tsWidgets[name] !== undefined) return;
+    if (!window.turnstile) { setTimeout(() => ensureTs(name), 300); return; }
+    tsWidgets[name] = window.turnstile.render(el, { sitekey: TURNSTILE_SITE_KEY, theme: 'dark', language: 'pl' });
+}
+function getTsToken(name) {
+    if (tsWidgets[name] === undefined || !window.turnstile) return '';
+    return window.turnstile.getResponse(tsWidgets[name]) || '';
+}
+function resetTs(name) {
+    if (tsWidgets[name] !== undefined && window.turnstile) window.turnstile.reset(tsWidgets[name]);
+}
+
 const VALID_CATEGORIES = ['main', 'netivly', 'trash', 'private', 'nsfw'];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -431,7 +450,7 @@ async function loadThreads() {
 /* =========================
    TWORZENIE WĄTKU
 ========================= */
-function showCreate() { document.getElementById("createBox").style.display = "block"; }
+function showCreate() { document.getElementById("createBox").style.display = "block"; ensureTs('thread'); }
 function hideCreate() { document.getElementById("createBox").style.display = "none"; }
 
 function togglePasswordInput() {
@@ -462,6 +481,12 @@ async function createThread() {
         return;
     }
 
+    const tsToken = getTsToken('thread');
+    if (!tsToken) {
+        alert("Potwierdź, że nie jesteś botem (Turnstile).");
+        return;
+    }
+
     const btn = document.getElementById("btnCreateThread");
     btn.disabled = true;
     btn.innerText = "TWORZENIE...";
@@ -480,7 +505,7 @@ async function createThread() {
         const response = await fetch(API + "/api/thread", {
             method: "POST",
             headers,
-            body: JSON.stringify({ title, category, password, is_nsfw: isNsfw ? 1 : 0 })
+            body: JSON.stringify({ title, category, password, is_nsfw: isNsfw ? 1 : 0, turnstile: tsToken })
         });
 
         const result = await response.json();
@@ -494,6 +519,7 @@ async function createThread() {
         formData.append("thread_id", result.thread_id);
         formData.append("content", content);
         formData.append("is_nsfw", isNsfw ? "1" : "0");
+        if (result.post_token) formData.append("post_token", result.post_token);
         if (compressedFile) {
             formData.append("image", compressedFile);
         }
@@ -522,6 +548,7 @@ async function createThread() {
         alert(error.message || "Nie można połączyć się z API.");
         console.error(error);
     } finally {
+        resetTs('thread');
         btn.disabled = false;
         btn.innerText = "UTWÓRZ WĄTEK";
     }
@@ -589,6 +616,7 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
 
             document.getElementById("home").style.display = "none";
             document.getElementById("board").style.display = "block";
+            ensureTs('reply');
 
             const board = document.getElementById("boardContent");
             const isThreadNsfw = data.thread && (data.thread.is_nsfw == 1 || data.thread.category === 'nsfw');
@@ -706,6 +734,12 @@ async function sendPost() {
         return;
     }
 
+    const tsToken = getTsToken('reply');
+    if (!tsToken) {
+        alert("Potwierdź, że nie jesteś botem (Turnstile).");
+        return;
+    }
+
     const btn = document.getElementById("btnSendReply");
     btn.disabled = true;
     btn.innerText = "WYSYŁANIE...";
@@ -720,6 +754,7 @@ async function sendPost() {
         formData.append("thread_id", currentThread);
         formData.append("content", content);
         formData.append("is_nsfw", isNsfw ? "1" : "0");
+        formData.append("turnstile", tsToken);
         if (compressedFile) {
             formData.append("image", compressedFile);
         }
@@ -759,6 +794,7 @@ async function sendPost() {
     } catch (error) {
         alert(error.message || "Błąd połączenia z API.");
     } finally {
+        resetTs('reply');
         btn.disabled = false;
         btn.innerText = "WYŚLIJ ODPOWIEDŹ (Ctrl + Enter)";
     }
