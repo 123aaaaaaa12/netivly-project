@@ -302,16 +302,33 @@ function hideQuotePreview() {
     if (popup) popup.style.display = 'none';
 }
 
-// KLUCZOWE: Poprawna obsługa kliknięcia obrazka z NSFW
+/* =========================
+   OBSŁUGA KLIKNIĘĆ W ZDJĘCIA (NSFW + POWIĘKSZANIE)
+========================= */
 function handleImageClick(container, imgElement, event) {
     if (event) event.stopPropagation();
-    
-    if (imgElement.classList.contains('nsfw-blurred')) {
+
+    const isNsfw = container.dataset.isNsfw === "true";
+
+    // KROK 1: Jeśli zdjęcie ma flagę NSFW i jest zamazane — odprowadzamy zamazanie
+    if (isNsfw && imgElement.classList.contains('nsfw-blurred')) {
         imgElement.classList.remove('nsfw-blurred');
         const badge = container.querySelector('.nsfw-overlay-badge');
-        if (badge) badge.remove();
+        if (badge) badge.style.display = 'none';
+        return;
+    }
+
+    // KROK 2: Jeśli zdjęcie nie jest powiększone — powiększamy je
+    if (!imgElement.classList.contains('expanded')) {
+        imgElement.classList.add('expanded');
     } else {
-        imgElement.classList.toggle('expanded');
+        // KROK 3: Ponowne kliknięcie zwija zdjęcie i przywraca blur jeśli było NSFW
+        imgElement.classList.remove('expanded');
+        if (isNsfw) {
+            imgElement.classList.add('nsfw-blurred');
+            const badge = container.querySelector('.nsfw-overlay-badge');
+            if (badge) badge.style.display = 'block';
+        }
     }
 }
 
@@ -581,7 +598,7 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
                         const isNsfwMedia = post.is_nsfw == 1 || isThreadNsfw;
 
                         imageHtml = `
-                            <div class="post-image-container" onclick="handleImageClick(this, this.querySelector('.post-image'), event)">
+                            <div class="post-image-container" data-is-nsfw="${isNsfwMedia}" onclick="handleImageClick(this, this.querySelector('.post-image'), event)">
                                 ${isNsfwMedia ? '<div class="nsfw-overlay-badge">🔞 NSFW (Kliknij aby odsłonić)</div>' : ''}
                                 <img src="${imgUrl}" 
                                      class="post-image ${isNsfwMedia ? 'nsfw-blurred' : ''}" 
