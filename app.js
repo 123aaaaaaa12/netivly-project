@@ -6,6 +6,7 @@ let currentCategory = 'main';
 let currentThreadPassword = '';
 let adminToken = localStorage.getItem('adminToken') || '';
 let loadedPostCount = 0;
+let lastPostTime = 0; // Cooldown anti-spam
 
 document.addEventListener('DOMContentLoaded', () => {
     if (adminToken) {
@@ -48,7 +49,6 @@ function applyTheme(themeName) {
         const month = now.getMonth() + 1; // 1-12
         const day = now.getDate();
 
-        // Sezonowość automatyczna (Cały październik = Halloween)
         if (month === 10) {
             targetFile = 'halloween.css';
         } else if ((month === 12 && day >= 15) || (month === 1 && day <= 6)) {
@@ -64,7 +64,6 @@ function applyTheme(themeName) {
         targetFile = '';
     }
 
-    // Bezpieczne przypisywanie href - usuwa atrybut gdy pusty
     if (targetFile) {
         linkElement.href = targetFile;
         linkElement.disabled = false;
@@ -139,7 +138,7 @@ async function compressImage(file) {
                 const canvas = document.createElement('canvas');
                 let width = img.width;
                 let height = img.height;
-                const maxDim = 1000;
+                const maxDim = 1200;
 
                 if (width > maxDim || height > maxDim) {
                     if (width > height) {
@@ -167,7 +166,7 @@ async function compressImage(file) {
                     }
                     const compressedFile = new File([blob], "upload.webp", { type: "image/webp" });
                     resolve(compressedFile);
-                }, "image/webp", 0.7);
+                }, "image/webp", 0.75);
             };
             img.onerror = (err) => reject(err);
         };
@@ -176,16 +175,17 @@ async function compressImage(file) {
 }
 
 /* =========================
-   PARSER TEKSTU (QoL: LINKI, YT EMBED, CYTATY >>ID)
+   PARSER TEKSTU Z BEZPIECZEŃSTWEM XSS & QoL (LINKI, YT, CYTATY, SPOILER)
 ========================= */
 function formatPostContent(rawText) {
     if (!rawText) return { html: "", youtubeEmbeds: [] };
 
+    // KROK 1: Ścisła sanitizacja wejścia przeciwdziałająca XSS
     let text = escapeHTML(rawText);
     const youtubeEmbeds = [];
-    
+
+    // KROK 2: Parser wyciągający identyfikatory filmów YouTube
     const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[^\s<]*)?/g;
-    
     let match;
     while ((match = ytRegex.exec(text)) !== null) {
         const videoId = match[1];
@@ -194,15 +194,22 @@ function formatPostContent(rawText) {
         }
     }
 
+    // KROK 3: Spoilery ||tekst||
+    text = text.replace(/\|\|(.*?)\|\|/g, '<span class="spoiler" onclick="this.classList.toggle(\'revealed\')">$1</span>');
+
+    // KROK 4: Linie, Cytaty & Odnośniki
     const lines = text.split('\n').map(line => {
+        // Cytowanie z podglądem najechania (Hover Preview)
         line = line.replace(/&gt;&gt;(\d+)/g, (m, id) => {
-            return `<a class="post-quote-ref" href="javascript:void(0)" onclick="scrollToPost(${id})">&gt;&gt;${id}</a>`;
+            return `<a class="post-quote-ref" href="javascript:void(0)" onclick="scrollToPost(${id})" onmouseenter="showQuotePreview(event, ${id})" onmouseleave="hideQuotePreview()">&gt;&gt;${id}</a>`;
         });
 
+        // Greentext
         if (line.startsWith('&gt;') && !line.startsWith('&gt;&gt;')) {
             return `<span class="post-greentext">${line}</span>`;
         }
 
+        // Aktywne hiperłącza
         const urlRegex = /(https?:\/\/[^\s<]+)/g;
         line = line.replace(urlRegex, (url) => {
             return `<a class="post-link" href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
@@ -215,6 +222,49 @@ function formatPostContent(rawText) {
         html: lines.join('\n'),
         youtubeEmbeds: youtubeEmbeds
     };
+}
+
+/* =========================
+   QoL: LICZNIK ZNAKÓW
+========================= */
+function updateCharCount(textareaId, counterId) {
+    const ta = document.getElementById(textareaId);
+    const cnt = document.getElementById(counterId);
+    if (ta && cnt) {
+        cnt.innerText = `${ta.value.length} / ${ta.getAttribute('maxlength') || 5000}`;
+    }
+}
+
+/* =========================
+   QoL: PODGLĄD CYTATÓW NA HOVER & ZOOM ZDJĘĆ
+========================= */
+function showQuotePreview(event, postId) {
+    const targetPost = document.getElementById(`post-${postId}`);
+    const popup = document.getElementById('quote-preview-popup');
+    if (!targetPost || !popup) return;
+
+    popup.innerHTML = targetPost.innerHTML;
+    // Usuwamy identyfikatory aby zapobiec zduplikowanym hookom DOM
+    popup.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+
+    popup.style.display = 'block';
+    popup.style.top = (event.pageY + 12) + 'px';
+    popup.style.left = Math.min(event.pageX + 12, window.innerWidth - 470) + 'px';
+}
+
+function hideQuotePreview() {
+    const popup = document.getElementById('quote-preview-popup');
+    if (popup) popup.style.display = 'none';
+}
+
+function toggleImageExpand(imgElement) {
+    imgElement.classList.toggle('expanded');
+}
+
+function revealNsfwImage(container, imgElement) {
+    imgElement.classList.remove('nsfw-blurred');
+    const badge = container.querySelector('.nsfw-overlay-badge');
+    if (badge) badge.remove();
 }
 
 function scrollToPost(postId) {
@@ -278,11 +328,12 @@ async function loadThreads() {
             div.className = `thread ${thread.is_pinned ? 'pinned-thread' : ''}`;
 
             const pinBadge = thread.is_pinned ? `<span class="badge badge-pinned">📌 PINNED</span>` : '';
+            const nsfwBadge = thread.is_nsfw ? `<span class="badge badge-nsfw">🔞 NSFW</span>` : '';
             const catBadge = thread.category ? `<span class="badge badge-${thread.category}">${thread.category}</span>` : '';
 
             div.innerHTML = `
                 <div class="thread-title">
-                    ${pinBadge} #${thread.id} ${escapeHTML(thread.title)}
+                    ${pinBadge} ${nsfwBadge} #${thread.id} ${escapeHTML(thread.title)}
                 </div>
                 <div class="thread-meta">
                     <span>${formatDate(thread.created_at)}</span>
@@ -316,6 +367,7 @@ async function createThread() {
     const content = document.getElementById("threadContent").value.trim();
     const category = document.getElementById("threadCategory").value;
     const password = document.getElementById("threadPassword").value.trim();
+    const isNsfw = document.getElementById("threadIsNsfw").checked;
     const imageFileInput = document.getElementById("threadImage").files[0];
 
     if (!title || (!content && !imageFileInput)) {
@@ -325,6 +377,12 @@ async function createThread() {
 
     if (category === 'private' && !password) {
         alert("Wprowadź hasło dla wątku prywatnego.");
+        return;
+    }
+
+    // Cooldown check
+    if (Date.now() - lastPostTime < 5000) {
+        alert("Odczekaj chwilę przed utworzeniem kolejnego wątku.");
         return;
     }
 
@@ -346,7 +404,7 @@ async function createThread() {
         const response = await fetch(API + "/api/thread", {
             method: "POST",
             headers,
-            body: JSON.stringify({ title, category, password })
+            body: JSON.stringify({ title, category, password, is_nsfw: isNsfw ? 1 : 0 })
         });
 
         const result = await response.json();
@@ -359,6 +417,7 @@ async function createThread() {
         const formData = new FormData();
         formData.append("thread_id", result.thread_id);
         formData.append("content", content);
+        if (isNsfw) formData.append("is_nsfw", "1");
         if (compressedFile) {
             formData.append("image", compressedFile);
         }
@@ -372,11 +431,14 @@ async function createThread() {
             body: formData
         });
 
+        lastPostTime = Date.now();
         hideCreate();
         document.getElementById("threadTitle").value = "";
         document.getElementById("threadContent").value = "";
         document.getElementById("threadPassword").value = "";
         document.getElementById("threadImage").value = "";
+        document.getElementById("threadIsNsfw").checked = false;
+        updateCharCount('threadContent', 'threadCharCount');
         
         switchCategory(category);
 
@@ -449,9 +511,13 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
             document.getElementById("board").style.display = "block";
 
             const board = document.getElementById("boardContent");
+            const isThreadNsfw = data.thread && data.thread.is_nsfw;
+
             board.innerHTML = `
-                <h2 style="color:#eee; font-weight:normal; margin-bottom:25px;">
-                    ${data.thread && data.thread.is_pinned ? '📌 ' : ''}#${data.thread ? data.thread.id : id} ${escapeHTML(data.thread ? data.thread.title : '')}
+                <h2 style="color:#eee; font-weight:normal; margin-bottom:25px; display:flex; gap:10px; align-items:center;">
+                    ${data.thread && data.thread.is_pinned ? '📌 ' : ''}
+                    ${isThreadNsfw ? '<span class="badge badge-nsfw">🔞 NSFW</span>' : ''}
+                    #${data.thread ? data.thread.id : id} ${escapeHTML(data.thread ? data.thread.title : '')}
                 </h2>
             `;
 
@@ -463,12 +529,19 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
 
                     let imageHtml = '';
                     if (post.image_key) {
-                        const imgUrl = `${PUBLIC_R2_URL}/${post.image_key}`;
+                        // Sanitizacja pod kątem kluczy R2
+                        const safeKey = encodeURIComponent(post.image_key).replace(/%2F/g, '/');
+                        const imgUrl = `${PUBLIC_R2_URL}/${safeKey}`;
+                        const isNsfwMedia = post.is_nsfw || isThreadNsfw;
+
                         imageHtml = `
-                            <div class="post-image-container">
-                                <a href="${imgUrl}" target="_blank">
-                                    <img src="${imgUrl}" class="post-image" alt="Zdjęcie" loading="lazy" />
-                                </a>
+                            <div class="post-image-container" onclick="if(this.querySelector('.nsfw-blurred')){ revealNsfwImage(this, this.querySelector('.post-image')); }">
+                                ${isNsfwMedia ? '<div class="nsfw-overlay-badge">🔞 NSFW (Kliknij aby odsłonić)</div>' : ''}
+                                <img src="${imgUrl}" 
+                                     class="post-image ${isNsfwMedia ? 'nsfw-blurred' : ''}" 
+                                     alt="Załącznik" 
+                                     loading="lazy" 
+                                     onclick="if(!this.classList.contains('nsfw-blurred')) toggleImageExpand(this);" />
                             </div>
                         `;
                     }
@@ -487,7 +560,7 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
                         parsed.youtubeEmbeds.forEach(vId => {
                             ytHtml += `
                                 <div class="youtube-embed">
-                                    <iframe src="https://www.youtube.com/embed/${vId}" allowfullscreen loading="lazy"></iframe>
+                                    <iframe src="https://www.youtube.com/embed/${encodeURIComponent(vId)}" allowfullscreen loading="lazy"></iframe>
                                 </div>
                             `;
                         });
@@ -525,6 +598,7 @@ function quotePost(postId) {
     }
 
     textarea.value += quoteText;
+    updateCharCount('replyContent', 'replyCharCount');
     textarea.focus();
     textarea.scrollIntoView({ behavior: 'smooth' });
 }
@@ -535,11 +609,18 @@ function quotePost(postId) {
 async function sendPost() {
     const textarea = document.getElementById("replyContent");
     const imageInput = document.getElementById("replyImage");
+    const isNsfw = document.getElementById("replyIsNsfw").checked;
     const content = textarea.value.trim();
     const file = imageInput.files[0];
 
     if (!content && !file) {
         alert("Treść posta lub zdjęcie jest wymagane.");
+        return;
+    }
+
+    // Cooldown check
+    if (Date.now() - lastPostTime < 4000) {
+        alert("Odczekaj chwilę przed wysłaniem kolejnej odpowiedzi.");
         return;
     }
 
@@ -556,6 +637,7 @@ async function sendPost() {
         const formData = new FormData();
         formData.append("thread_id", currentThread);
         formData.append("content", content);
+        if (isNsfw) formData.append("is_nsfw", "1");
         if (compressedFile) {
             formData.append("image", compressedFile);
         }
@@ -578,8 +660,12 @@ async function sendPost() {
             return;
         }
 
+        lastPostTime = Date.now();
         textarea.value = "";
         imageInput.value = "";
+        document.getElementById("replyIsNsfw").checked = false;
+        updateCharCount('replyContent', 'replyCharCount');
+
         openThread(currentThread, false);
 
     } catch (error) {
