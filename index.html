@@ -173,6 +173,11 @@ button:hover {
     color: white;
 }
 
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .status {
     color: #444;
     font-size: 12px;
@@ -332,6 +337,12 @@ button:hover {
     padding: 18px;
     margin-bottom: 10px;
     overflow: hidden;
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+.post.highlight {
+    background: #141410;
+    border-left-color: #ffd700;
 }
 
 .post:hover {
@@ -363,6 +374,47 @@ button:hover {
     white-space: pre-wrap;
     color: #ccc;
     line-height: 1.6;
+    word-break: break-word;
+}
+
+/* Dedykowana stylizacja elementów w treści postów */
+.post-content a.post-link {
+    color: #6495ed;
+    text-decoration: underline;
+}
+
+.post-content a.post-link:hover {
+    color: #a0c4ff;
+}
+
+.post-content a.post-quote-ref {
+    color: #8fbc8f;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.post-content a.post-quote-ref:hover {
+    text-decoration: underline;
+}
+
+.post-content .post-greentext {
+    color: #789922;
+}
+
+/* Tytuly / Embedy YouTube */
+.youtube-embed {
+    margin-top: 12px;
+    max-width: 560px;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 1px solid #222;
+    border-radius: 4px;
+}
+
+.youtube-embed iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
 }
 
 .post-image-container {
@@ -479,7 +531,7 @@ footer {
             <input id="threadImage" type="file" accept="image/*">
         </div>
 
-        <button onclick="createThread()">UTWÓRZ WĄTEK</button>
+        <button id="btnCreateThread" onclick="createThread()">UTWÓRZ WĄTEK</button>
         <button onclick="hideCreate()">ANULUJ</button>
     </div>
 
@@ -499,7 +551,7 @@ footer {
         <div class="file-input-wrapper">
             <input id="replyImage" type="file" accept="image/*">
         </div>
-        <button onclick="sendPost()">WYŚLIJ ODPOWIEDŹ</button>
+        <button id="btnSendReply" onclick="sendPost()">WYŚLIJ ODPOWIEDŹ</button>
     </div>
 </div>
 
@@ -629,6 +681,66 @@ async function compressImage(file) {
 }
 
 /* =========================
+   PARSER TEKSTU (QoL: LINKI, YT EMBED, CYTATY >>ID)
+========================= */
+function formatPostContent(rawText) {
+    if (!rawText) return { html: "", youtubeEmbeds: [] };
+
+    // Escapowanie znaków specjalnych HTML przeciwko XSS
+    let text = escapeHTML(rawText);
+
+    const youtubeEmbeds = [];
+    
+    // Regex do wykrywania odnośników YouTube (watch, shorts, youtu.be)
+    const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[^\s<]*)?/g;
+    
+    let match;
+    while ((match = ytRegex.exec(text)) !== null) {
+        const videoId = match[1];
+        if (!youtubeEmbeds.includes(videoId)) {
+            youtubeEmbeds.push(videoId);
+        }
+    }
+
+    // Dzielimy tekst na linie dla obsługi cytatów > oraz >>ID
+    const lines = text.split('\n').map(line => {
+        // Cytowanie odpowiedzi np. >>48
+        line = line.replace(/&gt;&gt;(\d+)/g, (m, id) => {
+            return `<a class="post-quote-ref" href="javascript:void(0)" onclick="scrollToPost(${id})">&gt;&gt;${id}</a>`;
+        });
+
+        // Greentext - linia zaczynająca się od pojedynczego >
+        if (line.startsWith('&gt;') && !line.startsWith('&gt;&gt;')) {
+            return `<span class="post-greentext">${line}</span>`;
+        }
+
+        // Linkify - wykrywanie ogólnych adresów URL http/https
+        const urlRegex = /(https?:\/\/[^\s<]+)/g;
+        line = line.replace(urlRegex, (url) => {
+            return `<a class="post-link" href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+        });
+
+        return line;
+    });
+
+    return {
+        html: lines.join('\n'),
+        youtubeEmbeds: youtubeEmbeds
+    };
+}
+
+function scrollToPost(postId) {
+    const targetPost = document.getElementById(`post-${postId}`);
+    if (targetPost) {
+        targetPost.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        targetPost.classList.add('highlight');
+        setTimeout(() => targetPost.classList.remove('highlight'), 1500);
+    } else {
+        alert(`Post #${postId} nie znajduje się w tym wątku.`);
+    }
+}
+
+/* =========================
    SEKCJE / KATEGORIE
 ========================= */
 function switchCategory(cat, btn, updateUrl = true) {
@@ -727,6 +839,10 @@ async function createThread() {
         return;
     }
 
+    const btn = document.getElementById("btnCreateThread");
+    btn.disabled = true;
+    btn.innerText = "TWORZENIE...";
+
     try {
         let compressedFile = null;
         if (imageFileInput) {
@@ -778,6 +894,9 @@ async function createThread() {
     } catch (error) {
         alert(error.message || "Nie można połączyć się z API.");
         console.error(error);
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "UTWÓRZ WĄTEK";
     }
 }
 
@@ -805,7 +924,7 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
         let data = await response.json();
 
         if (response.status === 401) {
-            if (isBackgroundRefresh) return; // Jeśli to odświeżanie w tle i nie ma hasła, pomijamy
+            if (isBackgroundRefresh) return;
             const pass = prompt("Wątek jest prywatny. Podaj hasło dostępu:");
             if (!pass) return;
 
@@ -830,7 +949,6 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
 
         currentThread = id;
         
-        // Jeśli liczba postów się zmieniła, przebudowujemy widok postów
         if (!isBackgroundRefresh || (data.posts && data.posts.length !== loadedPostCount)) {
             loadedPostCount = data.posts ? data.posts.length : 0;
 
@@ -852,6 +970,7 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
                 data.posts.forEach(post => {
                     const div = document.createElement("div");
                     div.className = "post";
+                    div.id = `post-${post.id}`;
 
                     let imageHtml = '';
                     if (post.image_key) {
@@ -865,11 +984,26 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
                         `;
                     }
 
+                    // Parsujemy treść posta przez rozbudowaną funkcję QoL
+                    const parsed = formatPostContent(post.content);
+
                     let contentHtml = '';
-                    if (post.content && post.content.trim() !== "" && post.content !== "(brak treści)") {
-                        contentHtml = `<div class="post-content" onclick="quotePost(${post.id})">${escapeHTML(post.content)}</div>`;
+                    if (parsed.html && parsed.html.trim() !== "" && post.content !== "(brak treści)") {
+                        contentHtml = `<div class="post-content">${parsed.html}</div>`;
                     } else if (!post.image_key) {
-                        contentHtml = `<div class="post-content" onclick="quotePost(${post.id})"></div>`;
+                        contentHtml = `<div class="post-content"></div>`;
+                    }
+
+                    // Jeśli wykryto filmy z YouTube, budujemy odtwarzacze embed
+                    let ytHtml = '';
+                    if (parsed.youtubeEmbeds && parsed.youtubeEmbeds.length > 0) {
+                        parsed.youtubeEmbeds.forEach(vId => {
+                            ytHtml += `
+                                <div class="youtube-embed">
+                                    <iframe src="https://www.youtube.com/embed/${vId}" allowfullscreen loading="lazy"></iframe>
+                                </div>
+                            `;
+                        });
                     }
 
                     div.innerHTML = `
@@ -878,6 +1012,7 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
                             <span>${formatDate(post.created_at)}</span>
                         </div>
                         ${contentHtml}
+                        ${ytHtml}
                         ${imageHtml}
                     `;
                     board.appendChild(div);
@@ -893,7 +1028,7 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
     }
 }
 
-/* Cytowanie wpisów po kliknięciu */
+/* Cytowanie wpisów po kliknięciu w nr posta */
 function quotePost(postId) {
     const textarea = document.getElementById("replyContent");
     const selection = window.getSelection().toString().trim();
@@ -921,6 +1056,10 @@ async function sendPost() {
         alert("Treść posta lub zdjęcie jest wymagane.");
         return;
     }
+
+    const btn = document.getElementById("btnSendReply");
+    btn.disabled = true;
+    btn.innerText = "WYSYŁANIE...";
 
     try {
         let compressedFile = null;
@@ -959,6 +1098,9 @@ async function sendPost() {
 
     } catch (error) {
         alert(error.message || "Błąd połączenia z API.");
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "WYŚLIJ ODPOWIEDŹ";
     }
 }
 
@@ -1007,10 +1149,8 @@ if (initialThreadId) {
 /* Automatyczne odświeżanie co 10 sekund */
 setInterval(() => {
     if (currentThread) {
-        // Jeśli jesteśmy w wątku, pobieraj najnowsze posty automatycznie w tle
         openThread(currentThread, false, true);
     } else {
-        // Jeśli jesteśmy na stronie głównej, odświeżaj listę wątków (o ile okno tworzenia wątku jest zamknięte)
         const createBox = document.getElementById("createBox");
         if (!createBox || createBox.style.display !== "block") {
             loadThreads();
