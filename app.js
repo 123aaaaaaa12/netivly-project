@@ -248,7 +248,7 @@ function formatPostContent(rawText) {
 }
 
 /* =========================
-   QoL: POMOCNIKI TEKSTOWE (SPOILER / GREENTEXT BUTTONS)
+   QoL: POMOCNIKI TEKSTOWE
 ========================= */
 function insertFormatting(textareaId, formatType) {
     const ta = document.getElementById(textareaId);
@@ -302,7 +302,10 @@ function hideQuotePreview() {
     if (popup) popup.style.display = 'none';
 }
 
-function handleImageClick(container, imgElement) {
+// KLUCZOWE: Poprawna obsługa kliknięcia obrazka z NSFW
+function handleImageClick(container, imgElement, event) {
+    if (event) event.stopPropagation();
+    
     if (imgElement.classList.contains('nsfw-blurred')) {
         imgElement.classList.remove('nsfw-blurred');
         const badge = container.querySelector('.nsfw-overlay-badge');
@@ -461,7 +464,7 @@ async function createThread() {
         const formData = new FormData();
         formData.append("thread_id", result.thread_id);
         formData.append("content", content);
-        if (isNsfw) formData.append("is_nsfw", "1");
+        formData.append("is_nsfw", isNsfw ? "1" : "0");
         if (compressedFile) {
             formData.append("image", compressedFile);
         }
@@ -555,7 +558,7 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
             document.getElementById("board").style.display = "block";
 
             const board = document.getElementById("boardContent");
-            const isThreadNsfw = data.thread && data.thread.is_nsfw;
+            const isThreadNsfw = data.thread && (data.thread.is_nsfw == 1 || data.thread.category === 'nsfw');
 
             board.innerHTML = `
                 <h2 style="color:#eee; font-weight:normal; margin-bottom:25px; display:flex; gap:10px; align-items:center;">
@@ -575,10 +578,10 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
                     if (post.image_key) {
                         const safeKey = encodeURIComponent(post.image_key).replace(/%2F/g, '/');
                         const imgUrl = `${PUBLIC_R2_URL}/${safeKey}`;
-                        const isNsfwMedia = post.is_nsfw || isThreadNsfw;
+                        const isNsfwMedia = post.is_nsfw == 1 || isThreadNsfw;
 
                         imageHtml = `
-                            <div class="post-image-container" onclick="handleImageClick(this, this.querySelector('.post-image'))">
+                            <div class="post-image-container" onclick="handleImageClick(this, this.querySelector('.post-image'), event)">
                                 ${isNsfwMedia ? '<div class="nsfw-overlay-badge">🔞 NSFW (Kliknij aby odsłonić)</div>' : ''}
                                 <img src="${imgUrl}" 
                                      class="post-image ${isNsfwMedia ? 'nsfw-blurred' : ''}" 
@@ -678,7 +681,7 @@ async function sendPost() {
         const formData = new FormData();
         formData.append("thread_id", currentThread);
         formData.append("content", content);
-        if (isNsfw) formData.append("is_nsfw", "1");
+        formData.append("is_nsfw", isNsfw ? "1" : "0");
         if (compressedFile) {
             formData.append("image", compressedFile);
         }
