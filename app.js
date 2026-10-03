@@ -48,8 +48,8 @@ function applyTheme(themeName) {
         const month = now.getMonth() + 1; // 1-12
         const day = now.getDate();
 
-        // Sezonowość automatyczna
-        if (month === 10 && day >= 25 && day <= 31) {
+        // Sezonowość automatyczna (Cały październik = Halloween)
+        if (month === 10) {
             targetFile = 'halloween.css';
         } else if ((month === 12 && day >= 15) || (month === 1 && day <= 6)) {
             targetFile = 'christmas.css';
@@ -64,7 +64,14 @@ function applyTheme(themeName) {
         targetFile = '';
     }
 
-    linkElement.href = targetFile;
+    // Bezpieczne przypisywanie href - usuwa atrybut gdy pusty
+    if (targetFile) {
+        linkElement.href = targetFile;
+        linkElement.disabled = false;
+    } else {
+        linkElement.removeAttribute('href');
+        linkElement.disabled = true;
+    }
 }
 
 /* =========================
