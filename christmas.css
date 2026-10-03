@@ -1,60 +1,49 @@
-/* Importuje główny układ i strukturę ze style.css */
-@import url('style.css');
-
 /* =========================
-   NADPISANIA: MOTYW ZIMA / ŚWIĘTA
+   MOTYW: ZIMA / ŚWIĘTA
 ========================= */
 
 html, body {
-    background: #02060c;
-    color: #d1ecf1;
+    background: #02060c !important;
+    color: #d1ecf1 !important;
 }
 
-/* Drobinki (śnieg) */
-.particle {
+#particles .particle {
     background: #a8dadc !important;
 }
 
-/* Nagłówek i Logo */
 header {
-    border-bottom-color: #112a46;
+    border-bottom-color: #112a46 !important;
 }
 
 .logo {
-    color: #e0f4ff;
+    color: #e0f4ff !important;
     text-shadow: 0 0 12px rgba(168, 218, 220, 0.4);
 }
 
 .logo::after {
-    color: #1d3557;
+    color: #1d3557 !important;
 }
 
-.subtitle {
-    color: #457b9d;
-}
-
-/* Status i Przycisk Categories */
-.status {
-    color: #457b9d;
+.subtitle, .status {
+    color: #457b9d !important;
 }
 
 .categories-bar {
-    border-bottom-color: #112a46;
+    border-bottom-color: #112a46 !important;
 }
 
 .cat-btn {
-    background: #061220;
-    color: #457b9d;
-    border-color: #112a46;
+    background: #061220 !important;
+    color: #457b9d !important;
+    border-color: #112a46 !important;
 }
 
 .cat-btn:hover, .cat-btn.active {
-    background: #0e243f;
-    color: #f1faee;
-    border-color: #4ea8de;
+    background: #0e243f !important;
+    color: #f1faee !important;
+    border-color: #4ea8de !important;
 }
 
-/* Przyciski i Select */
 button, .controls select {
     background: #061220 !important;
     color: #d1ecf1 !important;
@@ -65,81 +54,42 @@ button:hover, .controls select:hover {
     background: #0e243f !important;
     border-color: #4ea8de !important;
     color: #ffffff !important;
-    box-shadow: 0 0 10px rgba(78, 168, 222, 0.25);
 }
 
-.controls select option {
-    background: #061220;
-    color: #d1ecf1;
-}
-
-/* Wątki na liście */
 .thread {
-    background: rgba(6, 18, 32, 0.95);
-    border-color: #112a46;
+    background: #061220 !important;
+    border-color: #112a46 !important;
 }
 
 .thread.pinned-thread {
-    border-color: #1d4e89;
-    background: #0b1d33;
+    border-color: #1d4e89 !important;
+    background: #0b1d33 !important;
 }
 
 .thread:hover {
-    border-color: #4ea8de;
-    background: #0e243f;
-    box-shadow: -3px 0 0 #4ea8de;
+    border-color: #4ea8de !important;
+    background: #0e243f !important;
 }
 
 .thread-title {
-    color: #e0f4ff;
+    color: #e0f4ff !important;
 }
 
 .thread-meta {
-    color: #457b9d;
+    color: #457b9d !important;
 }
 
-/* Formularze i Posty */
-#createBox, .reply {
-    background: #061220;
-    border-color: #1a3a60;
+#createBox, .reply, .post {
+    background: #061220 !important;
+    border-color: #1a3a60 !important;
 }
 
 #createBox input, #createBox select, #createBox textarea, .reply textarea {
-    background: #02060c;
-    color: #d1ecf1;
-    border-color: #112a46;
-}
-
-#createBox input:focus, #createBox select:focus, #createBox textarea:focus, .reply textarea:focus {
-    border-color: #4ea8de;
-}
-
-.post {
-    background: #061220;
-    border-left-color: #1a3a60;
-}
-
-.post:hover {
-    border-left-color: #4ea8de;
-}
-
-.post.highlight {
-    background: #0e243f;
-    border-left-color: #90e0ef;
-}
-
-.post-head {
-    color: #457b9d;
-}
-
-.post-id-btn {
-    color: #a8dadc;
-}
-
-.post-id-btn:hover {
-    color: #ffffff;
+    background: #02060c !important;
+    color: #d1ecf1 !important;
+    border-color: #112a46 !important;
 }
 
 footer {
-    color: #1a3a60;
+    color: #1a3a60 !important;
 }
