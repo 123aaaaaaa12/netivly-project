@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="style.css">
 <!-- Opcjonalne nakładki motywów (halloween.css / christmas.css) -->
 <link rel="stylesheet" href="" id="theme-style">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </head>
 
 <body>
@@ -90,6 +91,7 @@
             </label>
         </div>
 
+        <div id="ts-thread" style="margin-bottom: 12px;"></div>
         <button id="btnCreateThread" onclick="createThread()">UTWÓRZ WĄTEK</button>
         <button onclick="hideCreate()">ANULUJ</button>
     </div>
@@ -119,6 +121,7 @@
                 <input type="checkbox" id="replyIsNsfw"> 🔞 Ukryj zdjęcie (NSFW Blur)
             </label>
         </div>
+        <div id="ts-reply" style="margin-bottom: 12px;"></div>
         <button id="btnSendReply" onclick="sendPost()">WYŚLIJ ODPOWIEDŹ (Ctrl + Enter)</button>
     </div>
 </div>
