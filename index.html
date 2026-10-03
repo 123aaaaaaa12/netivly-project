@@ -75,8 +75,8 @@
         <input id="threadPassword" type="password" placeholder="Wprowadź hasło do wątku prywatnego..." style="display: none;">
 
         <div style="margin-bottom: 6px; display: flex; gap: 6px;">
-            <button type="button" style="padding: 4px 8px; font-size: 11px;" onclick="insertFormatting('threadContent', 'spoiler')">||spoiler||</button>
-            <button type="button" style="padding: 4px 8px; font-size: 11px;" onclick="insertFormatting('threadContent', 'greentext')">&gt;greentext</button>
+            <button type="button" style="padding: 4px 8px; font-size: 11px;" onmousedown="event.preventDefault(); insertFormatting('threadContent', 'spoiler')">||spoiler||</button>
+            <button type="button" style="padding: 4px 8px; font-size: 11px;" onmousedown="event.preventDefault(); insertFormatting('threadContent', 'greentext')">&gt;greentext</button>
         </div>
         <textarea id="threadContent" maxlength="5000" placeholder="Treść pierwszego posta... (użyj ||tekst|| dla spoilera)" oninput="updateCharCount('threadContent', 'threadCharCount')"></textarea>
         <div id="threadCharCount" class="char-counter">0 / 5000</div>
@@ -105,8 +105,8 @@
 
     <div class="reply">
         <div style="margin-bottom: 6px; display: flex; gap: 6px;">
-            <button type="button" style="padding: 4px 8px; font-size: 11px;" onclick="insertFormatting('replyContent', 'spoiler')">||spoiler||</button>
-            <button type="button" style="padding: 4px 8px; font-size: 11px;" onclick="insertFormatting('replyContent', 'greentext')">&gt;greentext</button>
+            <button type="button" style="padding: 4px 8px; font-size: 11px;" onmousedown="event.preventDefault(); insertFormatting('replyContent', 'spoiler')">||spoiler||</button>
+            <button type="button" style="padding: 4px 8px; font-size: 11px;" onmousedown="event.preventDefault(); insertFormatting('replyContent', 'greentext')">&gt;greentext</button>
         </div>
         <textarea id="replyContent" maxlength="5000" placeholder="Napisz anonimowo... (Ctrl+Enter aby wysłać, ||tekst|| dla spoilera)" oninput="updateCharCount('replyContent', 'replyCharCount')"></textarea>
         <div id="replyCharCount" class="char-counter">0 / 5000</div>
