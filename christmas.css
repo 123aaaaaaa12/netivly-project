@@ -3,7 +3,7 @@
 ========================= */
 
 html, body {
-    background: #02060c !important;
+    background: #030a14 !important;
     color: #d1ecf1 !important;
 }
 
@@ -17,7 +17,7 @@ header {
 
 .logo {
     color: #e0f4ff !important;
-    text-shadow: 0 0 12px rgba(168, 218, 220, 0.4);
+    text-shadow: 0 0 12px rgba(168, 218, 220, 0.4) !important;
 }
 
 .logo::after {
@@ -33,42 +33,42 @@ header {
 }
 
 .cat-btn {
-    background: #061220 !important;
-    color: #457b9d !important;
-    border-color: #112a46 !important;
+    background: #08192d !important;
+    color: #8ab4f8 !important;
+    border-color: #1c3d5a !important;
 }
 
 .cat-btn:hover, .cat-btn.active {
-    background: #0e243f !important;
-    color: #f1faee !important;
+    background: #112e4e !important;
+    color: #ffffff !important;
     border-color: #4ea8de !important;
 }
 
-button, .controls select {
-    background: #061220 !important;
+button, .theme-switcher select {
+    background: #08192d !important;
     color: #d1ecf1 !important;
-    border-color: #1a3a60 !important;
+    border-color: #1c3d5a !important;
 }
 
-button:hover, .controls select:hover {
-    background: #0e243f !important;
+button:hover, .theme-switcher select:hover {
+    background: #112e4e !important;
     border-color: #4ea8de !important;
     color: #ffffff !important;
 }
 
 .thread {
-    background: #061220 !important;
-    border-color: #112a46 !important;
+    background: #08192d !important;
+    border-color: #1c3d5a !important;
 }
 
 .thread.pinned-thread {
     border-color: #1d4e89 !important;
-    background: #0b1d33 !important;
+    background: #0d233a !important;
 }
 
 .thread:hover {
     border-color: #4ea8de !important;
-    background: #0e243f !important;
+    background: #112e4e !important;
 }
 
 .thread-title {
@@ -76,20 +76,20 @@ button:hover, .controls select:hover {
 }
 
 .thread-meta {
-    color: #457b9d !important;
+    color: #6c9bcf !important;
 }
 
 #createBox, .reply, .post {
-    background: #061220 !important;
-    border-color: #1a3a60 !important;
+    background: #08192d !important;
+    border-color: #1c3d5a !important;
 }
 
 #createBox input, #createBox select, #createBox textarea, .reply textarea {
-    background: #02060c !important;
+    background: #030a14 !important;
     color: #d1ecf1 !important;
-    border-color: #112a46 !important;
+    border-color: #1c3d5a !important;
 }
 
 footer {
-    color: #1a3a60 !important;
+    color: #2b5278 !important;
 }
