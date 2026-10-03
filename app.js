@@ -219,11 +219,17 @@ function formatPostContent(rawText) {
 
     // Linie, Cytaty & Odnośniki
     const lines = text.split('\n').map(line => {
-        line = line.replace(/&gt;&gt;(\d+)/g, (m, id) => {
-            return `<a class="post-quote-ref" href="javascript:void(0)" onclick="scrollToPost(${id})" onmouseenter="showQuotePreview(event, ${id})" onmouseleave="hideQuotePreview()">&gt;&gt;${id}</a>`;
-        });
+        const trimmed = line.trim();
 
-        if (line.startsWith('&gt;') && !line.startsWith('&gt;&gt;')) {
+        // Obsługa cytowania posta np. >>12345 (zabezpieczone przez escapeHTML jako &gt;&gt;)
+        if (trimmed.startsWith('&gt;&gt;') || trimmed.startsWith('>>')) {
+            return line.replace(/(?:&gt;&gt;|>>)(\d+)/g, (m, id) => {
+                return `<a class="post-quote-ref" href="javascript:void(0)" onclick="scrollToPost(${id})" onmouseenter="showQuotePreview(event, ${id})" onmouseleave="hideQuotePreview()">&gt;&gt;${id}</a>`;
+            });
+        }
+
+        // Obsługa Greentextu dla linii zaczynających się od > / &gt;
+        if (trimmed.startsWith('&gt;') || trimmed.startsWith('>')) {
             return `<span class="post-greentext">${line}</span>`;
         }
 
@@ -256,7 +262,8 @@ function insertFormatting(textareaId, formatType) {
         const replacement = `||${selectedText || 'tekst'}||`;
         ta.value = ta.value.substring(0, start) + replacement + ta.value.substring(end);
     } else if (formatType === 'greentext') {
-        const replacement = `>${selectedText || 'cytat'}`;
+        const prefix = (start > 0 && ta.value[start - 1] !== '\n') ? '\n>' : '>';
+        const replacement = `${prefix}${selectedText || 'cytat'}`;
         ta.value = ta.value.substring(0, start) + replacement + ta.value.substring(end);
     }
 
@@ -293,14 +300,14 @@ function hideQuotePreview() {
     if (popup) popup.style.display = 'none';
 }
 
-function toggleImageExpand(imgElement) {
-    imgElement.classList.toggle('expanded');
-}
-
-function revealNsfwImage(container, imgElement) {
-    imgElement.classList.remove('nsfw-blurred');
-    const badge = container.querySelector('.nsfw-overlay-badge');
-    if (badge) badge.remove();
+function handleImageClick(container, imgElement) {
+    if (imgElement.classList.contains('nsfw-blurred')) {
+        imgElement.classList.remove('nsfw-blurred');
+        const badge = container.querySelector('.nsfw-overlay-badge');
+        if (badge) badge.remove();
+    } else {
+        imgElement.classList.toggle('expanded');
+    }
 }
 
 function scrollToPost(postId) {
@@ -569,13 +576,12 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
                         const isNsfwMedia = post.is_nsfw || isThreadNsfw;
 
                         imageHtml = `
-                            <div class="post-image-container" onclick="if(this.querySelector('.nsfw-blurred')){ revealNsfwImage(this, this.querySelector('.post-image')); }">
+                            <div class="post-image-container" onclick="handleImageClick(this, this.querySelector('.post-image'))">
                                 ${isNsfwMedia ? '<div class="nsfw-overlay-badge">🔞 NSFW (Kliknij aby odsłonić)</div>' : ''}
                                 <img src="${imgUrl}" 
                                      class="post-image ${isNsfwMedia ? 'nsfw-blurred' : ''}" 
                                      alt="Załącznik" 
-                                     loading="lazy" 
-                                     onclick="if(!this.classList.contains('nsfw-blurred')) toggleImageExpand(this);" />
+                                     loading="lazy" />
                             </div>
                         `;
                     }
