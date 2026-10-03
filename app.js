@@ -7,6 +7,7 @@ let currentThreadPassword = '';
 let adminToken = localStorage.getItem('adminToken') || '';
 let loadedPostCount = 0;
 let lastPostTime = 0; // Cooldown anti-spam
+const VALID_CATEGORIES = ['main', 'netivly', 'trash', 'private', 'nsfw'];
 
 document.addEventListener('DOMContentLoaded', () => {
     if (adminToken) {
@@ -346,7 +347,18 @@ function scrollToPost(postId) {
 /* =========================
    SEKCJE / KATEGORIE
 ========================= */
+function confirmAdult() {
+    if (localStorage.getItem('netivly_adult') === '1') return true;
+    const ok = confirm("Sekcja NSFW zawiera treści tylko dla osób pełnoletnich (18+).\n\nCzy potwierdzasz, że masz ukończone 18 lat?");
+    if (ok) localStorage.setItem('netivly_adult', '1');
+    return ok;
+}
+
 function switchCategory(cat, btn, updateUrl = true) {
+    if (cat === 'nsfw' && !confirmAdult()) {
+        cat = 'main';
+        btn = null;
+    }
     currentCategory = cat;
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
     
@@ -432,7 +444,7 @@ async function createThread() {
     const content = document.getElementById("threadContent").value.trim();
     const category = document.getElementById("threadCategory").value;
     const password = document.getElementById("threadPassword").value.trim();
-    const isNsfw = document.getElementById("threadIsNsfw").checked;
+    const isNsfw = category === 'nsfw' || document.getElementById("threadIsNsfw").checked;
     const imageFileInput = document.getElementById("threadImage").files[0];
 
     if (!title || (!content && !imageFileInput)) {
@@ -562,6 +574,10 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
             return;
         }
 
+        if (data.thread && data.thread.category === 'nsfw' && !isBackgroundRefresh && !confirmAdult()) {
+            return;
+        }
+
         currentThread = id;
         
         if (!isBackgroundRefresh || (data.posts && data.posts.length !== loadedPostCount)) {
@@ -576,6 +592,11 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
 
             const board = document.getElementById("boardContent");
             const isThreadNsfw = data.thread && (data.thread.is_nsfw == 1 || data.thread.category === 'nsfw');
+            const replyNsfwBox = document.getElementById("replyIsNsfw");
+            if (replyNsfwBox) {
+                replyNsfwBox.checked = !!isThreadNsfw;
+                replyNsfwBox.disabled = !!isThreadNsfw;
+            }
 
             board.innerHTML = `
                 <h2 style="color:#eee; font-weight:normal; margin-bottom:25px; display:flex; gap:10px; align-items:center;">
@@ -774,7 +795,7 @@ const initialCategory = urlParams.get('cat');
 if (initialThreadId) {
     openThread(initialThreadId, false);
 } else {
-    if (initialCategory && ['main', 'netivly', 'trash', 'private'].includes(initialCategory)) {
+    if (initialCategory && VALID_CATEGORIES.includes(initialCategory) && (initialCategory !== 'nsfw' || confirmAdult())) {
         currentCategory = initialCategory;
         const btn = document.getElementById(`cat-btn-${initialCategory}`);
         if (btn) {

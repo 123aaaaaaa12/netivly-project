@@ -590,3 +590,18 @@ footer {
     background: #090909;
     color: #ddd;
 }
+
+/* =========================
+   KATEGORIA NSFW
+========================= */
+
+.cat-btn-nsfw {
+    border-color: #4a1515;
+    color: #c66;
+}
+
+.cat-btn-nsfw:hover, .cat-btn-nsfw.active {
+    background: #1f0808;
+    border-color: #a33;
+    color: #f88;
+}

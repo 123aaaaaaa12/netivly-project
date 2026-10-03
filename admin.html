@@ -106,6 +106,7 @@
     .badge-netivly { background: #0d2238; border: 1px solid #38a; color: #8cf; }
     .badge-private { background: #380d0d; border: 1px solid #833; color: #f88; }
     .badge-trash { background: #1a1a1a; border: 1px solid #555; color: #888; }
+    .badge-nsfw { background: #380d0d; border: 1px solid #a33; color: #f66; font-weight: bold; }
     .badge-main { background: #0d3810; border: 1px solid #383; color: #8f8; }
 
     .post-item {
@@ -164,6 +165,7 @@
           <option value="main">Main</option>
           <option value="trash">Trash (Kosz)</option>
           <option value="private">Private</option>
+          <option value="nsfw">🔞 NSFW</option>
         </select>
         <button class="btn btn-warning" onclick="executeBulkMoveFromInput()">Przenieś wpisane ID</button>
         <button class="btn btn-success" onclick="executeBulkMoveFromCheckboxes()">Przenieś zaznaczone (<span id="selected-count">0</span>)</button>
@@ -186,6 +188,7 @@
             <option value="main">Main (Główna)</option>
             <option value="trash">Trash (Kosz)</option>
             <option value="private">Private (Chronione hasłem)</option>
+            <option value="nsfw">🔞 NSFW (18+)</option>
           </select>
         </div>
 
@@ -220,6 +223,7 @@
         <button class="tab-btn" onclick="switchCategory('netivly', this)">🌐 Netivly (<span id="count-netivly">0</span>)</button>
         <button class="tab-btn" onclick="switchCategory('main', this)">💬 Main (<span id="count-main">0</span>)</button>
         <button class="tab-btn" onclick="switchCategory('private', this)">🔒 Private (<span id="count-private">0</span>)</button>
+        <button class="tab-btn" onclick="switchCategory('nsfw', this)">🔞 NSFW (<span id="count-nsfw">0</span>)</button>
         <button class="tab-btn" onclick="switchCategory('trash', this)">🗑️ Trash (<span id="count-trash">0</span>)</button>
       </div>
 
@@ -356,6 +360,7 @@
       document.getElementById('count-netivly').innerText = threads.filter(t => (t.category || 'main') === 'netivly').length;
       document.getElementById('count-main').innerText = threads.filter(t => (t.category || 'main') === 'main').length;
       document.getElementById('count-private').innerText = threads.filter(t => t.category === 'private').length;
+      document.getElementById('count-nsfw').innerText = threads.filter(t => t.category === 'nsfw').length;
       document.getElementById('count-trash').innerText = threads.filter(t => t.category === 'trash').length;
     }
 
@@ -405,6 +410,7 @@
                 <option value="main" ${t.category === 'main' ? 'selected' : ''}>Kategoria: Main (Główna)</option>
                 <option value="trash" ${t.category === 'trash' ? 'selected' : ''}>Kategoria: Trash (Kosz)</option>
                 <option value="private" ${t.category === 'private' ? 'selected' : ''}>Kategoria: Private (Prywatna)</option>
+                <option value="nsfw" ${t.category === 'nsfw' ? 'selected' : ''}>Kategoria: NSFW (18+)</option>
               </select>
 
               <input type="password" id="thread-pass-input-${t.id}" class="form-control ${t.category === 'private' ? '' : 'hidden'}" placeholder="Ustaw nowe hasło dla kategorii Private...">
