@@ -41,7 +41,7 @@ function applyTheme(themeName) {
     const linkElement = document.getElementById('theme-style');
     if (!linkElement) return;
 
-    let targetFile = 'style.css';
+    let targetFile = '';
 
     if (themeName === 'auto') {
         const now = new Date();
@@ -54,14 +54,14 @@ function applyTheme(themeName) {
         } else if ((month === 12 && day >= 15) || (month === 1 && day <= 6)) {
             targetFile = 'christmas.css';
         } else {
-            targetFile = 'style.css';
+            targetFile = '';
         }
     } else if (themeName === 'halloween') {
         targetFile = 'halloween.css';
     } else if (themeName === 'christmas') {
         targetFile = 'christmas.css';
     } else {
-        targetFile = 'style.css';
+        targetFile = '';
     }
 
     linkElement.href = targetFile;
