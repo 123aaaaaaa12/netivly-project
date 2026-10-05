@@ -207,6 +207,22 @@
       </form>
     </div>
 
+    <!-- MODERATORZY -->
+    <div class="admin-card">
+      <h2>👮 Moderatorzy</h2>
+      <form id="mod-create-form" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;">
+        <input id="mod-new-name" class="form-control" placeholder="login (a-z, 0-9, _)" style="flex: 1; min-width: 140px;" required>
+        <input id="mod-new-pass" type="text" class="form-control" placeholder="hasło (min. 10 znaków)" style="flex: 1; min-width: 140px;" required>
+        <button type="submit" class="btn btn-success">Dodaj</button>
+      </form>
+      <div id="mods-list" style="font-size: 0.85rem;">Ładowanie...</div>
+      <details style="margin-top: 12px;">
+        <summary style="cursor: pointer; font-size: 0.85rem;">Dziennik moderacji (ostatnie 50)</summary>
+        <div id="mod-log" style="margin-top: 8px;"></div>
+      </details>
+      <div style="font-size: 0.75rem; margin-top: 10px; opacity: 0.7;">Panel moderatora: /mod.html</div>
+    </div>
+
     <!-- PANEL MODERACJI I LISTA WĄTKÓW -->
     <div class="admin-card">
       <h2>
@@ -276,10 +292,54 @@
       location.reload();
     });
 
+    async function modApi(path, method = 'GET', body) {
+      const r = await fetch(API_URL + path, {
+        method,
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
+        body: body ? JSON.stringify(body) : undefined
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || 'Błąd');
+      return d;
+    }
+
+    async function loadMods() {
+      try {
+        const d = await modApi('/api/admin/mods');
+        document.getElementById('mods-list').innerHTML = d.mods.length
+          ? d.mods.map(m => `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);"><span>${esc(m.username)} <small style="opacity:.6;">od ${esc(m.created_at)}</small></span><button class="btn btn-danger" onclick="deleteMod(${Number(m.id)})">Usuń</button></div>`).join('')
+          : 'Brak moderatorów.';
+        document.getElementById('mod-log').innerHTML = d.log.length
+          ? d.log.map(l => `<div style="font-size:.8rem;padding:2px 0;">${esc(l.created_at)} — <b>${esc(l.moderator)}</b>: ${esc(l.action)} (post #${Number(l.post_id)}, wątek #${Number(l.thread_id)})</div>`).join('')
+          : 'Pusto.';
+      } catch (e) {
+        document.getElementById('mods-list').textContent = 'Błąd: ' + e.message;
+      }
+    }
+
+    async function deleteMod(id) {
+      if (!confirm('Usunąć to konto moderatora? Straci dostęp natychmiast.')) return;
+      try { await modApi('/api/admin/mods/delete', 'POST', { id }); loadMods(); }
+      catch (e) { alert('Błąd: ' + e.message); }
+    }
+
+    document.getElementById('mod-create-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        await modApi('/api/admin/mods', 'POST', {
+          username: document.getElementById('mod-new-name').value,
+          password: document.getElementById('mod-new-pass').value
+        });
+        e.target.reset();
+        loadMods();
+      } catch (err) { alert('Błąd: ' + err.message); }
+    });
+
     function showDashboard() {
       loginSection.classList.add('hidden');
       dashboardWrapper.classList.remove('hidden');
       loadThreads();
+      loadMods();
     }
 
     function toggleNewPassInput() {
