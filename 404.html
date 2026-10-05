@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>404 — netivly</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: #000;
+    color: #ddd;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+  }
+
+  /* ===== Domyślne zmienne motywu: VOID ===== */
+  :root {
+    --a: #ffcf8c;
+    --b: #ff7a1a;
+    --c: #7a1500;
+    --ring: #ff8c00;
+    --ember: #ffae42;
+    --text-glow-1: rgba(255, 120, 20, 0.55);
+    --text-glow-2: rgba(255, 80, 0, 0.3);
+    --text-accent: #ff6600;
+    --ground: radial-gradient(ellipse at 50% 100%, rgba(120, 30, 0, 0.55) 0%, transparent 65%);
+    --msg-color: #c99;
+    --back-border: #442200;
+    --back-hover-border: #ff6600;
+    --back-hover-color: #ff9933;
+    --bg-radial: radial-gradient(ellipse at 50% 85%, #1a0a00 0%, #000 60%);
+  }
+
+  body.theme-halloween {
+    --a: #e8ffb0;
+    --b: #39ff14;
+    --c: #2a0040;
+    --ring: #8800ff;
+    --ember: #7dff5c;
+    --text-glow-1: rgba(136, 0, 255, 0.6);
+    --text-glow-2: rgba(57, 255, 20, 0.35);
+    --text-accent: #a64dff;
+    --ground: radial-gradient(ellipse at 50% 100%, rgba(60, 0, 90, 0.6) 0%, transparent 65%);
+    --msg-color: #b98fff;
+    --back-border: #3a0066;
+    --back-hover-border: #8800ff;
+    --back-hover-color: #c88cff;
+    --bg-radial: radial-gradient(ellipse at 50% 85%, #10041c 0%, #000 60%);
+  }
+
+  body.theme-christmas {
+    --a: #ffffff;
+    --b: #aee4ff;
+    --c: #0a1f33;
+    --ring: #4ea8de;
+    --ember: #d9f3ff;
+    --text-glow-1: rgba(78, 168, 222, 0.6);
+    --text-glow-2: rgba(170, 220, 255, 0.35);
+    --text-accent: #9fd8ff;
+    --ground: radial-gradient(ellipse at 50% 100%, rgba(20, 60, 100, 0.55) 0%, transparent 65%);
+    --msg-color: #a9d4ee;
+    --back-border: #15344d;
+    --back-hover-border: #4ea8de;
+    --back-hover-color: #cfeeff;
+    --bg-radial: radial-gradient(ellipse at 50% 85%, #020b16 0%, #000 60%);
+  }
+
+  .scene {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-radial);
+    animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) 1;
+  }
+  @keyframes shake {
+    0% { transform: translate(0,0); }
+    10% { transform: translate(-10px,6px); }
+    20% { transform: translate(9px,-7px); }
+    30% { transform: translate(-8px,5px); }
+    40% { transform: translate(7px,-4px); }
+    50% { transform: translate(-5px,3px); }
+    65% { transform: translate(3px,-2px); }
+    80% { transform: translate(-2px,1px); }
+    100% { transform: translate(0,0); }
+  }
+
+  .groundglow {
+    position: absolute;
+    inset: 0;
+    background: var(--ground);
+    z-index: 0;
+    animation: pulseglow 4s ease-in-out infinite;
+  }
+  @keyframes pulseglow {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
+  .rays {
+    position: absolute;
+    left: 50%;
+    bottom: 14%;
+    width: 1200px;
+    height: 1200px;
+    max-width: 220vw;
+    max-height: 220vw;
+    transform: translate(-50%, 50%);
+    background: conic-gradient(from 0deg,
+      transparent 0deg, var(--b) 3deg, transparent 10deg,
+      transparent 40deg, var(--b) 43deg, transparent 52deg,
+      transparent 90deg, var(--b) 93deg, transparent 100deg,
+      transparent 140deg, var(--b) 143deg, transparent 150deg,
+      transparent 190deg, var(--b) 193deg, transparent 202deg,
+      transparent 250deg, var(--b) 253deg, transparent 260deg,
+      transparent 300deg, var(--b) 303deg, transparent 312deg,
+      transparent 340deg, var(--b) 343deg, transparent 352deg);
+    opacity: 0.22;
+    filter: blur(2px);
+    animation: spin 40s linear infinite, fadein 2s ease-out;
+    z-index: 0;
+  }
+  @keyframes spin { from { transform: translate(-50%,50%) rotate(0deg); } to { transform: translate(-50%,50%) rotate(360deg); } }
+  @keyframes fadein { from { opacity: 0; } to { opacity: 0.22; } }
+
+  .flash {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    opacity: 0;
+    animation: flash 1.6s ease-out forwards;
+    pointer-events: none;
+    z-index: 6;
+  }
+  @keyframes flash {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .shockwave {
+    position: absolute;
+    left: 50%;
+    bottom: 16%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 3px solid var(--ring);
+    transform: translate(-50%, 50%);
+    animation: shock 3s ease-out infinite;
+    opacity: 0;
+    z-index: 1;
+  }
+  .shockwave.s2 { animation-delay: 0.7s; }
+  .shockwave.s3 { animation-delay: 1.4s; }
+  .shockwave.s4 { animation-delay: 2.1s; }
+  @keyframes shock {
+    0% { width: 10px; height: 10px; opacity: 0.9; border-width: 4px; }
+    75% { opacity: 0.1; }
+    100% { width: 1700px; height: 1700px; opacity: 0; border-width: 0.5px; }
+  }
+
+  .mushroom {
+    position: absolute;
+    left: 50%;
+    bottom: 10%;
+    transform: translateX(-50%);
+    width: 520px;
+    max-width: 92vw;
+    height: 600px;
+    z-index: 2;
+    filter: blur(1px);
+  }
+
+  .stem {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 90px;
+    height: 320px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, color-mix(in srgb, var(--b) 70%, white 10%), var(--c) 55%, transparent 80%);
+    filter: blur(16px);
+    animation: rise 6s ease-in-out infinite alternate;
+  }
+
+  .cap, .cap2, .cap3 {
+    position: absolute;
+    left: 50%;
+    border-radius: 50%;
+    transform: translateX(-50%);
+  }
+  .cap {
+    bottom: 250px;
+    width: 460px;
+    height: 330px;
+    background:
+      radial-gradient(circle at 35% 35%, color-mix(in srgb, var(--a) 70%, transparent), transparent 55%),
+      radial-gradient(circle at 65% 45%, color-mix(in srgb, var(--b) 75%, transparent), transparent 60%),
+      radial-gradient(circle at 50% 60%, var(--c), transparent 70%);
+    filter: blur(22px);
+    animation: billow 5.5s ease-in-out infinite alternate;
+  }
+  .cap2 {
+    bottom: 330px;
+    width: 320px;
+    height: 240px;
+    background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--b) 55%, white 15%), transparent 65%);
+    filter: blur(18px);
+    animation: billow 4.5s ease-in-out infinite alternate-reverse;
+  }
+  .cap3 {
+    bottom: 400px;
+    width: 220px;
+    height: 170px;
+    background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--a) 60%, white 25%), transparent 70%);
+    filter: blur(14px);
+    opacity: 0.8;
+    animation: billow 6.5s ease-in-out infinite;
+  }
+
+  @keyframes rise {
+    0% { transform: translateX(-50%) translateY(0); }
+    100% { transform: translateX(-50%) translateY(-14px); }
+  }
+  @keyframes billow {
+    0% { transform: translateX(-50%) scale(1) rotate(0deg); }
+    100% { transform: translateX(-50%) scale(1.1) rotate(4deg); }
+  }
+
+  .embers { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+  .ember {
+    position: absolute;
+    bottom: 8%;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--ember);
+    opacity: 0;
+    box-shadow: 0 0 7px 1px var(--ember);
+    animation: float-up linear infinite;
+  }
+  body.theme-christmas .ember {
+    width: 5px;
+    height: 5px;
+    box-shadow: 0 0 5px 1px rgba(255,255,255,0.8);
+  }
+  @keyframes float-up {
+    0% { opacity: 0; transform: translateY(0) translateX(0); }
+    10% { opacity: 0.95; }
+    88% { opacity: 0.3; }
+    100% { opacity: 0; transform: translateY(-560px) translateX(var(--drift, 20px)); }
+  }
+
+  .flyer {
+    position: absolute;
+    bottom: 10%;
+    font-size: 20px;
+    opacity: 0;
+    animation: fly linear infinite;
+    z-index: 4;
+    filter: drop-shadow(0 0 4px rgba(0,0,0,0.6));
+  }
+  @keyframes fly {
+    0% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
+    8% { opacity: 0.9; }
+    90% { opacity: 0.7; }
+    100% { opacity: 0; transform: translate(var(--fx, 40px), -620px) rotate(var(--fr, 25deg)); }
+  }
+
+  .content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .code {
+    font-size: clamp(70px, 17vw, 160px);
+    font-weight: 900;
+    letter-spacing: -4px;
+    color: #f5f5f5;
+    text-shadow: 0 0 34px var(--text-glow-1), 0 0 80px var(--text-glow-2);
+    position: relative;
+    display: inline-block;
+  }
+  .code::after {
+    content: "404";
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    color: var(--text-accent);
+    z-index: -1;
+    opacity: 0.55;
+    animation: glitch 3.2s infinite;
+  }
+  @keyframes glitch {
+    0%, 86%, 100% { transform: translate(0); opacity: .45; }
+    89% { transform: translate(7px, -3px); opacity: .8; }
+    91% { transform: translate(-6px, 3px); opacity: .1; }
+    93% { transform: translate(4px, 2px); opacity: .6; }
+  }
+
+  .msg {
+    margin-top: 10px;
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: var(--msg-color);
+    text-transform: uppercase;
+  }
+  .msg2 {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #776;
+  }
+
+  .back {
+    display: inline-block;
+    margin-top: 28px;
+    padding: 11px 22px;
+    background: #090909;
+    color: #ddd;
+    border: 1px solid var(--back-border);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 1px;
+    transition: .2s;
+  }
+  .back:hover {
+    background: #130f0a;
+    border-color: var(--back-hover-border);
+    color: var(--back-hover-color);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scene, .flash, .shockwave, .stem, .cap, .cap2, .cap3, .ember, .flyer, .rays, .groundglow { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scene" id="scene">
+  <div class="flash"></div>
+  <div class="groundglow"></div>
+  <div class="rays"></div>
+
+  <div class="shockwave s1"></div>
+  <div class="shockwave s2"></div>
+  <div class="shockwave s3"></div>
+  <div class="shockwave s4"></div>
+
+  <div class="mushroom">
+    <div class="stem"></div>
+    <div class="cap2"></div>
+    <div class="cap"></div>
+    <div class="cap3"></div>
+  </div>
+
+  <div class="embers" id="embers"></div>
+
+  <div class="content">
+    <div class="code">404</div>
+    <div class="msg" id="msg"></div>
+    <div class="msg2" id="msg2"></div>
+    <a class="back" href="/">← WRÓĆ NA GŁÓWNĄ</a>
+  </div>
+</div>
+
+<script>
+(function () {
+  function pickTheme() {
+    const saved = localStorage.getItem('netivly_theme') || 'auto';
+    if (saved === 'halloween' || saved === 'christmas') return saved;
+    if (saved === 'style') return 'void';
+    if (saved !== 'auto') return 'void';
+    const now = new Date();
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+    if (month === 10) return 'halloween';
+    if ((month === 12 && day >= 15) || (month === 1 && day <= 6)) return 'christmas';
+    return 'void';
+  }
+
+  const theme = pickTheme();
+  if (theme === 'halloween') document.body.classList.add('theme-halloween');
+  if (theme === 'christmas') document.body.classList.add('theme-christmas');
+
+  const COPY = {
+    void: { m1: 'Ta strona nie przetrwała wybuchu', m2: 'netivly // nothing remains' },
+    halloween: { m1: 'Ta strona rozpłynęła się w toksycznej mgle', m2: 'netivly // trick or 404' },
+    christmas: { m1: 'Ta strona zamarzła na śmierć', m2: 'netivly // frozen // 404' }
+  };
+  document.getElementById('msg').textContent = COPY[theme].m1;
+  document.getElementById('msg2').textContent = COPY[theme].m2;
+
+  const box = document.getElementById('embers');
+  const n = window.innerWidth < 600 ? 20 : 40;
+
+  for (let i = 0; i < n; i++) {
+    const e = document.createElement('div');
+    e.className = 'ember';
+    e.style.left = (50 + (Math.random() * 34 - 17)) + '%';
+    e.style.setProperty('--drift', (Math.random() * 70 - 35) + 'px');
+    e.style.animationDuration = (3.5 + Math.random() * 4) + 's';
+    e.style.animationDelay = (Math.random() * 6) + 's';
+    box.appendChild(e);
+  }
+
+  if (theme === 'halloween' || theme === 'christmas') {
+    const glyph = theme === 'halloween' ? '🦇' : '❄️';
+    const flyCount = window.innerWidth < 600 ? 7 : 14;
+    for (let i = 0; i < flyCount; i++) {
+      const f = document.createElement('div');
+      f.className = 'flyer';
+      f.textContent = glyph;
+      f.style.left = (10 + Math.random() * 80) + '%';
+      f.style.fontSize = (14 + Math.random() * 14) + 'px';
+      f.style.setProperty('--fx', (Math.random() * 160 - 80) + 'px');
+      f.style.setProperty('--fr', (Math.random() * 60 - 30) + 'deg');
+      f.style.animationDuration = (5 + Math.random() * 5) + 's';
+      f.style.animationDelay = (Math.random() * 7) + 's';
+      box.appendChild(f);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
