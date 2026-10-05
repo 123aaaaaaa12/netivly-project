@@ -626,7 +626,9 @@ async function openThread(id, pushHistory = true, isBackgroundRefresh = false) {
                     div.id = `post-${post.id}`;
 
                     let imageHtml = '';
-                    if (post.image_key) {
+                    if (post.image_pending) {
+                        imageHtml = '<div class="post-image-pending">🖼️ Zdjęcie czeka na zatwierdzenie przez moderację</div>';
+                    } else if (post.image_key) {
                         const safeKey = encodeURIComponent(post.image_key).replace(/%2F/g, '/');
                         const imgUrl = `${PUBLIC_R2_URL}/${safeKey}`;
                         const isNsfwMedia = post.is_nsfw == 1 || isThreadNsfw;
