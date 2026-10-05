@@ -8,7 +8,7 @@ let adminToken = localStorage.getItem('adminToken') || '';
 let loadedPostCount = 0;
 let lastPostTime = 0; // Cooldown anti-spam
 // Turnstile: wklej SITE KEY (publiczny) z Cloudflare -> Turnstile -> netivly-prod
-const TURNSTILE_SITE_KEY = "WKLEJ_TUTAJ_SITE_KEY";
+const TURNSTILE_SITE_KEY = "0x4AAAAAAFMyFipLXZavvS-_";
 const tsWidgets = {};
 
 function ensureTs(name) {
