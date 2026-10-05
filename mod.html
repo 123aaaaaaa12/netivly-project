@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src blob: data:; connect-src https://admin.cosielampisz7.workers.dev; form-action 'none'; base-uri 'none'">
+<title>netivly // moderacja</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #09090b; color: #ddd; font-family: Arial, Helvetica, sans-serif; padding: 16px; }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .sub { color: #666; font-size: 12px; margin-bottom: 16px; }
+  .box { background: #121215; border: 1px solid #27272a; border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+  .warn { border-color: #7f1d1d; background: #1a0f0f; font-size: 13px; line-height: 1.5; }
+  input { width: 100%; padding: 10px; margin-bottom: 10px; background: #000; color: #ddd; border: 1px solid #333; border-radius: 6px; }
+  button { padding: 9px 14px; border: 0; border-radius: 6px; font-weight: 700; cursor: pointer; color: #fff; }
+  .ok { background: #16a34a; } .no { background: #d97706; } .del { background: #dc2626; } .neutral { background: #3f3f46; }
+  .bar { display: flex; justify-content: space-between; align-items: center; font-size: 13px; margin-bottom: 12px; gap: 10px; }
+  .meta { font-size: 12px; color: #777; margin-bottom: 8px; }
+  .title { font-weight: 700; margin-bottom: 4px; }
+  .text { white-space: pre-wrap; word-break: break-word; font-size: 14px; margin: 8px 0; color: #bbb; }
+  .img { max-width: 100%; max-height: 520px; border-radius: 6px; border: 1px solid #333; display: block; margin: 8px 0; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .tag { background: #450a0a; color: #fca5a5; border: 1px solid #7f1d1d; padding: 1px 6px; border-radius: 3px; font-size: 11px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>netivly // moderacja</h1>
+  <div class="sub">Zdjęcia czekające na zatwierdzenie</div>
+
+  <div id="login" class="box">
+    <form id="loginForm">
+      <input id="u" placeholder="Login moderatora" autocomplete="username" required>
+      <input id="p" type="password" placeholder="Hasło" autocomplete="current-password" required>
+      <button class="ok" type="submit" style="width:100%">Zaloguj</button>
+    </form>
+    <div id="loginErr" style="color:#f87171;font-size:13px;margin-top:8px;"></div>
+  </div>
+
+  <div id="app" class="hidden">
+    <div class="box warn">
+      <b>Podejrzenie treści seksualnych z udziałem nieletnich:</b> nie zapisuj, nie kopiuj i nie rób zrzutu ekranu.
+      Kliknij <b>Usuń post</b> i zgłoś sprawę na <b>dyzurnet.pl</b> (podaj numer wątku i posta). Przy bezpośrednim zagrożeniu dziecka: 112.
+    </div>
+    <div class="bar">
+      <span>Zalogowany: <b id="who"></b> &nbsp;|&nbsp; Do sprawdzenia: <b id="count">0</b></span>
+      <span><button class="neutral" id="reload">Odśwież</button> <button class="neutral" id="logout">Wyloguj</button></span>
+    </div>
+    <div id="list"></div>
+  </div>
+</div>
+
+<script>
+const API = 'https://admin.cosielampisz7.workers.dev';
+const $ = (id) => document.getElementById(id);
+const tok = () => localStorage.getItem('modToken');
+
+function logout() {
+  localStorage.removeItem('modToken');
+  $('app').classList.add('hidden');
+  $('login').classList.remove('hidden');
+}
+
+async function api(path, opts = {}) {
+  const r = await fetch(API + path, {
+    ...opts,
+    headers: { 'Authorization': 'Bearer ' + tok(), ...(opts.body ? { 'Content-Type': 'application/json' } : {}) }
+  });
+  if (r.status === 401) { logout(); throw new Error('Sesja wygasła - zaloguj się ponownie.'); }
+  return r;
+}
+
+$('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  $('loginErr').textContent = '';
+  try {
+    const r = await fetch(API + '/api/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: $('u').value, password: $('p').value })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Błąd logowania');
+    localStorage.setItem('modToken', d.token);
+    $('p').value = '';
+    start();
+  } catch (err) { $('loginErr').textContent = err.message; }
+});
+
+$('logout').onclick = logout;
+$('reload').onclick = load;
+
+function setCount() { $('count').textContent = $('list').children.length; if (!$('list').children.length) $('list').textContent = 'Brak zdjęć do zatwierdzenia ✔'; }
+
+function card(p) {
+  const el = document.createElement('div');
+  el.className = 'box';
+
+  const title = document.createElement('div'); title.className = 'title';
+  title.textContent = '#' + p.thread_id + ' ' + (p.title || '');
+  const meta = document.createElement('div'); meta.className = 'meta';
+  meta.textContent = 'post #' + p.id + ' • ' + p.created_at + ' ';
+  if (p.is_nsfw == 1) { const t = document.createElement('span'); t.className = 'tag'; t.textContent = 'NSFW'; meta.appendChild(t); }
+
+  const img = document.createElement('img'); img.className = 'img'; img.alt = 'ładowanie...';
+  api('/api/mod/image/' + encodeURI(p.image_key)).then(r => r.ok ? r.blob() : Promise.reject())
+    .then(b => { img.src = URL.createObjectURL(b); }).catch(() => { img.alt = '(nie udało się wczytać zdjęcia)'; });
+
+  const text = document.createElement('div'); text.className = 'text'; text.textContent = p.content || '';
+
+  const actions = document.createElement('div'); actions.className = 'actions';
+  const mk = (cls, label, path, confirmMsg) => {
+    const b = document.createElement('button'); b.className = cls; b.textContent = label;
+    b.onclick = async () => {
+      if (confirmMsg && !confirm(confirmMsg)) return;
+      b.disabled = true;
+      try {
+        const r = await api(path, { method: 'POST', body: JSON.stringify({ post_id: p.id }) });
+        if (!r.ok) throw new Error((await r.json()).error || 'Błąd');
+        if (img.src.startsWith('blob:')) URL.revokeObjectURL(img.src);
+        el.remove(); setCount();
+      } catch (err) { alert(err.message); b.disabled = false; }
+    };
+    return b;
+  };
+  actions.append(
+    mk('ok', '✔ Zatwierdź', '/api/mod/approve'),
+    mk('no', '✖ Odrzuć zdjęcie', '/api/mod/reject', 'Odrzucić zdjęcie? Plik zostanie usunięty, tekst zostaje.'),
+    mk('del', '🗑 Usuń post', '/api/mod/delete-post', 'Usunąć cały post razem ze zdjęciem?')
+  );
+  el.append(title, meta, img, text, actions);
+  return el;
+}
+
+async function load() {
+  try {
+    const r = await api('/api/mod/pending');
+    const d = await r.json();
+    $('who').textContent = d.moderator;
+    $('list').replaceChildren(...d.pending.map(card));
+    setCount();
+  } catch (err) { $('list').textContent = err.message; }
+}
+
+function start() {
+  $('login').classList.add('hidden');
+  $('app').classList.remove('hidden');
+  load();
+}
+
+if (tok()) start();
+setInterval(() => { if (tok() && !document.hidden) load(); }, 60000);
+</script>
+</body>
+</html>
