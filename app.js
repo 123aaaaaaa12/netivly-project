@@ -829,7 +829,10 @@ if (initialThreadId) {
     loadThreads();
 }
 
-setInterval(() => {
+// [POLLING] rzadziej (30s zamiast 10s) i tylko gdy karta jest aktywna w przeglądarce (Page Visibility API).
+// Po powrocie do karty odświeża od razu, więc nic nie traci na responsywności.
+function pollTick() {
+    if (document.hidden) return;
     if (currentThread) {
         openThread(currentThread, false, true);
     } else {
@@ -838,4 +841,9 @@ setInterval(() => {
             loadThreads();
         }
     }
-}, 10000);
+}
+
+setInterval(pollTick, 30000);
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) pollTick();
+});
